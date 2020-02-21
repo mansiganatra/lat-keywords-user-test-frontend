@@ -19,7 +19,6 @@ const SearchResultView = ({
   return (
     <Container>
       <SearchBar getKeywords={getKeywords} />
-      <Button onClick={saveToFile}>Download JSON</Button>
       <BottomContent>
         {result.models.map(model => (
           <Model key={model.id} model={model} removeKey={removeKey} />
@@ -30,11 +29,6 @@ const SearchResultView = ({
 };
 
 const Container = styled.div``;
-const Button = styled.button`
-  height: 50px;
-  width: 70px;
-  cursor: pointer;
-`;
 const BottomContent = styled.div`
   display: flex;
   flex-wrap: wrap;

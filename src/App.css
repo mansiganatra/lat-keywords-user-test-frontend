@@ -1,0 +1,19 @@
+.search-content {
+  display: flex;
+}
+
+.search-content .left-content {
+  margin-right: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.search-content .left-content div .download-btn {
+  height: 50px;
+  width: 70px;
+  cursor: pointer;
+}
+
+.searchContent .rightContent {
+}

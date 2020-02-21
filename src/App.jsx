@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Switch, Route, NavLink } from 'react-router-dom';
-import { Grommet } from 'grommet';
+import { NavLink } from 'react-router-dom';
 import fileDownload from 'js-file-download';
 import axiosWithAuth from './utils/axiosWithAuth';
 import styled from 'styled-components';
-import Uploader from './components/Uploader';
-import Dashboard from './components/Dashboard';
-import Navigation from './components/Navigation';
-import SearchResultView from './components/SearchResultView';
+import AppRoutes from './AppRoutes';
 
-const sample = {
-  docset: [
+import './App.css';
+import DocsetList from './components/DocsetList';
+
+function App() {
+  const [docset, setDocset] = useState([
     {
       name: 'juul',
       models: [],
@@ -26,22 +25,12 @@ const sample = {
       models: [],
       search_history: []
     }
-  ]
-};
-
-function App() {
-  const [state, setState] = useState(
-    JSON.parse(localStorage.getItem('state')) || sample
-  );
-
-  // useEffect(() => {
-  //   localStorage.setItem('state', JSON.stringify(state));
-  // }, [state]);
+  ]);
 
   const setUploadPath = async path => {
     try {
       const data = await axiosWithAuth().post('/upload', path);
-      setState({ ...state, uploaded: data });
+      setDocset({ ...docset, uploaded: data });
     } catch (error) {
       console.log(error);
     }
@@ -59,9 +48,9 @@ function App() {
         };
       });
 
-      setState(prevState => ({
+      setDocset(prevState => ({
         ...prevState,
-        docset: prevState.docset.map(item => {
+        docset: prevState.map(item => {
           if (item.name === docset) {
             return {
               ...item,
@@ -78,9 +67,9 @@ function App() {
   };
 
   const removeKey = (modelId, index, docset) => {
-    setState(prevState => ({
+    setDocset(prevState => ({
       ...prevState,
-      docset: prevState.docset.map(item => {
+      docset: prevState.map(item => {
         console.log('iterm: ', item.name, docset);
         if (item.name === docset) {
           console.log(item.name);
@@ -106,73 +95,32 @@ function App() {
   };
 
   const saveToFile = () => {
-    fileDownload(JSON.stringify(state), 'keyword_list.json');
+    fileDownload(JSON.stringify(docset), 'keyword_list.json');
   };
-  console.log(state);
+
   return (
     <div>
-      <Grommet plain>
-        {/* <Navigation /> */}
-        <SearchContent>
-          <TopContent>
-            {state.docset.map((item, i) => (
-              <div key={i}>
-                <NavLink
-                  to={`/docset=${item.name}`}
-                  activeClassName="selectedLink"
-                  exact
-                >
-                  <h3>{item.name}</h3>
-                </NavLink>
-              </div>
-            ))}
-          </TopContent>
-          <BottomContent>
-            <Switch>
-              <Route
-                path="/"
-                exact
-                render={_ => (
-                  <div>
-                    <p>Please choose a docset on the left</p>
-                  </div>
-                )}
-                setUploadPath={setUploadPath}
-              />
-              <Route
-                path="/:docset"
-                exact
-                render={props => (
-                  <SearchResultView
-                    {...props}
-                    docset={state.docset}
-                    removeKey={removeKey}
-                    saveToFile={saveToFile}
-                    getKeywords={getKeywords}
-                  />
-                )}
-              />
-            </Switch>
-          </BottomContent>
-        </SearchContent>
-      </Grommet>
+      <div className="search-content">
+        <div className="left-content">
+          <div className="docset-list">
+            <DocsetList docset={docset} />
+          </div>
+          <div>
+            <button className="download-btn" onClick={saveToFile}>
+              Download JSON
+            </button>
+          </div>
+        </div>
+        <div className="right-content">
+          <AppRoutes
+            docset={docset}
+            saveToFile={saveToFile}
+            getKeywords={getKeywords}
+          />
+        </div>
+      </div>
     </div>
   );
 }
-
-const SearchContent = styled.div`
-  display: flex;
-
-  .selectedLink {
-    h3 {
-      color: white;
-      background-color: black;
-    }
-  }
-`;
-const TopContent = styled.div`
-  margin-right: 50px;
-`;
-const BottomContent = styled.div``;
 
 export default App;
