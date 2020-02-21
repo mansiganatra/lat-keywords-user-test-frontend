@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import CrossButton from './CrossButton';
+import CrossButton from '../CrossButton';
 
 import './Keyword.css';
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import KeywordList from './KeywordList';
+import KeywordList from '../KeywordList';
 
 import './Model.css';
 

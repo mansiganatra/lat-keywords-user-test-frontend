@@ -1,6 +1,6 @@
 import React from 'react';
-import SearchBar from './SearchBar';
-import ModelList from './ModelList';
+import SearchBar from '../components/SearchBar';
+import ModelList from '../components/ModelList';
 
 const SearchResultView = ({ docset, match, removeKey, getKeywords }) => {
   const result = docset.find(

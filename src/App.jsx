@@ -1,14 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { NavLink } from 'react-router-dom';
+import React, { useState } from 'react';
 import fileDownload from 'js-file-download';
 import axiosWithAuth from './utils/axiosWithAuth';
-import styled from 'styled-components';
 import AppRoutes from './AppRoutes';
-
-import './App.css';
 import DocsetList from './components/DocsetList';
 
+import './App.css';
+
 function App() {
+  const [error, setError] = useState('');
   const [docset, setDocset] = useState([
     {
       name: 'juul',
@@ -27,30 +26,20 @@ function App() {
     }
   ]);
 
-  const setUploadPath = async path => {
-    try {
-      const data = await axiosWithAuth().post('/upload', path);
-      setDocset({ ...docset, uploaded: data });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  //search?term=nicotine&docset=juul
   const getKeywords = async (query, docset) => {
     try {
       const res = await axiosWithAuth().get(`/?term=${query}&docset=${docset}`);
 
-      // add id to models by index
+      // add id and deleted_kw to models by index
       const newData = res.data.kw.map((item, i) => {
         return {
           id: `${Date.now()}${i}`,
-          ...item
+          ...item,
+          deleted_kw: []
         };
       });
-
-      setDocset(prevState => ({
-        ...prevState,
-        docset: prevState.map(item => {
+      setDocset(prevState =>
+        prevState.map(item => {
           if (item.name === docset) {
             return {
               ...item,
@@ -60,19 +49,17 @@ function App() {
           }
           return item;
         })
-      }));
+      );
     } catch (error) {
-      console.log(error);
+      setError(error);
     }
   };
 
   const removeKey = (modelId, index, docset) => {
-    setDocset(prevState => ({
-      ...prevState,
-      docset: prevState.map(item => {
-        console.log('iterm: ', item.name, docset);
+    // remove key from list
+    setDocset(prevState =>
+      prevState.map(item => {
         if (item.name === docset) {
-          console.log(item.name);
           return {
             ...item,
             models: item.models.map(model => {
@@ -91,7 +78,12 @@ function App() {
         }
         return item;
       })
-    }));
+    );
+  };
+
+  const addToDeletedKwList = () => {
+    // add removed key to deleted list
+    setDocset();
   };
 
   const saveToFile = () => {
@@ -116,6 +108,7 @@ function App() {
             docset={docset}
             saveToFile={saveToFile}
             getKeywords={getKeywords}
+            removeKey={removeKey}
           />
         </div>
       </div>

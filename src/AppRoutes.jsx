@@ -1,8 +1,8 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
-import SearchResultView from './components/SearchResultView';
+import SearchResultView from './views/SearchResultView';
 
-const AppRoutes = ({ docset, saveToFile, getKeywords }) => {
+const AppRoutes = ({ docset, saveToFile, getKeywords, removeKey }) => {
   return (
     <Switch>
       <Route
@@ -21,7 +21,7 @@ const AppRoutes = ({ docset, saveToFile, getKeywords }) => {
           <SearchResultView
             {...props}
             docset={docset}
-            removeKey={docset}
+            removeKey={removeKey}
             saveToFile={saveToFile}
             getKeywords={getKeywords}
           />
