@@ -28,6 +28,11 @@ function App() {
       name: 'mueller',
       models: [],
       search_history: []
+    },
+    {
+      name: 'Banks-Daxzaneous-Forger',
+      models: [],
+      search_history: []
     }
   ]);
 
