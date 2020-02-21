@@ -137,7 +137,7 @@ function App() {
   console.log(docset);
 
   return (
-    <div>
+    <div className="App">
       <div className="search-content">
         <div className="left-content">
           <div className="docset-list">

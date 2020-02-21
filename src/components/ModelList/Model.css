@@ -6,6 +6,7 @@
   padding: 0 10px;
   background-color: white;
   overflow: auto;
+  max-height: calc(100vh - 50px);
 }
 
 .model-container .header {
@@ -17,4 +18,8 @@
   height: 50vh;
   max-height: 100%;
   overflow: auto;
+}
+
+.model-container .deletedlist-container {
+  border-bottom: 1px solid black;
 }

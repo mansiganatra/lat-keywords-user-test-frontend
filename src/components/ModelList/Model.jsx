@@ -15,7 +15,9 @@ const Model = ({ model, removeKey, getKeywords }) => {
         <KeywordList kw={kw} removeKey={removeKey} modelId={id} />
       </div>
       <h2>score: {score}</h2>
-      <DeletedList deleted_kw={deleted_kw} />
+      <div className="deletedlist-container">
+        <DeletedList deleted_kw={deleted_kw} />
+      </div>
     </div>
   );
 };
