@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { Switch, Route, NavLink } from 'react-router-dom';
-import { Grommet } from 'grommet';
 import fileDownload from 'js-file-download';
 import axiosWithAuth from './utils/axiosWithAuth';
-import styled from 'styled-components';
-import Uploader from './components/Uploader';
-import Dashboard from './components/Dashboard';
-import Navigation from './components/Navigation';
-import SearchResultView from './components/SearchResultView';
+import AppRoutes from './AppRoutes';
+import DocsetList from './components/DocsetList';
 
-const sample = {
-  docset: [
+import './App.css';
+
+function App() {
+  const [error, setError] = useState('');
+  const [deleted, setDeleted] = useState(false);
+  const [deletedWord, setDeletedWord] = useState({
+    modelId: null,
+    word: ''
+  });
+  const [docset, setDocset] = useState([
     {
       name: 'juul',
       models: [],
@@ -26,42 +29,34 @@ const sample = {
       models: [],
       search_history: []
     }
-  ]
-};
+  ]);
 
-function App() {
-  const [state, setState] = useState(
-    JSON.parse(localStorage.getItem('state')) || sample
-  );
-
-  // useEffect(() => {
-  //   localStorage.setItem('state', JSON.stringify(state));
-  // }, [state]);
-
-  const setUploadPath = async path => {
-    try {
-      const data = await axiosWithAuth().post('/upload', path);
-      setState({ ...state, uploaded: data });
-    } catch (error) {
-      console.log(error);
+  useEffect(() => {
+    if (deleted) {
+      addToDeletedKwList(
+        deletedWord.modelId,
+        deletedWord.kw,
+        deletedWord.docset
+      );
+      setDeleted(false);
     }
-  };
-  //search?term=nicotine&docset=juul
+  }, [deleted]);
+
   const getKeywords = async (query, docset) => {
     try {
       const res = await axiosWithAuth().get(`/?term=${query}&docset=${docset}`);
 
-      // add id to models by index
+      // add id and deleted_kw to models by index
       const newData = res.data.kw.map((item, i) => {
         return {
           id: `${Date.now()}${i}`,
-          ...item
+          ...item,
+          deleted_kw: [],
+          search_term: query
         };
       });
-
-      setState(prevState => ({
-        ...prevState,
-        docset: prevState.docset.map(item => {
+      setDocset(prevState =>
+        prevState.map(item => {
           if (item.name === docset) {
             return {
               ...item,
@@ -71,26 +66,33 @@ function App() {
           }
           return item;
         })
-      }));
+      );
     } catch (error) {
-      console.log(error);
+      setError(error);
     }
   };
 
   const removeKey = (modelId, index, docset) => {
-    setState(prevState => ({
-      ...prevState,
-      docset: prevState.docset.map(item => {
-        console.log('iterm: ', item.name, docset);
+    // remove key from keyword list
+    setDocset(prevState =>
+      prevState.map(item => {
         if (item.name === docset) {
-          console.log(item.name);
           return {
             ...item,
             models: item.models.map(model => {
               if (modelId === model.id) {
                 return {
                   ...model,
-                  kw: model.kw.filter((_, i) => {
+                  kw: model.kw.filter((kw, i) => {
+                    if (i === index) {
+                      // add removed key to deleted list
+                      setDeletedWord({
+                        modelId,
+                        kw,
+                        docset
+                      });
+                      setDeleted(true);
+                    }
                     return i !== index;
                   }),
                   score: model.score - 1
@@ -102,77 +104,67 @@ function App() {
         }
         return item;
       })
-    }));
+    );
+  };
+
+  const addToDeletedKwList = (modelId, kw, docset) => {
+    console.log(modelId, kw, docset);
+    setDocset(prevState =>
+      prevState.map(item => {
+        if (item.name === docset) {
+          return {
+            ...item,
+            models: item.models.map(model => {
+              if (modelId === model.id) {
+                console.log(model);
+                return {
+                  ...model,
+                  deleted_kw: [...model.deleted_kw, kw]
+                };
+              }
+              return model;
+            })
+          };
+        }
+        return item;
+      })
+    );
   };
 
   const saveToFile = () => {
-    fileDownload(JSON.stringify(state), 'keyword_list.json');
+    fileDownload(JSON.stringify(docset), 'keyword_list.json');
   };
-  console.log(state);
+
+  console.log(docset);
+
   return (
-    <div>
-      <Grommet plain>
-        {/* <Navigation /> */}
-        <SearchContent>
-          <TopContent>
-            {state.docset.map((item, i) => (
-              <div key={i}>
-                <NavLink
-                  to={`/docset=${item.name}`}
-                  activeClassName="selectedLink"
-                  exact
-                >
-                  <h3>{item.name}</h3>
-                </NavLink>
-              </div>
-            ))}
-          </TopContent>
-          <BottomContent>
-            <Switch>
-              <Route
-                path="/"
-                exact
-                render={_ => (
-                  <div>
-                    <p>Please choose a docset on the left</p>
-                  </div>
-                )}
-                setUploadPath={setUploadPath}
-              />
-              <Route
-                path="/:docset"
-                exact
-                render={props => (
-                  <SearchResultView
-                    {...props}
-                    docset={state.docset}
-                    removeKey={removeKey}
-                    saveToFile={saveToFile}
-                    getKeywords={getKeywords}
-                  />
-                )}
-              />
-            </Switch>
-          </BottomContent>
-        </SearchContent>
-      </Grommet>
+    <div className="App">
+      <div className="search-content">
+        <div className="left-content">
+          <div className="docset-list">
+            <DocsetList docset={docset} />
+          </div>
+          <div>
+            <button className="download-btn" onClick={saveToFile}>
+              Download JSON
+            </button>
+          </div>
+        </div>
+        <div className="right-content">
+          <AppRoutes
+            docset={docset}
+            saveToFile={saveToFile}
+            getKeywords={getKeywords}
+            removeKey={removeKey}
+          />
+        </div>
+      </div>
     </div>
   );
 }
 
-const SearchContent = styled.div`
-  display: flex;
-
-  .selectedLink {
-    h3 {
-      color: white;
-      background-color: black;
-    }
-  }
-`;
-const TopContent = styled.div`
-  margin-right: 50px;
-`;
-const BottomContent = styled.div``;
-
 export default App;
+
+// TODO
+// Fix styles
+// add deleted list component

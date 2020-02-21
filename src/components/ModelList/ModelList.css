@@ -1,0 +1,11 @@
+.modellist-container {
+  display: flex;
+  justify-content: center;
+  max-width: 100vw;
+  width: 100%;
+  overflow: auto;
+}
+
+.error-message {
+  text-align: center;
+}
