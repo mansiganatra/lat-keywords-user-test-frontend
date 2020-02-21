@@ -1,0 +1,19 @@
+.model-container {
+  height: 300px;
+  max-width: 250px;
+  width: 100%;
+  border: 1px solid black;
+  margin: 0 5px 5px 5px;
+  padding: 0 10px;
+  background-color: white;
+}
+
+.model-container .header {
+  border-bottom: 1px solid black;
+}
+
+.model-container .header .keywordlist-container {
+  border-bottom: 1px solid black;
+  height: 150px;
+  overflow: auto;
+}

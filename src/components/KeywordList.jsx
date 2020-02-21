@@ -1,5 +1,5 @@
 import React from 'react';
-import Word from './Word';
+import Keyword from './Keyword';
 
 const KeywordList = ({ kw, removeKey, modelId }) => {
   if (!kw || !kw.length) return <p>No Keywords Left</p>;
@@ -7,7 +7,7 @@ const KeywordList = ({ kw, removeKey, modelId }) => {
   return (
     <div>
       {kw.map((word, i) => (
-        <Word
+        <Keyword
           word={word}
           key={word}
           index={i}

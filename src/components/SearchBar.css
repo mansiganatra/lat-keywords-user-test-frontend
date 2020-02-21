@@ -1,0 +1,13 @@
+form {
+  display: flex;
+  justify-content: center;
+}
+
+form input {
+  border: 1px solid black;
+  padding: 7px 20px;
+}
+
+form button {
+  padding: 7px;
+}

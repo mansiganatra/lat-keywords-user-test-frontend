@@ -1,16 +1,9 @@
 import React from 'react';
-import styled from 'styled-components';
+
+import './CrossButton.css';
 
 const CrossButton = ({ removeHandler }) => (
-  <Button onClick={removeHandler}>X</Button>
+  <button onClick={removeHandler}>X</button>
 );
-
-const Button = styled.button`
-  padding: 10px;
-  background-color: white;
-  border: 1px solid black;
-  color: black;
-  cursor: pointer;
-`;
 
 export default CrossButton;

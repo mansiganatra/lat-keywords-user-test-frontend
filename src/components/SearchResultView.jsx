@@ -1,15 +1,8 @@
 import React from 'react';
-import styled from 'styled-components';
-import Model from './Model';
 import SearchBar from './SearchBar';
+import ModelList from './ModelList';
 
-const SearchResultView = ({
-  docset,
-  match,
-  removeKey,
-  saveToFile,
-  getKeywords
-}) => {
+const SearchResultView = ({ docset, match, removeKey, getKeywords }) => {
   const result = docset.find(
     item => match.params.docset.split('=')[1] === item.name
   );
@@ -17,21 +10,11 @@ const SearchResultView = ({
   if (!result) return <p>No Docsets Available</p>;
 
   return (
-    <Container>
+    <div>
       <SearchBar getKeywords={getKeywords} />
-      <BottomContent>
-        {result.models.map(model => (
-          <Model key={model.id} model={model} removeKey={removeKey} />
-        ))}
-      </BottomContent>
-    </Container>
+      <ModelList models={result.models} removeKey={removeKey} />
+    </div>
   );
 };
-
-const Container = styled.div``;
-const BottomContent = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-`;
 
 export default SearchResultView;
