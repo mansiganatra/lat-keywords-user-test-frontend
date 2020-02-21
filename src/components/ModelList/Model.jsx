@@ -6,11 +6,10 @@ import DeletedList from '../DeletedList';
 import './Model.css';
 
 const Model = ({ model, removeKey, getKeywords }) => {
-  const { mname, kw, score, id, deleted_kw } = model;
+  const { mname, kw, score, id, deleted_kw, search_term } = model;
   return (
     <div className="model-container">
-      <SearchBar getKeywords={getKeywords} />
-      <div className="header">{mname}</div>
+      <div className="header">"{search_term}"</div>
       <div className="keywordlist-container">
         <KeywordList kw={kw} removeKey={removeKey} modelId={id} />
       </div>

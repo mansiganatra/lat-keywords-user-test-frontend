@@ -51,7 +51,8 @@ function App() {
         return {
           id: `${Date.now()}${i}`,
           ...item,
-          deleted_kw: []
+          deleted_kw: [],
+          search_term: query
         };
       });
       setDocset(prevState =>
