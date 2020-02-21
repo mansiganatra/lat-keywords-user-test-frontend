@@ -1,6 +1,6 @@
 import React from 'react';
-import SearchBar from '../components/SearchBar';
 import ModelList from '../components/ModelList';
+import SearchBar from '../components/SearchBar';
 
 const SearchResultView = ({ docset, match, removeKey, getKeywords }) => {
   const result = docset.find(
@@ -12,7 +12,11 @@ const SearchResultView = ({ docset, match, removeKey, getKeywords }) => {
   return (
     <div>
       <SearchBar getKeywords={getKeywords} />
-      <ModelList models={result.models} removeKey={removeKey} />
+      <ModelList
+        models={result.models}
+        removeKey={removeKey}
+        getKeywords={getKeywords}
+      />
     </div>
   );
 };

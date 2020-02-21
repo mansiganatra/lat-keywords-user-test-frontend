@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import fileDownload from 'js-file-download';
 import axiosWithAuth from './utils/axiosWithAuth';
 import AppRoutes from './AppRoutes';
@@ -8,6 +8,11 @@ import './App.css';
 
 function App() {
   const [error, setError] = useState('');
+  const [deleted, setDeleted] = useState(false);
+  const [deletedWord, setDeletedWord] = useState({
+    modelId: null,
+    word: ''
+  });
   const [docset, setDocset] = useState([
     {
       name: 'juul',
@@ -25,6 +30,17 @@ function App() {
       search_history: []
     }
   ]);
+
+  useEffect(() => {
+    if (deleted) {
+      addToDeletedKwList(
+        deletedWord.modelId,
+        deletedWord.kw,
+        deletedWord.docset
+      );
+      setDeleted(false);
+    }
+  }, [deleted]);
 
   const getKeywords = async (query, docset) => {
     try {
@@ -56,7 +72,7 @@ function App() {
   };
 
   const removeKey = (modelId, index, docset) => {
-    // remove key from list
+    // remove key from keyword list
     setDocset(prevState =>
       prevState.map(item => {
         if (item.name === docset) {
@@ -66,7 +82,16 @@ function App() {
               if (modelId === model.id) {
                 return {
                   ...model,
-                  kw: model.kw.filter((_, i) => {
+                  kw: model.kw.filter((kw, i) => {
+                    if (i === index) {
+                      // add removed key to deleted list
+                      setDeletedWord({
+                        modelId,
+                        kw,
+                        docset
+                      });
+                      setDeleted(true);
+                    }
                     return i !== index;
                   }),
                   score: model.score - 1
@@ -81,14 +106,35 @@ function App() {
     );
   };
 
-  const addToDeletedKwList = () => {
-    // add removed key to deleted list
-    setDocset();
+  const addToDeletedKwList = (modelId, kw, docset) => {
+    console.log(modelId, kw, docset);
+    setDocset(prevState =>
+      prevState.map(item => {
+        if (item.name === docset) {
+          return {
+            ...item,
+            models: item.models.map(model => {
+              if (modelId === model.id) {
+                console.log(model);
+                return {
+                  ...model,
+                  deleted_kw: [...model.deleted_kw, kw]
+                };
+              }
+              return model;
+            })
+          };
+        }
+        return item;
+      })
+    );
   };
 
   const saveToFile = () => {
     fileDownload(JSON.stringify(docset), 'keyword_list.json');
   };
+
+  console.log(docset);
 
   return (
     <div>
@@ -117,3 +163,7 @@ function App() {
 }
 
 export default App;
+
+// TODO
+// Fix styles
+// add deleted list component
