@@ -1,11 +1,12 @@
 import React from 'react';
 import KeywordList from '../KeywordList';
 import SearchBar from '../SearchBar';
+import DeletedList from '../DeletedList';
 
 import './Model.css';
 
 const Model = ({ model, removeKey, getKeywords }) => {
-  const { mname, kw, score, id } = model;
+  const { mname, kw, score, id, deleted_kw } = model;
   return (
     <div className="model-container">
       <SearchBar getKeywords={getKeywords} />
@@ -14,6 +15,7 @@ const Model = ({ model, removeKey, getKeywords }) => {
         <KeywordList kw={kw} removeKey={removeKey} modelId={id} />
       </div>
       <h2>score: {score}</h2>
+      <DeletedList deleted_kw={deleted_kw} />
     </div>
   );
 };

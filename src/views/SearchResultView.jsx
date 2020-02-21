@@ -8,10 +8,10 @@ const SearchResultView = ({ docset, match, removeKey, getKeywords }) => {
   );
 
   if (!result) return <p>No Docsets Available</p>;
+  if (!result.models.length) return <SearchBar getKeywords={getKeywords} />;
 
   return (
     <div>
-      <SearchBar getKeywords={getKeywords} />
       <ModelList
         models={result.models}
         removeKey={removeKey}
