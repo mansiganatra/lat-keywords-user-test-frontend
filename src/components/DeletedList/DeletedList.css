@@ -1,4 +1,4 @@
-h3 {
+h2 {
   padding: 10px 0;
 }
 
@@ -6,4 +6,10 @@ h3 {
 }
 
 .deleted p {
+  padding: 3px 0;
+  cursor: pointer;
+}
+
+.deleted p:hover {
+  font-weight: 700;
 }

@@ -6,7 +6,6 @@ import './DeletedList.css';
 const DeletedList = ({ deleted_kw }) => {
   return (
     <>
-      <h2>Deleted keywords:</h2>
       <div className="deleted">
         {deleted_kw.map((deleted, i) => (
           <Deleted key={i} deleted={deleted} />

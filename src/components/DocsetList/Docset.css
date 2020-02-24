@@ -11,6 +11,6 @@ div h3 {
 
 .docset {
   margin-top: 20px;
-  list-style-type: disc;
-  margin-left: 10px;
+  /* list-style-type: disc;
+  margin-left: 10px; */
 }

@@ -2,10 +2,12 @@
   width: 150px;
   border-radius: 3px;
   margin-right: 10px;
-  border: 1.5px solid black;
+  border: 1px solid black;
   padding: 0 10px;
   background-color: white;
   height: 75vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .model-container .header {
@@ -19,12 +21,17 @@
 .model-container .keywordlist-container {
   border-bottom: 1px solid black;
   max-height: 50%;
+  min-height: 50%;
   overflow: auto;
 }
 
 .model-container h2 {
   border-bottom: 1px solid black;
   padding: 10px 0;
+}
+.model-container .score {
+  display: flex;
+  justify-content: center;
 }
 
 .model-container .deletedlist-container {

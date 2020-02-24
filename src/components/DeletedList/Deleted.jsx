@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Deleted = ({ deleted }) => {
-  return <p>{deleted + ' '}</p>;
+  return <p>{deleted}</p>;
 };
 
 export default Deleted;

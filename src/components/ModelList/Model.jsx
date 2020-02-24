@@ -12,10 +12,13 @@ const Model = ({ model, removeKey, getKeywords }) => {
       <div className="header">
         <p>"{search_term}"</p>
       </div>
+
       <div className="keywordlist-container">
         <KeywordList kw={kw} removeKey={removeKey} modelId={id} />
       </div>
-      <h2>score: {score}</h2>
+
+      <h2 className="score">score: {score}</h2>
+      <h2>Deleted keywords:</h2>
       <div className="deletedlist-container">
         <DeletedList deleted_kw={deleted_kw} />
       </div>
