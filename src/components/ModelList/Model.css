@@ -1,25 +1,33 @@
 .model-container {
-  height: 100vh;
-  max-width: 250px;
-  width: 100%;
-  border: 1px solid black;
+  width: 150px;
+  border-radius: 3px;
+  margin-right: 10px;
+  border: 1.5px solid black;
   padding: 0 10px;
   background-color: white;
-  overflow: auto;
-  max-height: calc(100vh - 150px);
+  height: 75vh;
 }
 
 .model-container .header {
+  padding: 8px 0;
   border-bottom: 1px solid black;
+}
+.model-container .header p {
+  font-weight: 700;
 }
 
 .model-container .keywordlist-container {
   border-bottom: 1px solid black;
-  height: 50vh;
-  max-height: 100%;
+  max-height: 50%;
   overflow: auto;
 }
 
-.model-container .deletedlist-container {
+.model-container h2 {
   border-bottom: 1px solid black;
+  padding: 10px 0;
+}
+
+.model-container .deletedlist-container {
+  overflow: auto;
+  /* max-height: 150px; */
 }

@@ -3,6 +3,7 @@ import fileDownload from 'js-file-download';
 import axiosWithAuth from './utils/axiosWithAuth';
 import AppRoutes from './AppRoutes';
 import DocsetList from './components/DocsetList';
+import DownloadBtn from './components/DownloadBtn';
 
 import './App.css';
 
@@ -16,7 +17,92 @@ function App() {
   const [docset, setDocset] = useState([
     {
       name: 'juul',
-      models: [],
+      models: [
+        {
+          id: 1,
+          search_term: 'model_name',
+          kw: [
+            'awareness',
+            'young',
+            'adolescent',
+            'adult',
+            'prevalence',
+            'cidarette',
+            'person',
+            'teenage',
+            'future',
+            'younger',
+            'teen',
+            'participation',
+            'teenager',
+            'disadvantaged',
+            'schoenborn',
+            'initiation',
+            'ministry',
+            'use',
+            'gindi',
+            'education'
+          ],
+          score: 20,
+          deleted_kw: []
+        },
+        {
+          id: 2,
+          search_term: 'model_name',
+          kw: [
+            'awareness',
+            'young',
+            'adolescent',
+            'adult',
+            'prevalence',
+            'cidarette',
+            'person',
+            'teenage',
+            'future',
+            'younger',
+            'teen',
+            'participation',
+            'teenager',
+            'disadvantaged',
+            'schoenborn',
+            'initiation',
+            'ministry',
+            'use',
+            'gindi',
+            'education'
+          ],
+          score: 20,
+          deleted_kw: []
+        },
+        {
+          id: 3,
+          search_term: 'model_name',
+          kw: [
+            'awareness',
+            'young',
+            'adolescent',
+            'adult',
+            'prevalence',
+            'cidarette',
+            'person',
+            'teenage',
+            'future',
+            'younger',
+            'teen',
+            'participation',
+            'teenager',
+            'disadvantaged',
+            'schoenborn',
+            'initiation',
+            'ministry',
+            'use',
+            'gindi',
+            'education'
+          ],
+          score: 20,
+          deleted_kw: []
+        }
+      ],
       search_history: []
     },
     {
@@ -150,9 +236,7 @@ function App() {
             <DocsetList docset={docset} />
           </div>
           <div>
-            <button className="download-btn" onClick={saveToFile}>
-              Download JSON
-            </button>
+            <DownloadBtn saveToFile={saveToFile} />
           </div>
         </div>
         <div className="right-content">

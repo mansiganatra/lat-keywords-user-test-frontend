@@ -1,5 +1,11 @@
+.container {
+  border: 1px solid red;
+  max-width: 70vw;
+  width: 100%;
+}
+
 .searchbar-container {
-  padding-bottom: 50px;
+  padding-bottom: 5px;
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
 }

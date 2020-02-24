@@ -9,7 +9,9 @@ const Model = ({ model, removeKey, getKeywords }) => {
   const { mname, kw, score, id, deleted_kw, search_term } = model;
   return (
     <div className="model-container">
-      <div className="header">"{search_term}"</div>
+      <div className="header">
+        <p>"{search_term}"</p>
+      </div>
       <div className="keywordlist-container">
         <KeywordList kw={kw} removeKey={removeKey} modelId={id} />
       </div>

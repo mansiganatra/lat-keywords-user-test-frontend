@@ -12,7 +12,7 @@ const SearchResultView = ({ docset, match, removeKey, getKeywords }) => {
   if (!result) return <p>No Docsets Available</p>;
 
   return (
-    <div>
+    <div className="container">
       <div className="searchbar-container">
         <SearchBar getKeywords={getKeywords} />
       </div>

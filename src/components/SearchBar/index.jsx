@@ -31,7 +31,7 @@ const SearchBar = ({ getKeywords }) => {
         onChange={handleChange}
         placeholder="keyword search"
       />
-      <button type="submit">Submit</button>
+      <button type="submit">Search</button>
     </form>
   );
 };
