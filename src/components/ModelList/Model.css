@@ -15,8 +15,8 @@
 .remove-btn {
   position: absolute;
   background-color: white;
-  height: 15px;
-  width: 15px;
+  height: 25px;
+  width: 25px;
   border-radius: 50%;
   border: 1px solid black;
   display: flex;
