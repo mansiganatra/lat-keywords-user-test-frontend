@@ -5,14 +5,14 @@ This is a front end app for LA Times keyword search. This project uses React on 
 ## Local development
 
 ```bash
-git clone https://github.com/mansiganatra/lat-keywords-user-test-frontend.git
-cd lat-keywords-user-test-frontend
-yarn install
-yarn start
+$ git clone https://github.com/mansiganatra/lat-keywords-user-test-frontend.git
+$ cd lat-keywords-user-test-frontend
+$ yarn install
+$ yarn start
 ```
 
 ## Test
 
 ```bash
-yarn test
+$ yarn test
 ```
