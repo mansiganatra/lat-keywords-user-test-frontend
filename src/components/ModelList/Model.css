@@ -1,4 +1,5 @@
 .model-container {
+  margin-top: 10px;
   width: 150px;
   border-radius: 3px;
   margin-right: 10px;
@@ -8,6 +9,26 @@
   height: 75vh;
   display: flex;
   flex-direction: column;
+  position: relative;
+}
+
+.remove-btn {
+  position: absolute;
+  background-color: white;
+  height: 15px;
+  width: 15px;
+  border-radius: 50%;
+  border: 1px solid black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  right: -7px;
+  top: -8px;
+  cursor: pointer;
+}
+
+.disable-remove-btn {
+  display: none;
 }
 
 .model-container .header {

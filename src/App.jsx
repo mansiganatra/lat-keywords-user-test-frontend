@@ -177,7 +177,7 @@ function App() {
           <div className="docset-list">
             <DocsetList docset={docset} />
           </div>
-          <div>
+          <div className="download-btn">
             <DownloadBtn saveToFile={saveToFile} />
           </div>
         </div>
