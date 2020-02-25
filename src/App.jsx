@@ -34,6 +34,31 @@ function App() {
       name: 'Banks-Daxzaneous-Forger',
       models: [],
       search_history: []
+    },
+    {
+      name: 'Belver-Matthew-Fightclub',
+      models: [],
+      search_history: []
+    },
+    {
+      name: 'Blumenthal-John-Homelessassault',
+      models: [],
+      search_history: []
+    },
+    {
+      name: 'Caro-Bill-Unpaidparkingtix',
+      models: [],
+      search_history: []
+    },
+    {
+      name: 'DaRosa-Baltazar-Getawaydriver',
+      models: [],
+      search_history: []
+    },
+    {
+      name: 'Garcia-Mayra-Meatthrower',
+      models: [],
+      search_history: []
     }
   ]);
 
@@ -48,9 +73,11 @@ function App() {
     }
   }, [deleted]);
 
-  const getKeywords = async (query, docset) => {
+  const getKeywords = async (query, docset, size) => {
     try {
-      const res = await axiosWithAuth().get(`/?term=${query}&docset=${docset}`);
+      const res = await axiosWithAuth().get(
+        `search?term=${query}&docset=${docset}&size=${size}`
+      );
 
       // add id and deleted_kw to models by index
       const newData = res.data.kw.map((item, i) => {
