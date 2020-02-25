@@ -1,6 +1,7 @@
 .model-container {
   margin-top: 10px;
-  width: 150px;
+  min-width: 150px;
+  max-width: 150px;
   border-radius: 3px;
   margin-right: 10px;
   border: 1px solid black;
