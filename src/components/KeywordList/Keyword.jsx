@@ -14,7 +14,9 @@ const Word = ({ word, removeKey, index, modelId }) => {
 
   return (
     <div className="keyword-container">
-      <p>{word}</p>
+      <p>
+        {word[0]}({word[1]})
+      </p>
       <div>
         <CrossButton removeHandler={removeHandler} />
       </div>

@@ -21,11 +21,6 @@ function App() {
       search_history: []
     },
     {
-      name: 'woolsey',
-      models: [],
-      search_history: []
-    },
-    {
       name: 'mueller',
       models: [],
       search_history: []
@@ -59,8 +54,54 @@ function App() {
       name: 'Garcia-Mayra-Meatthrower',
       models: [],
       search_history: []
+    },
+    {
+      name: 'Goodbread-JohnPhillip-Drug trafficking',
+      models: [],
+      search_history: []
+    },
+    {
+      name: 'Goyos-Reinaldo-Fatalshooting',
+      models: [],
+      search_history: []
+    },
+    {
+      name: 'Gulley-Lawrence-Daughterassault',
+      models: [],
+      search_history: []
+    },
+    {
+      name: 'wildfire',
+      models: [],
+      search_history: []
+    },
+    {
+      name: 'woolsey',
+      models: [],
+      search_history: []
     }
   ]);
+
+  // useEffect(() => {
+  //   if (!docset.length) {
+  //     const getDocsetInit = async () => {
+  //       try {
+  //         const res = await axiosWithAuth().get(`getDocsetNames`);
+  //         console.log(res);
+  //         const newDocset = res.data.map(doc => {
+  //           return {
+  //             name: doc,
+  //             models: [],
+  //             search_history: []
+  //           };
+  //         });
+  //         setDocset(newDocset);
+  //       } catch (error) {}
+  //     };
+
+  //     getDocsetInit();
+  //   }
+  // }, []);
 
   useEffect(() => {
     if (deleted) {
@@ -76,9 +117,9 @@ function App() {
   const getKeywords = async (query, docset, size) => {
     try {
       const res = await axiosWithAuth().get(
-        `search?term=${query}&docset=${docset}&size=${size}`
+        `?term=${query}&docset=${docset}&size=${size}`
       );
-
+      console.log(res.data);
       // add id and deleted_kw to models by index
       const newData = res.data.kw.map((item, i) => {
         return {
