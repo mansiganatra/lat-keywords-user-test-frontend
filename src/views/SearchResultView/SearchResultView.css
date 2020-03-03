@@ -10,7 +10,8 @@
 .message {
   display: flex;
   justify-content: center;
-  margin-bottom: 10px;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
   flex-direction: column;
   align-items: center;
 }
@@ -21,5 +22,11 @@
   padding-bottom: 10px;
 }
 
+.message div {
+  display: flex;
+  justify-content: center;
+}
+
 .message p {
+  margin-right: 5px;
 }

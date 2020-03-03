@@ -25,8 +25,10 @@ const SearchResultView = ({
       </div>
       <div className="message">
         {result.msg.length > 0 && <h1>{result.msg}</h1>}
-        {result.alt_arr.length > 0 &&
-          result.alt_arr.map(item => <p key={item}>{item}</p>)}
+        <div>
+          {result.alt_arr.length > 0 &&
+            result.alt_arr.map(item => <p key={item}>{item},</p>)}
+        </div>
       </div>
 
       <ModelList
