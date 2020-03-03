@@ -4,7 +4,7 @@ import Carousel from '../Carousel';
 
 import './ModelList.css';
 
-const ModelList = ({ models, removeKey, getKeywords }) => {
+const ModelList = ({ models, removeKey, getKeywords, deleteModel }) => {
   if (!models || !models.length)
     return <div className="error-message">No current models</div>;
 
@@ -17,6 +17,7 @@ const ModelList = ({ models, removeKey, getKeywords }) => {
             model={model}
             removeKey={removeKey}
             getKeywords={getKeywords}
+            deleteModel={deleteModel}
           />
         ))}
       </Carousel>

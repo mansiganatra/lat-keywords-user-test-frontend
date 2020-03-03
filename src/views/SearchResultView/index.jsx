@@ -4,7 +4,13 @@ import SearchBar from '../../components/SearchBar';
 
 import './SearchResultView.css';
 
-const SearchResultView = ({ docset, match, removeKey, getKeywords }) => {
+const SearchResultView = ({
+  docset,
+  match,
+  removeKey,
+  getKeywords,
+  deleteModel
+}) => {
   const result = docset.find(
     item => match.params.docset.split('=')[1] === item.name
   );
@@ -21,6 +27,7 @@ const SearchResultView = ({ docset, match, removeKey, getKeywords }) => {
         models={result.models}
         removeKey={removeKey}
         getKeywords={getKeywords}
+        deleteModel={deleteModel}
       />
     </div>
   );

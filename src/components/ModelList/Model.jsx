@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
 import KeywordList from '../KeywordList';
 import SearchBar from '../SearchBar';
 import DeletedList from '../DeletedList';
 
 import './Model.css';
 
-const Model = ({ model, removeKey, getKeywords }) => {
-  const { mname, kw, score, id, deleted_kw, search_term } = model;
+const Model = ({ model, removeKey, getKeywords, deleteModel }) => {
+  const { mname, kw, score, id, deleted_kw, search_term, deleted } = model;
   const [hover, setHover] = useState(false);
   const [display, setDisplay] = useState(true);
+  let { docset } = useParams();
 
   const handleHoverEnable = () => {
     if (!hover) return setHover(true);
@@ -18,12 +20,13 @@ const Model = ({ model, removeKey, getKeywords }) => {
   };
 
   const handleDisplayNone = () => {
-    setDisplay(false);
+    docset = docset.split('=')[1];
+    deleteModel(docset, id);
   };
 
   return (
     <div
-      className={`model-container ${display ? '' : 'disable-remove-btn'}`}
+      className={`model-container ${!deleted ? '' : 'disable-remove-btn'}`}
       onMouseEnter={handleHoverEnable}
       onMouseLeave={handleHoverDisable}
     >

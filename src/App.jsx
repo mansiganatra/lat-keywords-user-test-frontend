@@ -14,94 +14,28 @@ function App() {
     modelId: null,
     word: ''
   });
-  const [docset, setDocset] = useState([
-    {
-      name: 'juul',
-      models: [],
-      search_history: []
-    },
-    {
-      name: 'mueller',
-      models: [],
-      search_history: []
-    },
-    {
-      name: 'Banks-Daxzaneous-Forger',
-      models: [],
-      search_history: []
-    },
-    {
-      name: 'Belver-Matthew-Fightclub',
-      models: [],
-      search_history: []
-    },
-    {
-      name: 'Blumenthal-John-Homelessassault',
-      models: [],
-      search_history: []
-    },
-    {
-      name: 'Caro-Bill-Unpaidparkingtix',
-      models: [],
-      search_history: []
-    },
-    {
-      name: 'DaRosa-Baltazar-Getawaydriver',
-      models: [],
-      search_history: []
-    },
-    {
-      name: 'Garcia-Mayra-Meatthrower',
-      models: [],
-      search_history: []
-    },
-    {
-      name: 'Goodbread-JohnPhillip-Drug trafficking',
-      models: [],
-      search_history: []
-    },
-    {
-      name: 'Goyos-Reinaldo-Fatalshooting',
-      models: [],
-      search_history: []
-    },
-    {
-      name: 'Gulley-Lawrence-Daughterassault',
-      models: [],
-      search_history: []
-    },
-    {
-      name: 'wildfire',
-      models: [],
-      search_history: []
-    },
-    {
-      name: 'woolsey',
-      models: [],
-      search_history: []
+  const [docset, setDocset] = useState([]);
+
+  useEffect(() => {
+    if (!docset.length) {
+      const getDocsetInit = async () => {
+        try {
+          const res = await axiosWithAuth().get(`/getDocsetNames`);
+          console.log(res);
+          const newDocset = res.data.map(doc => {
+            return {
+              name: doc,
+              models: [],
+              search_history: []
+            };
+          });
+          setDocset(newDocset);
+        } catch (error) {}
+      };
+
+      getDocsetInit();
     }
-  ]);
-
-  // useEffect(() => {
-  //   if (!docset.length) {
-  //     const getDocsetInit = async () => {
-  //       try {
-  //         const res = await axiosWithAuth().get(`getDocsetNames`);
-  //         console.log(res);
-  //         const newDocset = res.data.map(doc => {
-  //           return {
-  //             name: doc,
-  //             models: [],
-  //             search_history: []
-  //           };
-  //         });
-  //         setDocset(newDocset);
-  //       } catch (error) {}
-  //     };
-
-  //     getDocsetInit();
-  //   }
-  // }, []);
+  }, []);
 
   useEffect(() => {
     if (deleted) {
@@ -114,21 +48,46 @@ function App() {
     }
   }, [deleted]);
 
+  const deleteModel = (docset, modelId) => {
+    setDocset(prevState =>
+      prevState.map(item => {
+        if (item.name === docset) {
+          return {
+            ...item,
+            models: item.models.map(model => {
+              if (modelId === model.id) {
+                console.log(model);
+                return {
+                  ...model,
+                  deleted: true
+                };
+              }
+              return model;
+            })
+          };
+        }
+        return item;
+      })
+    );
+  };
+
   const getKeywords = async (query, docset, size) => {
     try {
       const res = await axiosWithAuth().get(
-        `?term=${query}&docset=${docset}&size=${size}`
+        `/?term=${query}&docset=${docset}&size=${size}`
       );
-      console.log(res.data);
+
       // add id and deleted_kw to models by index
       const newData = res.data.kw.map((item, i) => {
         return {
           id: `${Date.now()}${i}`,
           ...item,
           deleted_kw: [],
-          search_term: query
+          search_term: query,
+          deleted: false
         };
       });
+      console.log(newData);
       setDocset(prevState =>
         prevState.map(item => {
           if (item.name === docset) {
@@ -228,6 +187,7 @@ function App() {
             saveToFile={saveToFile}
             getKeywords={getKeywords}
             removeKey={removeKey}
+            deleteModel={deleteModel}
           />
         </div>
       </div>
