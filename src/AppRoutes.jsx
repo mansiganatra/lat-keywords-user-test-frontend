@@ -7,7 +7,9 @@ const AppRoutes = ({
   saveToFile,
   getKeywords,
   removeKey,
-  deleteModel
+  deleteModel,
+  msg,
+  alternateArr
 }) => {
   return (
     <Switch>
@@ -31,6 +33,8 @@ const AppRoutes = ({
             saveToFile={saveToFile}
             getKeywords={getKeywords}
             deleteModel={deleteModel}
+            msg={msg}
+            alternateArr={alternateArr}
           />
         )}
       />

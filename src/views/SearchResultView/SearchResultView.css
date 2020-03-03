@@ -6,3 +6,21 @@
 .searchbar-container {
   padding: 10px 0;
 }
+
+.message {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+  flex-direction: column;
+  align-items: center;
+}
+
+.message h1 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  padding-bottom: 10px;
+}
+
+.message p {
+  text-decoration: underline;
+}

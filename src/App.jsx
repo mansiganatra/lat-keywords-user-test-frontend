@@ -8,8 +8,9 @@ import DownloadBtn from './components/DownloadBtn';
 import './App.css';
 
 function App() {
-  const [error, setError] = useState('');
+  const [msg, setMessage] = useState('');
   const [deleted, setDeleted] = useState(false);
+  const [alternateArr, setAlternateArr] = useState([]);
   const [deletedWord, setDeletedWord] = useState({
     modelId: null,
     word: ''
@@ -73,35 +74,54 @@ function App() {
 
   const getKeywords = async (query, docset, size) => {
     try {
+      let newData;
       const res = await axiosWithAuth().get(
         `/?term=${query}&docset=${docset}&size=${size}`
       );
-
-      // add id and deleted_kw to models by index
-      const newData = res.data.kw.map((item, i) => {
-        return {
-          id: `${Date.now()}${i}`,
-          ...item,
-          deleted_kw: [],
-          search_term: query,
-          deleted: false
-        };
-      });
-      console.log(newData);
-      setDocset(prevState =>
-        prevState.map(item => {
-          if (item.name === docset) {
+      console.log(res.data);
+      if (res.data.kw[0].msg) {
+        setMessage(res.data.kw[0].msg);
+        setAlternateArr([
+          ...res.data.kw[0].kw.map(item => {
+            return item[0];
+          })
+        ]);
+      } else {
+        if (res.data.kw[0].score < 0) {
+          setMessage(res.data.kw[0].kw[1]);
+          setAlternateArr([]);
+        } else {
+          // add id and deleted_kw to models by index
+          setAlternateArr([]);
+          setMessage('');
+          newData = res.data.kw.map((item, i) => {
             return {
+              id: `${Date.now()}${i}`,
               ...item,
-              models: [...item.models, ...newData],
-              search_history: [...item.search_history, query]
+              deleted_kw: [],
+              search_term: query,
+              deleted: false
             };
-          }
-          return item;
-        })
-      );
+          });
+
+          console.log(newData);
+
+          setDocset(prevState =>
+            prevState.map(item => {
+              if (item.name === docset) {
+                return {
+                  ...item,
+                  models: [...item.models, ...newData],
+                  search_history: [...item.search_history, query]
+                };
+              }
+              return item;
+            })
+          );
+        }
+      }
     } catch (error) {
-      setError(error);
+      console.log(error);
     }
   };
 
@@ -139,7 +159,6 @@ function App() {
       })
     );
   };
-
   const addToDeletedKwList = (modelId, kw, docset) => {
     console.log(modelId, kw, docset);
     setDocset(prevState =>
@@ -188,6 +207,8 @@ function App() {
             getKeywords={getKeywords}
             removeKey={removeKey}
             deleteModel={deleteModel}
+            msg={msg}
+            alternateArr={alternateArr}
           />
         </div>
       </div>
