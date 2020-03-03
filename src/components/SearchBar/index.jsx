@@ -14,7 +14,6 @@ const SearchBar = ({ getKeywords }) => {
   };
 
   const handleResize = val => {
-    console.log(val);
     setSize(val);
   };
 

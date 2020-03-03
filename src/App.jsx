@@ -18,11 +18,11 @@ function App() {
   const [docset, setDocset] = useState([]);
 
   useEffect(() => {
+    // fetch docset at initialization
     if (!docset.length) {
       const getDocsetInit = async () => {
         try {
           const res = await axiosWithAuth().get(`/getDocsetNames`);
-          console.log(res);
           const newDocset = res.data.map(doc => {
             return {
               name: doc,
@@ -41,6 +41,7 @@ function App() {
   }, []);
 
   useEffect(() => {
+    // populated deleted_kw array
     if (deleted) {
       addToDeletedKwList(
         deletedWord.modelId,
@@ -59,7 +60,6 @@ function App() {
             ...item,
             models: item.models.map(model => {
               if (modelId === model.id) {
-                console.log(model);
                 return {
                   ...model,
                   deleted: true
@@ -183,7 +183,6 @@ function App() {
     );
   };
   const addToDeletedKwList = (modelId, kw, docset) => {
-    console.log(modelId, kw, docset);
     setDocset(prevState =>
       prevState.map(item => {
         if (item.name === docset) {
@@ -191,7 +190,6 @@ function App() {
             ...item,
             models: item.models.map(model => {
               if (modelId === model.id) {
-                console.log(model);
                 return {
                   ...model,
                   deleted_kw: [...model.deleted_kw, kw]
@@ -209,8 +207,6 @@ function App() {
   const saveToFile = () => {
     fileDownload(JSON.stringify(docset), 'keyword_list.json');
   };
-
-  console.log(docset);
 
   return (
     <div className="App">

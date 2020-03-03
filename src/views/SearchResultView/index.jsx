@@ -17,7 +17,6 @@ const SearchResultView = ({
 
   if (!result) return <p>No Docsets Available</p>;
 
-  console.log(result);
   return (
     <div className="container">
       <div className="searchbar-container">
