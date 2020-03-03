@@ -27,7 +27,9 @@ function App() {
             return {
               name: doc,
               models: [],
-              search_history: []
+              search_history: [],
+              msg: '',
+              alt_arr: []
             };
           });
           setDocset(newDocset);
@@ -78,18 +80,42 @@ function App() {
       const res = await axiosWithAuth().get(
         `/?term=${query}&docset=${docset}&size=${size}`
       );
-      console.log(res.data);
+
+      // msg will only appear with words not in dict
       if (res.data.kw[0].msg) {
-        setMessage(res.data.kw[0].msg);
-        setAlternateArr([
-          ...res.data.kw[0].kw.map(item => {
-            return item[0];
+        setDocset(prevState =>
+          prevState.map(item => {
+            if (item.name === docset) {
+              return {
+                ...item,
+                msg: res.data.kw[0].msg,
+                alt_arr: [
+                  ...res.data.kw[0].kw.map(word => {
+                    return word[0];
+                  })
+                ]
+              };
+            }
+            return item;
           })
-        ]);
+        );
       } else {
+        // checks if score is -1 to indicate word
+        // that does not exist in dict and
+        // no similar words
         if (res.data.kw[0].score < 0) {
-          setMessage(res.data.kw[0].kw[1]);
-          setAlternateArr([]);
+          setDocset(prevState =>
+            prevState.map(item => {
+              if (item.name === docset) {
+                return {
+                  ...item,
+                  msg: res.data.kw[0].kw[1],
+                  alt_arr: []
+                };
+              }
+              return item;
+            })
+          );
         } else {
           // add id and deleted_kw to models by index
           setAlternateArr([]);
@@ -103,9 +129,6 @@ function App() {
               deleted: false
             };
           });
-
-          console.log(newData);
-
           setDocset(prevState =>
             prevState.map(item => {
               if (item.name === docset) {
@@ -207,8 +230,6 @@ function App() {
             getKeywords={getKeywords}
             removeKey={removeKey}
             deleteModel={deleteModel}
-            msg={msg}
-            alternateArr={alternateArr}
           />
         </div>
       </div>

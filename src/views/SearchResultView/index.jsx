@@ -9,9 +9,7 @@ const SearchResultView = ({
   match,
   removeKey,
   getKeywords,
-  deleteModel,
-  msg,
-  alternateArr
+  deleteModel
 }) => {
   const result = docset.find(
     item => match.params.docset.split('=')[1] === item.name
@@ -19,16 +17,16 @@ const SearchResultView = ({
 
   if (!result) return <p>No Docsets Available</p>;
 
-  console.log(msg);
+  console.log(result);
   return (
     <div className="container">
       <div className="searchbar-container">
         <SearchBar getKeywords={getKeywords} />
       </div>
       <div className="message">
-        {msg.length > 0 && <h1>{msg}</h1>}
-        {alternateArr.length > 0 &&
-          alternateArr.map(item => <p key={item}>{item}</p>)}
+        {result.msg.length > 0 && <h1>{result.msg}</h1>}
+        {result.alt_arr.length > 0 &&
+          result.alt_arr.map(item => <p key={item}>{item}</p>)}
       </div>
 
       <ModelList
