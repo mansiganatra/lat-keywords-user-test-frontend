@@ -49,6 +49,7 @@
   color: #172d3b;
   margin-right: 6px;
   margin-bottom: 3px;
+  text-transform: uppercase;
 }
 
 .search-show-top .searchbar-container .search-history .clear-history {
@@ -196,6 +197,10 @@
 .result-kw-list {
   background-color: #ffffff;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.esult-kw-list:hover {
 }
 
 .result-kw-list .result-kw-item {
@@ -265,15 +270,19 @@
   justify-content: space-between;
   align-items: center;
 }
+.model-header-container h1 {
+  text-transform: capitalize;
+}
 .model-header-container .delete {
   display: none;
   width: 17px;
   height: 17px;
-  border-radius: 21px;
+  border-radius: 50%;
   background-color: #ff0f0f;
 
   color: #ffffff;
   text-align: center;
+  cursor: pointer;
 }
 
 .model-header-container .hover {

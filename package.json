@@ -8,6 +8,7 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "axios": "^0.19.2",
+    "clipboard-copy": "^3.1.0",
     "cors": "^2.8.5",
     "js-file-download": "^0.4.9",
     "prop-types": "^15.7.2",

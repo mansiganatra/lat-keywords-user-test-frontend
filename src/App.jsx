@@ -66,13 +66,13 @@ function App() {
       const res = await axiosWithAuth().get(
         `/?term=${query}&docset=${docset}&size=${size}`
       );
-
+      console.log('res!!!', res);
       // msg will only appear with words not in dict
       if (res.data.kw[0].msg) {
         setDocset(prevState => ({
           ...prevState,
           msg: res.data.kw[0].msg,
-          alt_arr: [...res.data.kw[0].map(word => word[0])]
+          alt_arr: [...res.data.kw[0].kw.map(word => word[0])]
         }));
       } else {
         // checks if score is -1 to indicate word

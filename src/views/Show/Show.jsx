@@ -47,7 +47,7 @@ const Show = ({ searched, getKeywords, startSearch, docset }) => {
             <div className="searchbar-container">
               <SearchBar
                 getKeywords={getKeywords}
-                size={15}
+                size={size}
                 startSearch={startSearch}
               />
               <div className="search-history">
@@ -64,9 +64,11 @@ const Show = ({ searched, getKeywords, startSearch, docset }) => {
             </div>
             <div className="search-keyword-range">
               <div className="range-left">
-                <h2>How many word associations would you like to find?</h2>
-                <div className="slider-container">
-                  <Slider handleResize={handleResize} size={size} />
+                <h2>Suggestions</h2>
+                {docset.msg.length > 0 && <h1>{docset.msg}</h1>}
+                <div>
+                  {docset.alt_arr.length > 0 &&
+                    docset.alt_arr.map(item => <p key={item}>{item},</p>)}
                 </div>
               </div>
               <div className="range-right">
@@ -94,7 +96,7 @@ const Show = ({ searched, getKeywords, startSearch, docset }) => {
           </div>
           <SearchBar
             getKeywords={getKeywords}
-            size={15}
+            size={size}
             startSearch={startSearch}
           />
         </>
