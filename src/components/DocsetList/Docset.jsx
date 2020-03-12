@@ -6,11 +6,7 @@ import './Docset.css';
 const Docset = ({ item }) => {
   return (
     <div>
-      <NavLink
-        to={`/docset=${item.name}`}
-        activeClassName="selected-link"
-        exact
-      >
+      <NavLink to={`/show/${item.name}`} activeClassName="selected-link" exact>
         <h3>{item.name}</h3>
       </NavLink>
     </div>

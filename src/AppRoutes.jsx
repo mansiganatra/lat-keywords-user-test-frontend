@@ -10,31 +10,33 @@ const AppRoutes = ({
   deleteModel
 }) => {
   return (
-    <Switch>
-      <Route
-        path="/"
-        exact
-        render={_ => (
-          <div>
-            <p>Please choose a docset on the left</p>
-          </div>
-        )}
-      />
-      <Route
-        path="/:docset"
-        exact
-        render={props => (
-          <SearchResultView
-            {...props}
-            docset={docset}
-            removeKey={removeKey}
-            saveToFile={saveToFile}
-            getKeywords={getKeywords}
-            deleteModel={deleteModel}
-          />
-        )}
-      />
-    </Switch>
+    <>
+      <Switch>
+        <Route
+          path="/show"
+          exact
+          render={_ => (
+            <div>
+              <p>Please choose a docset on the left</p>
+            </div>
+          )}
+        />
+        <Route
+          exact
+          path="/show/:docset"
+          render={props => (
+            <SearchResultView
+              {...props}
+              docset={docset}
+              removeKey={removeKey}
+              saveToFile={saveToFile}
+              getKeywords={getKeywords}
+              deleteModel={deleteModel}
+            />
+          )}
+        />
+      </Switch>
+    </>
   );
 };
 
