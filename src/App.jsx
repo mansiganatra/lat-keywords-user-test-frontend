@@ -11,7 +11,6 @@ import './App.css';
 
 function App() {
   const [msg, setMessage] = useState('');
-  const [deleted, setDeleted] = useState(false);
   const [alternateArr, setAlternateArr] = useState([]);
   const [deletedWord, setDeletedWord] = useState({
     modelId: null,
@@ -26,38 +25,8 @@ function App() {
   });
   const [searched, setSearched] = useState(false);
 
-  // useEffect(() => {
-  //   // populated deleted_kw array
-  //   if (deleted) {
-  //     addToDeletedKwList(
-  //       deletedWord.modelId,
-  //       deletedWord.kw,
-  //       deletedWord.docset
-  //     );
-  //     setDeleted(false);
-  //   }
-  // }, [deleted]);
-
   const deleteModel = (docset, modelId) => {
-    setDocset(prevState =>
-      prevState.map(item => {
-        if (item.name === docset) {
-          return {
-            ...item,
-            models: item.models.map(model => {
-              if (modelId === model.id) {
-                return {
-                  ...model,
-                  deleted: true
-                };
-              }
-              return model;
-            })
-          };
-        }
-        return item;
-      })
-    );
+    // TODO
   };
 
   const getKeywords = async (query, size = 15, docset = 'mueller') => {
@@ -110,61 +79,6 @@ function App() {
       console.log(error);
     }
   };
-  const removeKey = (modelId, index, docset) => {
-    // remove key from keyword list
-    setDocset(prevState =>
-      prevState.map(item => {
-        if (item.name === docset) {
-          return {
-            ...item,
-            models: item.models.map(model => {
-              if (modelId === model.id) {
-                return {
-                  ...model,
-                  kw: model.kw.filter((kw, i) => {
-                    if (i === index) {
-                      // add removed key to deleted list
-                      setDeletedWord({
-                        modelId,
-                        kw,
-                        docset
-                      });
-                      setDeleted(true);
-                    }
-                    return i !== index;
-                  }),
-                  score: model.score - 1
-                };
-              }
-              return model;
-            })
-          };
-        }
-        return item;
-      })
-    );
-  };
-  const addToDeletedKwList = (modelId, kw, docset) => {
-    setDocset(prevState =>
-      prevState.map(item => {
-        if (item.name === docset) {
-          return {
-            ...item,
-            models: item.models.map(model => {
-              if (modelId === model.id) {
-                return {
-                  ...model,
-                  deleted_kw: [...model.deleted_kw, kw]
-                };
-              }
-              return model;
-            })
-          };
-        }
-        return item;
-      })
-    );
-  };
 
   const saveToFile = () => {
     fileDownload(JSON.stringify(docset), 'keyword_list.json');
@@ -197,31 +111,3 @@ function App() {
 }
 
 export default App;
-
-// TODO
-// Fix styles
-// add deleted list component
-
-// return (
-//   <div className="App">
-//     <div className="search-content">
-//       <div className="left-content">
-//         <div className="docset-list">
-//           <DocsetList docset={docset} />
-//         </div>
-//         <div className="download-btn">
-//           <DownloadBtn saveToFile={saveToFile} />
-//         </div>
-//       </div>
-//       <div className="right-content">
-//         <AppRoutes
-//           docset={docset}
-//           saveToFile={saveToFile}
-//           getKeywords={getKeywords}
-//           removeKey={removeKey}
-//           deleteModel={deleteModel}
-//         />
-//       </div>
-//     </div>
-//   </div>
-// );
