@@ -24,7 +24,7 @@ function App() {
     msg: '',
     alt_arr: []
   });
-  const [searched, setSearched] = useState(true);
+  const [searched, setSearched] = useState(false);
 
   // useEffect(() => {
   //   // populated deleted_kw array
@@ -69,39 +69,21 @@ function App() {
 
       // msg will only appear with words not in dict
       if (res.data.kw[0].msg) {
-        setDocset(prevState =>
-          prevState.map(item => {
-            if (item.name === docset) {
-              return {
-                ...item,
-                msg: res.data.kw[0].msg,
-                alt_arr: [
-                  ...res.data.kw[0].kw.map(word => {
-                    return word[0];
-                  })
-                ]
-              };
-            }
-            return item;
-          })
-        );
+        setDocset(prevState => ({
+          ...prevState,
+          msg: res.data.kw[0].msg,
+          alt_arr: [...res.data.kw[0].map(word => word[0])]
+        }));
       } else {
         // checks if score is -1 to indicate word
         // that does not exist in dict and
         // no similar words
         if (res.data.kw[0].score < 0) {
-          setDocset(prevState =>
-            prevState.map(item => {
-              if (item.name === docset) {
-                return {
-                  ...item,
-                  msg: res.data.kw[0].kw[1],
-                  alt_arr: []
-                };
-              }
-              return item;
-            })
-          );
+          setDocset(prevState => ({
+            ...prevState,
+            msg: res.data.kw[0].kw[1],
+            alt_arr: []
+          }));
         } else {
           // add id and deleted_kw to models by index
           setAlternateArr([]);
@@ -115,25 +97,17 @@ function App() {
               deleted: false
             };
           });
-          setDocset(prevState =>
-            prevState.map(item => {
-              if (item.name === docset) {
-                return {
-                  ...item,
-                  models: [...item.models, ...newData],
-                  search_history: [...item.search_history, query]
-                };
-              }
-              return item;
-            })
-          );
+          setDocset(prevState => ({
+            ...prevState,
+            models: [...prevState.models, ...newData],
+            search_history: [...prevState.search_history, query]
+          }));
         }
       }
     } catch (error) {
       console.log(error);
     }
   };
-
   const removeKey = (modelId, index, docset) => {
     // remove key from keyword list
     setDocset(prevState =>

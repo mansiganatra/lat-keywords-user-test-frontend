@@ -259,6 +259,23 @@
   min-width: 195px;
   width: 100%;
 }
-.result-model-container h1 {
+.model-header-container {
   margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.model-header-container .delete {
+  display: none;
+  width: 17px;
+  height: 17px;
+  border-radius: 21px;
+  background-color: #ff0f0f;
+
+  color: #ffffff;
+  text-align: center;
+}
+
+.model-header-container .hover {
+  display: block;
 }
