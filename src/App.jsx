@@ -210,6 +210,7 @@ function App() {
             searched={searched}
             getKeywords={getKeywords}
             startSearch={startSearch}
+            docset={docset}
           />
         )}
       />

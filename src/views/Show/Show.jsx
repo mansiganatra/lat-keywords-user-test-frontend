@@ -4,12 +4,14 @@ import { useLocation } from 'react-router-dom';
 import './Show.css';
 import SearchBar from '../../components/SearchBar';
 import Slider from '../../components/Slider';
+import xImage from '../../lib/x.png';
+import seeMoreArror from '../../lib/see_more_arrow.png';
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
 
-const Show = ({ searched, getKeywords, startSearch }) => {
+const Show = ({ searched, getKeywords, startSearch, docset }) => {
   let query = useQuery();
   let apiToken = query.get('apiToken');
   let server = query.get('server');
@@ -49,8 +51,16 @@ const Show = ({ searched, getKeywords, startSearch }) => {
                 startSearch={startSearch}
               />
               <div className="search-history">
-                <div className="history">TRUMP</div>
-                <div className="clear-history">CLEAR</div>
+                <div className="history-list">
+                  {docset.search_history.length > 0 &&
+                    docset.search_history.map(item => (
+                      <div className="history">
+                        TRUMP
+                        <img src={xImage} alt="x" />
+                      </div>
+                    ))}
+                </div>
+                <div className="clear-history">CLEAR ALL</div>
               </div>
             </div>
             <div className="search-keyword-range">
@@ -63,6 +73,257 @@ const Show = ({ searched, getKeywords, startSearch }) => {
               <div className="range-right">
                 <div>{size}</div>
                 <h2>Keyword List Size</h2>
+              </div>
+            </div>
+          </div>
+          <div className="search-show-bot">
+            <div className="result-header">KEYWORDS ASSOCIATED WITH:</div>
+            <div className="model-list">
+              <div className="result-model-container">
+                <h1>“Money”</h1>
+                <div className="result-list-container">
+                  <div className="result-kw-heading list-item">
+                    <div className="word">Word</div>
+                    <div className="word-partner">No. of Mentions</div>
+                  </div>
+                  <div className="result-kw-list">
+                    <div className="result-kw-item list-item">
+                      <div className="text">Donald</div>
+                      <div className="freq">150</div>
+                    </div>
+                    <div className="result-kw-item list-item">
+                      <div className="text">Donald</div>
+                      <div className="freq">150</div>
+                    </div>
+                    <div className="result-kw-item list-item">
+                      <div className="text">Donald</div>
+                      <div className="freq">150</div>
+                    </div>
+                    <div className="result-kw-item list-item">
+                      <div className="text">Donald</div>
+                      <div className="freq">150</div>
+                    </div>
+                    <div className="result-kw-item list-item">
+                      <div className="text">Donald</div>
+                      <div className="freq">150</div>
+                    </div>
+                    <div className="result-kw-item list-item">
+                      <div className="text">Donald</div>
+                      <div className="freq">150</div>
+                    </div>
+                  </div>
+                  <div className="see-more-container">
+                    <div className="content">
+                      <p>SEE MORE</p>
+                      <img src={seeMoreArror} alt="arrow" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="result-model-container">
+                <h1>“Money”</h1>
+                <div className="result-list-container">
+                  <div className="result-kw-heading list-item">
+                    <div className="word">Word</div>
+                    <div className="word-partner">No. of Mentions</div>
+                  </div>
+                  <div className="result-kw-list">
+                    <div className="result-kw-item list-item">
+                      <div className="text">Donald</div>
+                      <div className="freq">150</div>
+                    </div>
+                    <div className="result-kw-item list-item">
+                      <div className="text">Donald</div>
+                      <div className="freq">150</div>
+                    </div>
+                    <div className="result-kw-item list-item">
+                      <div className="text">Donald</div>
+                      <div className="freq">150</div>
+                    </div>
+                    <div className="result-kw-item list-item">
+                      <div className="text">Donald</div>
+                      <div className="freq">150</div>
+                    </div>
+                    <div className="result-kw-item list-item">
+                      <div className="text">Donald</div>
+                      <div className="freq">150</div>
+                    </div>
+                    <div className="result-kw-item list-item">
+                      <div className="text">Donald</div>
+                      <div className="freq">150</div>
+                    </div>
+                  </div>
+                  <div className="see-more-container">
+                    <div className="content">
+                      <p>SEE MORE</p>
+                      <img src={seeMoreArror} alt="arrow" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="result-model-container">
+                <h1>“Money”</h1>
+                <div className="result-list-container">
+                  <div className="result-kw-heading list-item">
+                    <div className="word">Word</div>
+                    <div className="word-partner">No. of Mentions</div>
+                  </div>
+                  <div className="result-kw-list">
+                    <div className="result-kw-item list-item">
+                      <div className="text">Donald</div>
+                      <div className="freq">150</div>
+                    </div>
+                    <div className="result-kw-item list-item">
+                      <div className="text">Donald</div>
+                      <div className="freq">150</div>
+                    </div>
+                    <div className="result-kw-item list-item">
+                      <div className="text">Donald</div>
+                      <div className="freq">150</div>
+                    </div>
+                    <div className="result-kw-item list-item">
+                      <div className="text">Donald</div>
+                      <div className="freq">150</div>
+                    </div>
+                    <div className="result-kw-item list-item">
+                      <div className="text">Donald</div>
+                      <div className="freq">150</div>
+                    </div>
+                    <div className="result-kw-item list-item">
+                      <div className="text">Donald</div>
+                      <div className="freq">150</div>
+                    </div>
+                  </div>
+                  <div className="see-more-container">
+                    <div className="content">
+                      <p>SEE MORE</p>
+                      <img src={seeMoreArror} alt="arrow" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="result-model-container">
+                <h1>“Money”</h1>
+                <div className="result-list-container">
+                  <div className="result-kw-heading list-item">
+                    <div className="word">Word</div>
+                    <div className="word-partner">No. of Mentions</div>
+                  </div>
+                  <div className="result-kw-list">
+                    <div className="result-kw-item list-item">
+                      <div className="text">Donald</div>
+                      <div className="freq">150</div>
+                    </div>
+                    <div className="result-kw-item list-item">
+                      <div className="text">Donald</div>
+                      <div className="freq">150</div>
+                    </div>
+                    <div className="result-kw-item list-item">
+                      <div className="text">Donald</div>
+                      <div className="freq">150</div>
+                    </div>
+                    <div className="result-kw-item list-item">
+                      <div className="text">Donald</div>
+                      <div className="freq">150</div>
+                    </div>
+                    <div className="result-kw-item list-item">
+                      <div className="text">Donald</div>
+                      <div className="freq">150</div>
+                    </div>
+                    <div className="result-kw-item list-item">
+                      <div className="text">Donald</div>
+                      <div className="freq">150</div>
+                    </div>
+                  </div>
+                  <div className="see-more-container">
+                    <div className="content">
+                      <p>SEE MORE</p>
+                      <img src={seeMoreArror} alt="arrow" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="result-model-container">
+                <h1>“Money”</h1>
+                <div className="result-list-container">
+                  <div className="result-kw-heading list-item">
+                    <div className="word">Word</div>
+                    <div className="word-partner">No. of Mentions</div>
+                  </div>
+                  <div className="result-kw-list">
+                    <div className="result-kw-item list-item">
+                      <div className="text">Donald</div>
+                      <div className="freq">150</div>
+                    </div>
+                    <div className="result-kw-item list-item">
+                      <div className="text">Donald</div>
+                      <div className="freq">150</div>
+                    </div>
+                    <div className="result-kw-item list-item">
+                      <div className="text">Donald</div>
+                      <div className="freq">150</div>
+                    </div>
+                    <div className="result-kw-item list-item">
+                      <div className="text">Donald</div>
+                      <div className="freq">150</div>
+                    </div>
+                    <div className="result-kw-item list-item">
+                      <div className="text">Donald</div>
+                      <div className="freq">150</div>
+                    </div>
+                    <div className="result-kw-item list-item">
+                      <div className="text">Donald</div>
+                      <div className="freq">150</div>
+                    </div>
+                  </div>
+                  <div className="see-more-container">
+                    <div className="content">
+                      <p>SEE MORE</p>
+                      <img src={seeMoreArror} alt="arrow" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="result-model-container">
+                <h1>“Money”</h1>
+                <div className="result-list-container">
+                  <div className="result-kw-heading list-item">
+                    <div className="word">Word</div>
+                    <div className="word-partner">No. of Mentions</div>
+                  </div>
+                  <div className="result-kw-list">
+                    <div className="result-kw-item list-item">
+                      <div className="text">Donald</div>
+                      <div className="freq">150</div>
+                    </div>
+                    <div className="result-kw-item list-item">
+                      <div className="text">Donald</div>
+                      <div className="freq">150</div>
+                    </div>
+                    <div className="result-kw-item list-item">
+                      <div className="text">Donald</div>
+                      <div className="freq">150</div>
+                    </div>
+                    <div className="result-kw-item list-item">
+                      <div className="text">Donald</div>
+                      <div className="freq">150</div>
+                    </div>
+                    <div className="result-kw-item list-item">
+                      <div className="text">Donald</div>
+                      <div className="freq">150</div>
+                    </div>
+                    <div className="result-kw-item list-item">
+                      <div className="text">Donald</div>
+                      <div className="freq">150</div>
+                    </div>
+                  </div>
+                  <div className="see-more-container">
+                    <div className="content">
+                      <p>SEE MORE</p>
+                      <img src={seeMoreArror} alt="arrow" />
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
