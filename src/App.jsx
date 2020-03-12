@@ -16,18 +16,26 @@ function App() {
     modelId: null,
     word: ''
   });
-  const [docset, setDocset] = useState({
-    name: 'mueller',
-    models: [],
-    search_history: [],
-    msg: '',
-    alt_arr: []
-  });
-  const [searched, setSearched] = useState(false);
+  const [docset, setDocset] = useState(
+    JSON.parse(localStorage.getItem('docset')) || {
+      name: 'mueller',
+      models: [],
+      search_history: [],
+      msg: '',
+      alt_arr: []
+    }
+  );
+  const [searched, setSearched] = useState(
+    localStorage.getItem('searched') || false
+  );
 
   const deleteModel = (docset, modelId) => {
     // TODO
   };
+
+  useEffect(() => {
+    localStorage.setItem('docset', JSON.stringify(docset));
+  }, [docset, setDocset]);
 
   const getKeywords = async (query, size = 15, docset = 'mueller') => {
     try {
@@ -87,6 +95,7 @@ function App() {
   const startSearch = () => {
     if (!searched) {
       setSearched(true);
+      localStorage.setItem('searched', searched);
     }
   };
 
