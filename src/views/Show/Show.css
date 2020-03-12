@@ -1,0 +1,50 @@
+.show-container .header-message {
+  padding-bottom: 40px;
+}
+
+.show-container .header-message .header {
+  font-size: 24px;
+  line-height: 31px;
+  width: 100%;
+  max-width: 404px;
+}
+
+.show-container .header-message .header h1 {
+  font-size: 24px;
+  line-height: 31px;
+}
+
+.show-container .header-message .subheader {
+  padding-top: 6px;
+}
+
+.show-container .header-message .subheader p {
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 16px;
+  color: rgba(0, 0, 0, 0.5);
+}
+
+.searchbar {
+  position: relative;
+  width: 100%;
+  max-width: 294px;
+  height: 36px;
+}
+
+.searchbar img {
+  position: absolute;
+  left: 18px;
+  top: 12px;
+}
+
+.searchbar input {
+  background: #ffffff;
+  border: 1.5px solid rgba(23, 45, 59, 0.07);
+  box-sizing: border-box;
+  box-shadow: inset 0px 4px 2px rgba(0, 0, 0, 0.02);
+  border-radius: 21px;
+  width: 100%;
+  height: 100%;
+  padding-left: 45px;
+}

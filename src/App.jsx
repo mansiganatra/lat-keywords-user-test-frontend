@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { Route } from 'react-router-dom';
 import fileDownload from 'js-file-download';
+
 import axiosWithAuth from './utils/axiosWithAuth';
-import AppRoutes from './AppRoutes';
-import DocsetList from './components/DocsetList';
-import DownloadBtn from './components/DownloadBtn';
+
+import Metadata from './views/Metadata/Metadata';
+import Show from './views/Show/Show';
 
 import './App.css';
 
@@ -15,42 +17,26 @@ function App() {
     modelId: null,
     word: ''
   });
-  const [docset, setDocset] = useState([]);
+  const [docset, setDocset] = useState({
+    name: 'mueller',
+    models: [],
+    search_history: [],
+    msg: '',
+    alt_arr: []
+  });
+  const [searched, setSearched] = useState(false);
 
-  useEffect(() => {
-    // fetch docset at initialization
-    if (!docset.length) {
-      const getDocsetInit = async () => {
-        try {
-          const res = await axiosWithAuth().get(`/getDocsetNames`);
-          const newDocset = res.data.map(doc => {
-            return {
-              name: doc,
-              models: [],
-              search_history: [],
-              msg: '',
-              alt_arr: []
-            };
-          });
-          setDocset(newDocset);
-        } catch (error) {}
-      };
-
-      getDocsetInit();
-    }
-  }, []);
-
-  useEffect(() => {
-    // populated deleted_kw array
-    if (deleted) {
-      addToDeletedKwList(
-        deletedWord.modelId,
-        deletedWord.kw,
-        deletedWord.docset
-      );
-      setDeleted(false);
-    }
-  }, [deleted]);
+  // useEffect(() => {
+  //   // populated deleted_kw array
+  //   if (deleted) {
+  //     addToDeletedKwList(
+  //       deletedWord.modelId,
+  //       deletedWord.kw,
+  //       deletedWord.docset
+  //     );
+  //     setDeleted(false);
+  //   }
+  // }, [deleted]);
 
   const deleteModel = (docset, modelId) => {
     setDocset(prevState =>
@@ -74,7 +60,7 @@ function App() {
     );
   };
 
-  const getKeywords = async (query, docset, size) => {
+  const getKeywords = async (query, docset = 'mueller', size = 15) => {
     try {
       let newData;
       const res = await axiosWithAuth().get(
@@ -210,25 +196,11 @@ function App() {
 
   return (
     <div className="App">
-      <div className="search-content">
-        <div className="left-content">
-          <div className="docset-list">
-            <DocsetList docset={docset} />
-          </div>
-          <div className="download-btn">
-            <DownloadBtn saveToFile={saveToFile} />
-          </div>
-        </div>
-        <div className="right-content">
-          <AppRoutes
-            docset={docset}
-            saveToFile={saveToFile}
-            getKeywords={getKeywords}
-            removeKey={removeKey}
-            deleteModel={deleteModel}
-          />
-        </div>
-      </div>
+      <Route
+        path="/show"
+        render={props => <Show {...props} searched={searched} />}
+      />
+      <Route path="/metadata" component={Metadata} />
     </div>
   );
 }
@@ -238,3 +210,27 @@ export default App;
 // TODO
 // Fix styles
 // add deleted list component
+
+// return (
+//   <div className="App">
+//     <div className="search-content">
+//       <div className="left-content">
+//         <div className="docset-list">
+//           <DocsetList docset={docset} />
+//         </div>
+//         <div className="download-btn">
+//           <DownloadBtn saveToFile={saveToFile} />
+//         </div>
+//       </div>
+//       <div className="right-content">
+//         <AppRoutes
+//           docset={docset}
+//           saveToFile={saveToFile}
+//           getKeywords={getKeywords}
+//           removeKey={removeKey}
+//           deleteModel={deleteModel}
+//         />
+//       </div>
+//     </div>
+//   </div>
+// );
