@@ -31,6 +31,12 @@ const Show = ({ searched, getKeywords, startSearch }) => {
       });
   });
 
+  const [size, setSize] = useState(15);
+
+  const handleResize = num => {
+    setSize(num);
+  };
+
   return (
     <div className="show-container">
       {searched ? (
@@ -50,10 +56,12 @@ const Show = ({ searched, getKeywords, startSearch }) => {
             <div className="search-keyword-range">
               <div className="range-left">
                 <h2>How many word associations would you like to find?</h2>
-                <Slider handleResize={() => {}} />
+                <div className="slider-container">
+                  <Slider handleResize={handleResize} size={size} />
+                </div>
               </div>
               <div className="range-right">
-                <div>15</div>
+                <div>{size}</div>
                 <h2>Keyword List Size</h2>
               </div>
             </div>

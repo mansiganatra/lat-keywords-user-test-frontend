@@ -6,9 +6,6 @@ import Slider from '@material-ui/core/Slider';
 const useStyles = makeStyles(theme => ({
   root: {
     width: 300
-  },
-  margin: {
-    height: theme.spacing(3)
   }
 }));
 
@@ -34,7 +31,7 @@ function valuetext(value) {
   return `${value}`;
 }
 
-export default function DiscreteSlider({ handleResize }) {
+export default function DiscreteSlider({ handleResize, size }) {
   const classes = useStyles();
 
   const handleChange = (e, val) => {
@@ -89,10 +86,9 @@ export default function DiscreteSlider({ handleResize }) {
   return (
     <div className={classes.root}>
       <SliderWithtyle
-        defaultValue={10}
+        defaultValue={size}
         getAriaValueText={valuetext}
         aria-labelledby="discrete-slider"
-        valueLabelDisplay="auto"
         onChange={handleChange}
         step={5}
         marks={marks}
