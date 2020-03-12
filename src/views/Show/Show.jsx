@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import ModelList from '../../components/Models/ModelList';
 
+import DownloadBtn from '../../components/DownloadBtn';
+
 import './Show.css';
 import SearchBar from '../../components/SearchBar';
 import Slider from '../../components/Slider';
@@ -11,7 +13,7 @@ function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
 
-const Show = ({ searched, getKeywords, startSearch, docset }) => {
+const Show = ({ searched, getKeywords, startSearch, docset, saveToFile }) => {
   let query = useQuery();
   let apiToken = query.get('apiToken');
   let server = query.get('server');
@@ -65,15 +67,14 @@ const Show = ({ searched, getKeywords, startSearch, docset }) => {
             <div className="search-keyword-range">
               <div className="range-left">
                 <h2>Suggestions</h2>
-                {docset.msg.length > 0 && <h1>{docset.msg}</h1>}
+                {docset.msg.length > 0 && <p>{docset.msg}</p>}
                 <div>
                   {docset.alt_arr.length > 0 &&
                     docset.alt_arr.map(item => <p key={item}>{item},</p>)}
                 </div>
               </div>
               <div className="range-right">
-                <div>{size}</div>
-                <h2>Keyword List Size</h2>
+                <DownloadBtn saveToFile={saveToFile} />
               </div>
             </div>
           </div>

@@ -100,7 +100,9 @@ function App() {
           setDocset(prevState => ({
             ...prevState,
             models: [...prevState.models, ...newData],
-            search_history: [...prevState.search_history, query]
+            search_history: [...prevState.search_history, query],
+            msg: '',
+            alt_arr: []
           }));
         }
       }
@@ -185,6 +187,7 @@ function App() {
             getKeywords={getKeywords}
             startSearch={startSearch}
             docset={docset}
+            saveToFile={saveToFile}
           />
         )}
       />

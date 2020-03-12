@@ -18,6 +18,7 @@ const SearchBar = ({ getKeywords, size, startSearch }) => {
     e.preventDefault();
     try {
       getKeywords(search, size);
+
       startSearch();
       setSearch('');
     } catch (error) {

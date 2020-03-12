@@ -172,3 +172,8 @@ pre {
   font-weight: 400;
   line-height: 18.5714px;
 }
+
+html,
+body {
+  background-color: #f9f9fb;
+}
