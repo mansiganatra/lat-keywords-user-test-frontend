@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import searchImage from '../../lib/search.png';
-
 import './Show.css';
+import SearchBar from '../../components/SearchBar';
+import Slider from '../../components/Slider';
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
 
-const Show = ({ searched }) => {
+const Show = ({ searched, getKeywords, startSearch }) => {
   let query = useQuery();
   let apiToken = query.get('apiToken');
   let server = query.get('server');
@@ -32,14 +32,35 @@ const Show = ({ searched }) => {
   });
 
   return (
-    <>
+    <div className="show-container">
       {searched ? (
-        <div className="searched-container">
-          {/* <SearchTopSection />
-          <SearchBottomResult /> */}
-        </div>
+        <>
+          <div className="search-show-top">
+            <div className="searchbar-container">
+              <SearchBar
+                getKeywords={getKeywords}
+                size={15}
+                startSearch={startSearch}
+              />
+              <div className="search-history">
+                <div className="history">TRUMP</div>
+                <div className="clear-history">CLEAR</div>
+              </div>
+            </div>
+            <div className="search-keyword-range">
+              <div className="range-left">
+                <h2>How many word associations would you like to find?</h2>
+                <Slider handleResize={() => {}} />
+              </div>
+              <div className="range-right">
+                <div>15</div>
+                <h2>Keyword List Size</h2>
+              </div>
+            </div>
+          </div>
+        </>
       ) : (
-        <div className="show-container">
+        <>
           <div className="header-message">
             <div className="header">
               <h1>
@@ -50,13 +71,14 @@ const Show = ({ searched }) => {
               <p>Try searching keywords like “politics” or “money.”</p>
             </div>
           </div>
-          <form className="searchbar">
-            <img src={searchImage} alt="search" />
-            <input type="text" placeholder="Search keyword from document set" />
-          </form>
-        </div>
+          <SearchBar
+            getKeywords={getKeywords}
+            size={15}
+            startSearch={startSearch}
+          />
+        </>
       )}
-    </>
+    </div>
   );
 };
 

@@ -24,7 +24,7 @@ function App() {
     msg: '',
     alt_arr: []
   });
-  const [searched, setSearched] = useState(false);
+  const [searched, setSearched] = useState(true);
 
   // useEffect(() => {
   //   // populated deleted_kw array
@@ -60,7 +60,7 @@ function App() {
     );
   };
 
-  const getKeywords = async (query, docset = 'mueller', size = 15) => {
+  const getKeywords = async (query, size = 15, docset = 'mueller') => {
     try {
       let newData;
       const res = await axiosWithAuth().get(
@@ -194,11 +194,24 @@ function App() {
     fileDownload(JSON.stringify(docset), 'keyword_list.json');
   };
 
+  const startSearch = () => {
+    if (!searched) {
+      setSearched(true);
+    }
+  };
+
   return (
     <div className="App">
       <Route
         path="/show"
-        render={props => <Show {...props} searched={searched} />}
+        render={props => (
+          <Show
+            {...props}
+            searched={searched}
+            getKeywords={getKeywords}
+            startSearch={startSearch}
+          />
+        )}
       />
       <Route path="/metadata" component={Metadata} />
     </div>

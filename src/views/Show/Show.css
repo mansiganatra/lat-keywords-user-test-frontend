@@ -14,6 +14,34 @@
   line-height: 31px;
 }
 
+.search-show-top {
+  display: flex;
+  width: 100%;
+  max-width: 900px;
+  justify-content: space-between;
+}
+
+.search-show-top .search-keyword-range {
+  display: flex;
+  width: 100%;
+  max-width: 364px;
+  height: 119px;
+  justify-content: space-between;
+  background-color: #ffffff;
+  padding-top: 27px;
+  padding-left: 19px;
+}
+
+.search-show-top .search-keyword-range .range-left h2 {
+  font-family: 'Helvetica Neue';
+  font-style: normal;
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 15px;
+  width: 100%;
+  max-width: 170px;
+}
+
 .show-container .header-message .subheader {
   padding-top: 6px;
 }
@@ -23,28 +51,4 @@
   font-size: 12px;
   line-height: 16px;
   color: rgba(0, 0, 0, 0.5);
-}
-
-.searchbar {
-  position: relative;
-  width: 100%;
-  max-width: 294px;
-  height: 36px;
-}
-
-.searchbar img {
-  position: absolute;
-  left: 18px;
-  top: 12px;
-}
-
-.searchbar input {
-  background: #ffffff;
-  border: 1.5px solid rgba(23, 45, 59, 0.07);
-  box-sizing: border-box;
-  box-shadow: inset 0px 4px 2px rgba(0, 0, 0, 0.02);
-  border-radius: 21px;
-  width: 100%;
-  height: 100%;
-  padding-left: 45px;
 }
