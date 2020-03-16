@@ -9,19 +9,17 @@ const SearchTopResult = ({
   startSearch,
   docset,
   saveToFile
-}) => {
-  return (
-    <>
-      <SearchShowTop
-        getKeywords={getKeywords}
-        size={size}
-        startSearch={startSearch}
-        docset={docset}
-        saveToFile={saveToFile}
-      />
-      <SearchShowBot docset={docset} />
-    </>
-  );
-};
+}) => (
+  <>
+    <SearchShowTop
+      getKeywords={getKeywords}
+      size={size}
+      startSearch={startSearch}
+      docset={docset}
+      saveToFile={saveToFile}
+    />
+    <SearchShowBot docset={docset} />
+  </>
+);
 
 export default SearchTopResult;

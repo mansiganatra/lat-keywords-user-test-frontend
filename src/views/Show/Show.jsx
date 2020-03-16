@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import './Show.css';
-import LandingPage from '../../components/Show/LandingPage';
-import Slider from '../../components/Slider';
 import SearchResults from '../../components/Show/SearchResults';
 
 function useQuery() {
@@ -18,39 +16,17 @@ const Show = ({ searched, getKeywords, startSearch, docset, saveToFile }) => {
   let documentSetId = query.get('documentSetId');
   let [search, setSearch] = useState(null);
 
-  // useEffect(() => {
-  //   window.addEventListener('message', e => {
-  //     if (e.data.event === 'notify:documentListParams') {
-  //       const term = e.data.args[0].q;
-  //       setSearch(term);
-  //     }
-  //   });
-
-  //   return () =>
-  //     window.removeEventListener('message', () => {
-  //       console.log('done');
-  //     });
-  // });
-
   const [size, setSize] = useState(15);
-
+  console.log('search');
   return (
     <div className="show-container">
-      {searched ? (
-        <SearchResults
-          getKeywords={getKeywords}
-          size={size}
-          startSearch={startSearch}
-          docset={docset}
-          saveToFile={saveToFile}
-        />
-      ) : (
-        <LandingPage
-          getKeywords={getKeywords}
-          size={size}
-          startSearch={startSearch}
-        />
-      )}
+      <SearchResults
+        getKeywords={getKeywords}
+        size={size}
+        startSearch={startSearch}
+        docset={docset}
+        saveToFile={saveToFile}
+      />
     </div>
   );
 };

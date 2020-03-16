@@ -10,8 +10,6 @@ import Show from './views/Show/Show';
 import './App.css';
 
 function App() {
-  const [msg, setMessage] = useState('');
-  const [alternateArr, setAlternateArr] = useState([]);
   const [deletedWord, setDeletedWord] = useState({
     modelId: null,
     word: ''
@@ -25,12 +23,13 @@ function App() {
       alt_arr: []
     }
   );
-  const [searched, setSearched] = useState(
-    localStorage.getItem('searched') || false
-  );
 
   const deleteModel = (docset, modelId) => {
     // TODO
+  };
+
+  const saveToFile = () => {
+    fileDownload(JSON.stringify(docset), 'keyword_list.json');
   };
 
   useEffect(() => {
@@ -43,7 +42,7 @@ function App() {
       const res = await axiosWithAuth().get(
         `/?term=${query}&docset=${docset}&size=${size}`
       );
-      console.log('res!!!', res);
+
       // msg will only appear with words not in dict
       if (res.data.kw[0].msg) {
         setDocset(prevState => ({
@@ -63,8 +62,6 @@ function App() {
           }));
         } else {
           // add id and deleted_kw to models by index
-          setAlternateArr([]);
-          setMessage('');
           newData = res.data.kw.map((item, i) => {
             return {
               id: `${Date.now()}${i}`,
@@ -88,32 +85,32 @@ function App() {
     }
   };
 
-  const saveToFile = () => {
-    fileDownload(JSON.stringify(docset), 'keyword_list.json');
-  };
+  useEffect(() => {
+    // global search input watcher
+    window.addEventListener('message', e => {
+      if (e.data.event === 'notify:documentListParams') {
+        const term = e.data.args[0].q;
+        getKeywords(term);
 
-  const startSearch = () => {
-    if (!searched) {
-      setSearched(true);
-      localStorage.setItem('searched', searched);
-    }
-  };
+        // console.log(term);
+      }
+    });
+
+    return () =>
+      window.removeEventListener('message', () => {
+        console.log('done');
+      });
+  }, []);
 
   return (
     <div className="App">
-      <Route
-        path="/show"
-        render={props => (
-          <Show
-            {...props}
-            searched={searched}
-            getKeywords={getKeywords}
-            startSearch={startSearch}
-            docset={docset}
-            saveToFile={saveToFile}
-          />
-        )}
-      />
+      <Route path="/show">
+        <Show
+          getKeywords={getKeywords}
+          docset={docset}
+          saveToFile={saveToFile}
+        />
+      </Route>
       <Route path="/metadata" component={Metadata} />
     </div>
   );
