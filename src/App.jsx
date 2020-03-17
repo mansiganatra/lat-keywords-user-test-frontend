@@ -24,8 +24,7 @@ function App() {
   //   // TODO
   // };
   console.log(docset.models);
-  const sortModels = (tagIndex, name, tag) => {
-    console.log(tag);
+  const sortModels = (tagIndex, name) => {
     const sortedModels = [...docset.models];
     let temp;
     // check if already first

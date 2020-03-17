@@ -71,6 +71,14 @@
   text-transform: uppercase;
 }
 
+.search-show-top
+  .search-show-tags-container
+  .tag-history
+  .history-list
+  .selected {
+  background: #43d0ce;
+}
+
 .search-show-top .search-show-tags-container .show-tags-top {
   display: flex;
   justify-content: space-around;
