@@ -10,10 +10,6 @@ import Show from './views/Show/Show';
 import './App.css';
 
 function App() {
-  // const [deletedWord, setDeletedWord] = useState({
-  //   modelId: null,
-  //   word: ''
-  // });
   const [docset, setDocset] = useState(
     JSON.parse(localStorage.getItem('docset')) || {
       name: 'mueller',
@@ -27,6 +23,17 @@ function App() {
   // const deleteModel = (docset, modelId) => {
   //   // TODO
   // };
+
+  const clearAll = () => {
+    localStorage.removeItem('docset');
+    setDocset({
+      name: 'mueller',
+      models: [],
+      search_history: [],
+      msg: '',
+      alt_arr: []
+    });
+  };
   const saveToFile = () => {
     fileDownload(JSON.stringify(docset), 'keyword_list.json');
   };
@@ -105,6 +112,7 @@ function App() {
           getKeywords={getKeywords}
           docset={docset}
           saveToFile={saveToFile}
+          clearAll={clearAll}
         />
       </Route>
       <Route path="/metadata">

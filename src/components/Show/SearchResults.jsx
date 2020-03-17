@@ -4,21 +4,9 @@ import SearchShowTop from './SearchShowTop';
 import SearchShowBot from './SearchShowBot';
 import searchImg from '../../lib/search.png';
 
-const SearchTopResult = ({
-  getKeywords,
-  size,
-  startSearch,
-  docset,
-  saveToFile
-}) => (
+const SearchTopResult = ({ clearAll, docset }) => (
   <>
-    <SearchShowTop
-      getKeywords={getKeywords}
-      size={size}
-      startSearch={startSearch}
-      docset={docset}
-      saveToFile={saveToFile}
-    />
+    <SearchShowTop docset={docset} clearAll={clearAll} />
     <div className="result-header">
       <div className="result-header-left">
         WORDS ASSOCIATED WITH:

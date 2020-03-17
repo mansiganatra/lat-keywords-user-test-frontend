@@ -12,9 +12,11 @@
 }
 
 .search-show-top .search-show-tags-container {
-  width: 100%;
-  max-width: 312px;
-  padding: 25px 50px 20px;
+  width: 410px;
+  min-height: 88px;
+  max-height: 120px;
+  padding-top: 20px;
+  padding-bottom: 20px;
   background: #ffffff;
   box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.08);
   border-radius: 3px;
@@ -26,6 +28,10 @@
   width: 100%;
   justify-content: space-between;
   padding-top: 5px;
+  max-height: 70px;
+  overflow: auto;
+  padding-left: 55px;
+  max-width: 330px;
 }
 
 .search-show-top .search-show-tags-container .tag-history .history-list {
@@ -39,6 +45,7 @@
   .tag-history
   .history-list
   .history {
+  cursor: pointer;
   display: flex;
   justify-content: space-evenly;
   align-items: center;
@@ -64,7 +71,16 @@
   text-transform: uppercase;
 }
 
+.search-show-top .search-show-tags-container .show-tags-top {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
 .search-show-top .search-show-tags-container .show-tags-top .clear-history {
+  cursor: pointer;
   width: 77px;
   height: 21px;
   border-radius: 4px;
@@ -72,6 +88,19 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.search-show-top
+  .search-show-tags-container
+  .show-tags-top
+  .clear-history:active {
+  background-color: #a8226f;
+}
+.search-show-top
+  .search-show-tags-container
+  .show-tags-top
+  .clear-history:visited {
+  background-color: white;
 }
 
 .search-show-top .search-show-tags-container .show-tags-top .clear-history p {
@@ -86,12 +115,12 @@
   color: #a8226f;
 }
 
-.search-show-top .search-show-tags-container .show-tags-top {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  align-items: center;
-  margin-bottom: 10px;
+.search-show-top
+  .search-show-tags-container
+  .show-tags-top
+  .clear-history:active
+  p {
+  color: white;
 }
 
 .search-show-top .search-show-tags-container .show-tags-top h2 {
