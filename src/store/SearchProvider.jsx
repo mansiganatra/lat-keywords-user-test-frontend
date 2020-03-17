@@ -7,7 +7,7 @@ import searchContext from './searchContext';
 const SearchProvider = ({ children }) => {
   const [docset, setDocset] = useState(
     JSON.parse(localStorage.getItem('docset')) || {
-      name: 'mueller',
+      name: 'coronavirus',
       models: [],
       search_history: [],
       msg: '',
@@ -76,7 +76,7 @@ const SearchProvider = ({ children }) => {
     return;
   };
 
-  const getKeywords = async (query, size = 15, docset = 'mueller') => {
+  const getKeywords = async (query, size = 15, docset = 'coronavirus') => {
     try {
       let newData;
       const res = await axiosWithAuth().get(
