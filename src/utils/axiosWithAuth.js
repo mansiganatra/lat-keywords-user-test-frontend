@@ -1,8 +1,6 @@
 import axios from 'axios';
 
-const url1 = 'https://10.23.44.151:80';
-const url2 = 'https://cohorts-api.herokuapp.com/api';
-const url3 = 'http://ec2-34-220-242-182.us-west-2.compute.amazonaws.com';
+const url = 'https://cohorts-api.herokuapp.com/api';
 
 const axiosWithAuth = () => {
   return axios.create({
@@ -11,7 +9,7 @@ const axiosWithAuth = () => {
       'Access-Control-Allow-Origin': '*'
     },
     crossdomain: true,
-    baseURL: url2,
+    baseURL: url,
     json: true
   });
 };

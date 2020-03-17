@@ -10,10 +10,10 @@ import Show from './views/Show/Show';
 import './App.css';
 
 function App() {
-  const [deletedWord, setDeletedWord] = useState({
-    modelId: null,
-    word: ''
-  });
+  // const [deletedWord, setDeletedWord] = useState({
+  //   modelId: null,
+  //   word: ''
+  // });
   const [docset, setDocset] = useState(
     JSON.parse(localStorage.getItem('docset')) || {
       name: 'mueller',
@@ -24,18 +24,12 @@ function App() {
     }
   );
 
-  const deleteModel = (docset, modelId) => {
-    // TODO
-  };
-
+  // const deleteModel = (docset, modelId) => {
+  //   // TODO
+  // };
   const saveToFile = () => {
     fileDownload(JSON.stringify(docset), 'keyword_list.json');
   };
-
-  useEffect(() => {
-    localStorage.setItem('docset', JSON.stringify(docset));
-  }, [docset, setDocset]);
-
   const getKeywords = async (query, size = 15, docset = 'mueller') => {
     try {
       let newData;
@@ -43,7 +37,7 @@ function App() {
         `/?term=${query}&docset=${docset}&size=${size}`
       );
 
-      // msg will only appear with words not in dict
+      // search term does not exist but has similar words
       if (res.data.kw[0].msg) {
         setDocset(prevState => ({
           ...prevState,
@@ -51,15 +45,15 @@ function App() {
           alt_arr: [...res.data.kw[0].kw.map(word => word[0])]
         }));
       } else {
-        // checks if score is -1 to indicate word
-        // that does not exist in dict and
-        // no similar words
+        // search term does not exist and has no similar words
         if (res.data.kw[0].score < 0) {
           setDocset(prevState => ({
             ...prevState,
             msg: res.data.kw[0].kw[1],
             alt_arr: []
           }));
+
+          // search term exists
         } else {
           // add id and deleted_kw to models by index
           newData = res.data.kw.map((item, i) => {
@@ -86,13 +80,15 @@ function App() {
   };
 
   useEffect(() => {
-    // global search input watcher
+    localStorage.setItem('docset', JSON.stringify(docset));
+  }, [docset, setDocset]);
+
+  // global search input watcher
+  useEffect(() => {
     window.addEventListener('message', e => {
       if (e.data.event === 'notify:documentListParams') {
         const term = e.data.args[0].q;
         getKeywords(term);
-
-        // console.log(term);
       }
     });
 
@@ -111,7 +107,9 @@ function App() {
           saveToFile={saveToFile}
         />
       </Route>
-      <Route path="/metadata" component={Metadata} />
+      <Route path="/metadata">
+        <Metadata />
+      </Route>
     </div>
   );
 }

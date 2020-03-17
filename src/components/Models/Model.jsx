@@ -3,7 +3,7 @@ import seeMoreArror from '../../lib/see_more_arrow.png';
 import KeywordList from '../Keywords/KeywordList';
 
 const Model = ({ model }) => {
-  const { kw, score, id, deleted_kw, search_term, deleted } = model;
+  const { kw, search_term } = model;
   const [hover, setHover] = useState(false);
 
   const handleHoverEnable = () => {
