@@ -1,3 +1,4 @@
+/* Top */
 .search-show-top {
   display: flex;
   width: 100%;
@@ -47,14 +48,15 @@
   .history {
   cursor: pointer;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-between;
   align-items: center;
 
   background: #ffffff;
   border: 1px solid #eeeeee;
   box-sizing: border-box;
   border-radius: 2px;
-  width: 72px;
+  min-width: 70px;
+  padding: 0 10px;
   height: 21px;
 
   font-family: 'Helvetica Neue';
@@ -92,7 +94,10 @@
   .tag-history
   .history-list
   .selected
-  img {
+  .img {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   transform: scale(0.8);
 }
 .search-show-top
@@ -100,7 +105,7 @@
   .tag-history
   .history-list
   .selected
-  img:hover {
+  .img:hover {
   transform: scale(1);
 }
 
