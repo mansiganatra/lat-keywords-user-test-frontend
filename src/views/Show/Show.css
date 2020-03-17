@@ -1,7 +1,6 @@
 .search-show-top {
   display: flex;
   width: 100%;
-  max-width: 900px;
   justify-content: space-between;
   align-items: center;
 }
@@ -19,6 +18,7 @@
   background: #ffffff;
   box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.08);
   border-radius: 3px;
+  margin-right: 34px;
 }
 
 .search-show-top .search-show-tags-container .tag-history {
@@ -176,16 +176,39 @@
   overflow: auto;
 }
 
-.search-show-bot .result-header {
+.result-header {
+  width: 100%;
+  justify-content: space-between;
+  display: flex;
+
+  margin-bottom: 18px;
+  margin-top: 25px;
+}
+
+@media (max-width: 740px) {
+  .result-header {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+  }
+}
+
+.result-header .result-header-left {
+  display: flex;
+
   font-family: 'Helvetica Neue';
   font-style: normal;
   font-weight: bold;
-  font-size: 12px;
-  line-height: 15px;
+  font-size: 9px;
+  line-height: 11px;
   text-transform: uppercase;
 
   color: rgba(23, 45, 59, 0.4);
   margin-bottom: 18px;
+}
+.result-header .result-header-right {
+  display: flex;
+  margin-right: 34px;
 }
 
 .result-list-container {

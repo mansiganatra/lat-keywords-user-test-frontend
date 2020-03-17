@@ -4,3 +4,9 @@
   height: 100vh;
   background-color: #f9f9fb;
 }
+
+@media (max-width: 740px) {
+  .App {
+    padding-left: 0;
+  }
+}
