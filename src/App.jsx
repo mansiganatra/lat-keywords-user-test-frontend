@@ -12,7 +12,7 @@ import './App.css';
 function App() {
   const [docset, setDocset] = useState(
     JSON.parse(localStorage.getItem('docset')) || {
-      name: 'mueller',
+      name: 'coronavirus',
       models: [],
       search_history: [],
       msg: '',
@@ -84,7 +84,7 @@ function App() {
   const saveToFile = () => {
     fileDownload(JSON.stringify(docset), 'keyword_list.json');
   };
-  const getKeywords = async (query, size = 15, docset = 'mueller') => {
+  const getKeywords = async (query, size = 15, docset = 'coronavirus') => {
     try {
       let newData;
       const res = await axiosWithAuth().get(
