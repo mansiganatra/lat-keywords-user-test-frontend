@@ -20,9 +20,14 @@ function App() {
     }
   );
 
-  // const deleteModel = (docset, modelId) => {
-  //   // TODO
-  // };
+  const deleteModel = (e, modelId) => {
+    e.stopPropagation();
+    setDocset(prev => ({
+      ...prev,
+      models: prev.models.filter(model => model.id !== modelId),
+      search_history: prev.search_history.filter(tag => tag.tag_id !== modelId)
+    }));
+  };
   console.log(docset.models);
   const sortModels = (tagIndex, name) => {
     const sortedModels = [...docset.models];
@@ -158,11 +163,11 @@ function App() {
     <div className="App">
       <Route path="/show">
         <Show
-          getKeywords={getKeywords}
           docset={docset}
           saveToFile={saveToFile}
           clearAll={clearAll}
           sortModels={sortModels}
+          deleteModel={deleteModel}
         />
       </Route>
       <Route path="/metadata">

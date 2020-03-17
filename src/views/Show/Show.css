@@ -76,7 +76,32 @@
   .tag-history
   .history-list
   .selected {
-  background: #43d0ce;
+  background: #172d3b;
+  color: white;
+}
+.search-show-top
+  .search-show-tags-container
+  .tag-history
+  .history-list
+  .history
+  img:hover {
+  transform: scale(1.2);
+}
+.search-show-top
+  .search-show-tags-container
+  .tag-history
+  .history-list
+  .selected
+  img {
+  transform: scale(0.8);
+}
+.search-show-top
+  .search-show-tags-container
+  .tag-history
+  .history-list
+  .selected
+  img:hover {
+  transform: scale(1);
 }
 
 .search-show-top .search-show-tags-container .show-tags-top {

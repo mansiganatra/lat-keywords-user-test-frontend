@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 
 import xImage from '../../lib/x.png';
+import xAltImage from '../../lib/x_alt.png';
 import Header from './Header';
 
-const SearchShowTop = ({ docset, clearAll, sortModels }) => {
+const SearchShowTop = ({ docset, clearAll, sortModels, deleteModel }) => {
   const [clear, setClear] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
 
@@ -46,7 +47,13 @@ const SearchShowTop = ({ docset, clearAll, sortModels }) => {
                 onClick={() => handleSortModel(tag.tag_id, tag.term)}
               >
                 {tag.term}
-                <img src={xImage} alt="x" />
+                <div className="img" onClick={e => deleteModel(e, tag.tag_id)}>
+                  {selectedId === tag.tag_id ? (
+                    <img src={xAltImage} alt="x" />
+                  ) : (
+                    <img src={xImage} alt="x" />
+                  )}
+                </div>
               </div>
             ))}
           </div>

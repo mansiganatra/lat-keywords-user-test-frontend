@@ -4,12 +4,13 @@ import SearchShowTop from './SearchShowTop';
 import SearchShowBot from './SearchShowBot';
 import searchImg from '../../lib/search.png';
 
-const SearchTopResult = ({ clearAll, docset, sortModels }) => (
+const SearchTopResult = ({ clearAll, docset, sortModels, deleteModel }) => (
   <>
     <SearchShowTop
       docset={docset}
       clearAll={clearAll}
       sortModels={sortModels}
+      deleteModel={deleteModel}
     />
     <div className="result-header">
       <div className="result-header-left">
@@ -21,7 +22,7 @@ const SearchTopResult = ({ clearAll, docset, sortModels }) => (
         <input type="text" />
       </div>
     </div>
-    <SearchShowBot docset={docset} />
+    <SearchShowBot docset={docset} deleteModel={deleteModel} />
   </>
 );
 
