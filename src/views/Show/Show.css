@@ -239,8 +239,9 @@
 /* bot */
 
 .search-show-bot {
-  padding-top: 50px;
   overflow: auto;
+  overflow-y: hidden;
+  transform: rotateX(180deg);
 }
 
 .result-header {
@@ -313,7 +314,7 @@
   cursor: pointer;
 }
 
-.esult-kw-list:hover {
+.result-kw-list:hover {
 }
 
 .result-kw-list .result-kw-item {
@@ -369,6 +370,8 @@
 
 .model-list {
   display: flex;
+  transform: rotateX(180deg);
+  padding-top: 10px;
 }
 
 .result-model-container {
