@@ -141,7 +141,10 @@ const SearchProvider = ({ children }) => {
     window.addEventListener('message', e => {
       if (e.data.event === 'notify:documentListParams') {
         const term = e.data.args[0].q;
-        getKeywords(term);
+        if (term !== undefined) {
+          console.log(term);
+          getKeywords(term);
+        }
       }
     });
 
