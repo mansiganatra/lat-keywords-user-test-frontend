@@ -1,23 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import searchContext from '../../store/searchContext';
 
-import xImage from '../../lib/x.png';
-import xAltImage from '../../lib/x_alt.png';
-import Header from './Header';
+import ShowTopHeader from './ShowTopHeader';
+import ShowTopTagList from './ShowTopTagList';
 
-const SearchShowTop = ({ docset, clearAll, sortModels, deleteModel }) => {
+const SearchShowTop = () => {
   const [clear, setClear] = useState(false);
-  const [selectedId, setSelectedId] = useState(null);
+  const { clearAll } = useContext(searchContext);
 
   const handleClearConfirm = () => {
     const clearData = window.confirm(
       'Do you really want to clear all tags and results?'
     );
     setClear(clearData);
-  };
-
-  const handleSortModel = (id, term) => {
-    setSelectedId(id);
-    sortModels(id, term);
   };
 
   useEffect(() => {
@@ -29,7 +24,7 @@ const SearchShowTop = ({ docset, clearAll, sortModels, deleteModel }) => {
   return (
     <div className="search-show-top">
       <div className="search-show-header-container">
-        <Header />
+        <ShowTopHeader />
       </div>
       <div className="search-show-tags-container">
         <div className="show-tags-top">
@@ -39,24 +34,7 @@ const SearchShowTop = ({ docset, clearAll, sortModels, deleteModel }) => {
           </div>
         </div>
         <div className="tag-history">
-          <div className="history-list">
-            {docset.search_history.map(tag => (
-              <div
-                className={`history ${selectedId === tag.tag_id && 'selected'}`}
-                key={tag.tag_id}
-                onClick={() => handleSortModel(tag.tag_id, tag.term)}
-              >
-                {tag.term}
-                <div className="img" onClick={e => deleteModel(e, tag.tag_id)}>
-                  {selectedId === tag.tag_id ? (
-                    <img src={xAltImage} alt="x" />
-                  ) : (
-                    <img src={xImage} alt="x" />
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
+          <ShowTopTagList />
         </div>
       </div>
     </div>

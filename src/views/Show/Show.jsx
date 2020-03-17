@@ -8,7 +8,7 @@ import SearchResults from '../../components/Show/SearchResults';
 //   return new URLSearchParams(useLocation().search);
 // }
 
-const Show = ({ docset, clearAll, sortModels, deleteModel }) => {
+const Show = () => {
   // let query = useQuery();
   // let apiToken = query.get('apiToken');
   // let server = query.get('server');
@@ -18,12 +18,7 @@ const Show = ({ docset, clearAll, sortModels, deleteModel }) => {
 
   return (
     <div className="show-container">
-      <SearchResults
-        docset={docset}
-        deleteModel={deleteModel}
-        clearAll={clearAll}
-        sortModels={sortModels}
-      />
+      <SearchResults />
     </div>
   );
 };

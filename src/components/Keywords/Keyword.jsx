@@ -10,12 +10,15 @@ const Keyword = ({ word }) => {
   };
 
   return (
-    <div className="kw-container" onClick={handleClick}>
-      <div className="result-kw-item list-item">
-        <div className="text">{word[0]}</div>
-        <div className="freq">{word[1]}</div>
+    <>
+      <div className="kw-container" onClick={handleClick}>
+        <div className="result-kw-item list-item">
+          <div className="text">{word[0]}</div>
+          <div className="freq">{word[1]}</div>
+        </div>
       </div>
-    </div>
+      <hr />
+    </>
   );
 };
 
