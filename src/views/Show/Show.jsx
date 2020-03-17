@@ -8,7 +8,14 @@ import SearchResults from '../../components/Show/SearchResults';
 //   return new URLSearchParams(useLocation().search);
 // }
 
-const Show = ({ getKeywords, startSearch, docset, saveToFile, clearAll }) => {
+const Show = ({
+  getKeywords,
+  startSearch,
+  docset,
+  saveToFile,
+  clearAll,
+  sortModels
+}) => {
   // let query = useQuery();
   // let apiToken = query.get('apiToken');
   // let server = query.get('server');
@@ -24,6 +31,7 @@ const Show = ({ getKeywords, startSearch, docset, saveToFile, clearAll }) => {
         docset={docset}
         saveToFile={saveToFile}
         clearAll={clearAll}
+        sortModels={sortModels}
       />
     </div>
   );

@@ -23,6 +23,49 @@ function App() {
   // const deleteModel = (docset, modelId) => {
   //   // TODO
   // };
+  console.log(docset.models);
+  const sortModels = (tagIndex, name, tag) => {
+    console.log(tag);
+    const sortedModels = [...docset.models];
+    let temp;
+    // check if already first
+    // if arr[0] === name: do nothing
+    if (docset.models[0].search_term === name) return;
+
+    // check if last
+    // if arr[len of arr - 1]:
+    if (docset.models[docset.models.length - 1].search_term === name) {
+      //  temp = arr[len of arr - 1]
+      temp = sortedModels[sortedModels.length - 1];
+      //  arr.pop()
+      sortedModels.pop();
+      //  unshift temp to arr
+      setDocset(prev => ({ ...prev, models: [temp, ...sortedModels] }));
+      return;
+    }
+
+    // else
+    // temp = arr[tag index]
+    temp = sortedModels.find(model => model.id === tagIndex);
+    const filteredSortedModels = sortedModels.filter(
+      model => model.id !== temp.id
+    );
+    // del arr[tag index]
+    setDocset(prev => ({
+      ...prev,
+      models: [temp, ...filteredSortedModels]
+    }));
+    // unshift temp to arr
+  };
+
+  // const sortKWList = (context) => {
+  //   switch(context) {
+  //     case 'FREQ':
+  //       return
+  //     case 'RELEVANCE':
+
+  //   }
+  // }
 
   const clearAll = () => {
     localStorage.removeItem('docset');
@@ -63,19 +106,24 @@ function App() {
           // search term exists
         } else {
           // add id and deleted_kw to models by index
+          const newID = Date.now();
           newData = res.data.kw.map((item, i) => {
             return {
-              id: `${Date.now()}${i}`,
+              id: newID,
               ...item,
               deleted_kw: [],
               search_term: query,
               deleted: false
             };
           });
+          const historyObj = {
+            tag_id: newID,
+            term: query
+          };
           setDocset(prevState => ({
             ...prevState,
             models: [...prevState.models, ...newData],
-            search_history: [...prevState.search_history, query],
+            search_history: [...prevState.search_history, historyObj],
             msg: '',
             alt_arr: []
           }));
@@ -85,6 +133,8 @@ function App() {
       console.log(error);
     }
   };
+
+  console.log(docset.search_history);
 
   useEffect(() => {
     localStorage.setItem('docset', JSON.stringify(docset));
@@ -113,6 +163,7 @@ function App() {
           docset={docset}
           saveToFile={saveToFile}
           clearAll={clearAll}
+          sortModels={sortModels}
         />
       </Route>
       <Route path="/metadata">

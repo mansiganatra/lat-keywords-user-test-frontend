@@ -3,8 +3,9 @@ import React, { useState, useEffect } from 'react';
 import xImage from '../../lib/x.png';
 import Header from './Header';
 
-const SearchShowTop = ({ docset, clearAll }) => {
+const SearchShowTop = ({ docset, clearAll, sortModels }) => {
   const [clear, setClear] = useState(false);
+
   const handleClearConfirm = () => {
     const clearData = window.confirm(
       'Do you really want to clear all tags and results?'
@@ -17,7 +18,7 @@ const SearchShowTop = ({ docset, clearAll }) => {
       clearAll();
       setClear(false);
     }
-  }, [clear, setClear]);
+  }, [clear, setClear, clearAll]);
   return (
     <div className="search-show-top">
       <div className="search-show-header-container">
@@ -32,9 +33,13 @@ const SearchShowTop = ({ docset, clearAll }) => {
         </div>
         <div className="tag-history">
           <div className="history-list">
-            {docset.search_history.map((item, i) => (
-              <div className="history" key={i}>
-                {item}
+            {docset.search_history.map(tag => (
+              <div
+                className="history"
+                key={tag.tag_id}
+                onClick={() => sortModels(tag.tag_id, tag.term, tag)}
+              >
+                {tag.term}
                 <img src={xImage} alt="x" />
               </div>
             ))}
