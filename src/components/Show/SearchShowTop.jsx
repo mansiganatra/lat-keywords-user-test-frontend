@@ -22,22 +22,22 @@ const SearchShowTop = () => {
     }
   }, [clear, setClear, clearAll]);
   return (
-    <div className="search-show-top">
+    <section className="search-show-top">
       <div className="search-show-header-container">
         <ShowTopHeader />
       </div>
       <div className="search-show-tags-container">
         <div className="show-tags-top">
           <h2>YOU’VE SEARCHED:</h2>
-          <div className="clear-history" onClick={handleClearConfirm}>
+          <button className="clear-history" onClick={handleClearConfirm}>
             <p>CLEAR ALL</p>{' '}
-          </div>
+          </button>
         </div>
         <div className="tag-history">
           <ShowTopTagList />
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

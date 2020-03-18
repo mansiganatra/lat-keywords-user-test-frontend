@@ -17,9 +17,9 @@ const Show = () => {
   // let [search, setSearch] = useState(null);
 
   return (
-    <div className="show-container">
+    <main className="show-container">
       <SearchResults />
-    </div>
+    </main>
   );
 };
 

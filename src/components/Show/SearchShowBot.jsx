@@ -1,13 +1,18 @@
 import React, { useContext } from 'react';
 import searchContext from '../../store/searchContext';
-import ModelList from '../Models/ModelList';
+import Model from '../Models/Model';
 
 const SearchShowBot = () => {
   const { docset } = useContext(searchContext);
+  const { models } = docset;
   return (
-    <div className="search-show-bot">
-      <ModelList models={docset.models} />
-    </div>
+    <section className="search-show-bot">
+      <div className="model-list">
+        {models.map((model, i) => (
+          <Model key={i} model={model} />
+        ))}
+      </div>
+    </section>
   );
 };
 

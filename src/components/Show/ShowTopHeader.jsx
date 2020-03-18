@@ -3,7 +3,7 @@ import moreInfo from '../../lib/more_info.png';
 
 const Header = () => (
   <>
-    <div className="header-message">
+    <header className="header-message">
       <div className="header">
         <h1>Find words associated with your search term</h1>
         <div>
@@ -16,7 +16,7 @@ const Header = () => (
           “money.”
         </p>
       </div>
-    </div>
+    </header>
   </>
 );
 

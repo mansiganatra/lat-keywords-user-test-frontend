@@ -86,6 +86,23 @@
   .tag-history
   .history-list
   .history
+  .img {
+  border: 0;
+}
+.search-show-top
+  .search-show-tags-container
+  .tag-history
+  .history-list
+  .selected
+  .img {
+  border: 0;
+  background: #172d3b;
+}
+.search-show-top
+  .search-show-tags-container
+  .tag-history
+  .history-list
+  .history
   img:hover {
   transform: scale(1.2);
 }
@@ -437,7 +454,7 @@
 
 /* model list*/
 
-.model-list {
+.search-show-bot .model-list {
   display: flex;
   transform: rotateX(180deg);
   padding-top: 10px;
@@ -462,8 +479,10 @@
   justify-content: space-between;
   align-items: center;
 }
-.model-header-container .top img {
+.model-header-container .top button {
   cursor: pointer;
+  border: none;
+  background-color: #172d3b;
 }
 .model-header-container .top img:hover {
   transform: scale(1.2);

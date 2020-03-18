@@ -12,7 +12,7 @@ const SearchShowMid = () => {
   };
 
   return (
-    <div className="result-header">
+    <section className="result-header">
       <div className="result-header-left">
         WORDS ASSOCIATED WITH:
         <img src={searchImg} alt="search" />
@@ -29,7 +29,7 @@ const SearchShowMid = () => {
           </div>
         </form>
       </div>
-    </div>
+    </section>
   );
 };
 
