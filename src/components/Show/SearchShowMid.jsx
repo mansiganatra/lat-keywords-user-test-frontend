@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 
 import searchImg from '../../lib/search.png';
+import arrowDown from '../../lib/arrow-down.png';
 import searchContext from '../../store/searchContext';
 
 const SearchShowMid = () => {
@@ -18,11 +19,14 @@ const SearchShowMid = () => {
       </div>
       <div className="result-header-right">
         <label htmlFor="sort">SORT BY</label>
-        <form action="">
+        <form>
           <select name="sort" id="sort" onChange={handleChange}>
             <option value="relevance">Relevance</option>
             <option value="freq">Frequency</option>
           </select>
+          <div>
+            <img src={arrowDown} alt="arrow-down" />
+          </div>
         </form>
       </div>
     </div>

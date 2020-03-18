@@ -302,6 +302,47 @@
 
   color: #172d3b;
 }
+.result-header .result-header-right form {
+  position: relative;
+  display: flex;
+  justify-content: space-around;
+}
+.result-header .result-header-right form img {
+  position: absolute;
+  right: 15px;
+  top: 10px;
+}
+.result-header .result-header-right form::after {
+  pointer-events: none;
+}
+.result-header .result-header-right form select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  display: block;
+  border: 1.2px solid rgba(23, 45, 59, 0.3);
+  box-sizing: border-box;
+  border-radius: 3px;
+  width: 115px;
+  height: 24px;
+  text-transform: uppercase;
+
+  font-family: 'Helvetica Neue';
+  font-style: normal;
+  font-weight: bold;
+  font-size: 9px;
+  line-height: 11px;
+  padding-left: 10px;
+  /* identical to box height */
+
+  letter-spacing: 0.08em;
+
+  color: #172d3b;
+}
+.result-header .result-header-right form select::-ms-expand {
+  display: none;
+}
 
 .result-list-container {
   width: 100%;
