@@ -6,7 +6,7 @@
   align-items: center;
 }
 
-@media (max-width: 740px) {
+@media (max-width: 625px) {
   .search-show-top {
     flex-direction: column;
   }
@@ -22,6 +22,12 @@
   box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.08);
   border-radius: 3px;
   margin-right: 34px;
+}
+
+@media (max-width: 775px) {
+  .search-show-top .search-show-tags-container {
+    margin-right: 0;
+  }
 }
 
 .search-show-top .search-show-tags-container .tag-history {
@@ -272,7 +278,7 @@
   margin-top: 25px;
 }
 
-@media (max-width: 740px) {
+@media (max-width: 450px) {
   .result-header {
     flex-direction: column;
     justify-content: flex-start;
@@ -305,6 +311,13 @@
   margin-right: 34px;
   align-items: center;
 }
+
+@media (max-width: 775px) {
+  .result-header .result-header-right {
+    margin-right: 0;
+  }
+}
+
 .result-header .result-header-right label {
   font-family: 'Helvetica Neue';
   font-style: normal;
