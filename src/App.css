@@ -4,7 +4,7 @@
   background-color: #f9f9fb;
 }
 
-@media (max-width: 775px) {
+@media (max-width: 700px) {
   .App {
     padding-left: 0;
   }
