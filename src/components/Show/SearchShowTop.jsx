@@ -18,6 +18,11 @@ const SearchShowTop = () => {
   useEffect(() => {
     if (clear) {
       clearAll();
+      const message = {
+        call: 'setDocumentListParams', // call
+        args: [{ q: '' }] // arguments
+      };
+      window.parent.postMessage(message, '*'); // postMessage() with message and origin
       setClear(false);
     }
   }, [clear, setClear, clearAll]);

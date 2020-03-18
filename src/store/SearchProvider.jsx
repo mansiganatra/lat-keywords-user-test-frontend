@@ -70,7 +70,9 @@ const SearchProvider = ({ children }) => {
     return;
   };
   // mueller
-  const getKeywords = async (query, size = 8, docset = 'coronavirus') => {
+  // Gen-Hur
+  // coronavirus
+  const getKeywords = async (query, size = 20, docset = 'mueller') => {
     try {
       let newData;
       const res = await axiosWithAuth().get(
