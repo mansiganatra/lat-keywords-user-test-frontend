@@ -5,7 +5,7 @@ import KeywordList from '../Keywords/KeywordList';
 import xAlt from '../../lib/x_alt.png';
 
 const Model = ({ model }) => {
-  const { kw, search_term, id } = model;
+  const { kw, search_term, id, sorted_kw } = model;
   const [hover, setHover] = useState(false);
   const { deleteModel } = useContext(searchContext);
 
@@ -34,14 +34,14 @@ const Model = ({ model }) => {
       </div>
       <div className="result-list-container">
         <div className="result-kw-list">
-          <KeywordList kw={kw} />
+          <KeywordList kw={kw} sorted_kw={sorted_kw} />
         </div>
-        <div className="see-more-container">
+        {/* <div className="see-more-container">
           <div className="content">
             <p>SEE MORE</p>
             <img src={seeMoreArror} alt="arrow" />
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

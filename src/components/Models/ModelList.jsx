@@ -6,7 +6,6 @@ const ModelList = () => {
   const { docset } = useContext(searchContext);
   const { models } = docset;
 
-  if (!models.length) return <h1>Search models</h1>;
   return (
     <div className="model-list">
       {models.map((model, i) => (

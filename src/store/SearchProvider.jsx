@@ -5,9 +5,11 @@ import axiosWithAuth from '../utils/axiosWithAuth';
 import searchContext from './searchContext';
 
 const SearchProvider = ({ children }) => {
+  const [sortBy, setSortBy] = useState('relevance');
   const [docset, setDocset] = useState(
     JSON.parse(localStorage.getItem('docset')) || {
       name: 'coronavirus',
+      // mueller
       models: [],
       search_history: [],
       msg: '',
@@ -50,15 +52,7 @@ const SearchProvider = ({ children }) => {
     return;
   };
 
-  // const sortKWList = (context) => {
-  //   switch(context) {
-  //     case 'FREQ':
-  //       return
-  //     case 'RELEVANCE':
-
-  //   }
-  // }
-
+  console.log(docset.models);
   const clearAll = () => {
     localStorage.removeItem('docset');
     setDocset({
@@ -75,8 +69,8 @@ const SearchProvider = ({ children }) => {
     fileDownload(JSON.stringify(docset), 'keyword_list.json');
     return;
   };
-
-  const getKeywords = async (query, size = 15, docset = 'coronavirus') => {
+  // mueller
+  const getKeywords = async (query, size = 8, docset = 'coronavirus') => {
     try {
       let newData;
       const res = await axiosWithAuth().get(
@@ -106,9 +100,11 @@ const SearchProvider = ({ children }) => {
       // add id and deleted_kw to models by index
       const newID = Date.now();
       newData = res.data.kw.map((item, i) => {
+        const temp = [...item.kw];
         return {
           id: newID,
           ...item,
+          sorted_kw: temp.sort((a, b) => b[1] - a[1]),
           deleted_kw: [],
           search_term: query,
           deleted: false
@@ -156,7 +152,15 @@ const SearchProvider = ({ children }) => {
 
   return (
     <searchContext.Provider
-      value={{ docset, saveToFile, clearAll, sortModels, deleteModel }}
+      value={{
+        docset,
+        saveToFile,
+        clearAll,
+        sortModels,
+        deleteModel,
+        setSortBy,
+        sortBy
+      }}
     >
       {children}
     </searchContext.Provider>
