@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import fileDownload from 'js-file-download';
 
-import axiosWithAuth from '../utils/axiosWithAuth';
+import axiosWithAuth from '../utils/hooks/useAxios';
 import searchContext from './searchContext';
 
 const SearchProvider = ({ children }) => {
@@ -17,6 +17,31 @@ const SearchProvider = ({ children }) => {
       alt_arr: []
     }
   );
+
+  // use browser cache for persistence
+  useEffect(() => {
+    localStorage.setItem('docset', JSON.stringify(docset));
+  }, [docset, setDocset]);
+
+  // global search input watcher
+  useEffect(() => {
+    window.addEventListener('message', e => {
+      if (e.data.event === 'notify:documentListParams') {
+        const term = e.data.args[0].q;
+        console.log('in useEffect: ', keywordMode);
+        if (keywordMode.current === false && term !== undefined) {
+          getKeywords(term);
+        } else {
+          keywordMode.current = false;
+        }
+      }
+    });
+
+    return () =>
+      window.removeEventListener('message', () => {
+        console.log('done');
+      });
+  }, [keywordMode]);
 
   const deleteModel = (e, modelId) => {
     e.stopPropagation();
@@ -53,7 +78,6 @@ const SearchProvider = ({ children }) => {
     return;
   };
 
-  console.log(docset.models);
   const clearAll = () => {
     localStorage.removeItem('docset');
     setDocset({
@@ -129,31 +153,6 @@ const SearchProvider = ({ children }) => {
       console.log(error);
     }
   };
-
-  // use browser cache for persistence
-  useEffect(() => {
-    localStorage.setItem('docset', JSON.stringify(docset));
-  }, [docset, setDocset]);
-
-  // global search input watcher
-  useEffect(() => {
-    window.addEventListener('message', e => {
-      if (e.data.event === 'notify:documentListParams') {
-        const term = e.data.args[0].q;
-        console.log('in useEffect: ', keywordMode);
-        if (keywordMode.current === false && term !== undefined) {
-          getKeywords(term);
-        } else {
-          keywordMode.current = false;
-        }
-      }
-    });
-
-    return () =>
-      window.removeEventListener('message', () => {
-        console.log('done');
-      });
-  }, [keywordMode]);
 
   return (
     <searchContext.Provider
