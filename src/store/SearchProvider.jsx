@@ -71,9 +71,9 @@ const SearchProvider = ({ children }) => {
     return;
   };
   // mueller m-overview
-  // Gen-Hur gen-hur-ov
+  // Gen-Hur gen-hur
   // coronavirus associator-covid19
-  const getKeywords = async (query, size = 20, docset = 'coronavirus') => {
+  const getKeywords = async (query, size = 20, docset = 'mueller') => {
     try {
       let newData;
       const res = await axiosWithAuth().get(

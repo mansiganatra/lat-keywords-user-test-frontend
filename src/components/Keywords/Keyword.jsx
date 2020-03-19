@@ -49,6 +49,7 @@ const StyledKWItem = styled.div`
   border: none;
 `;
 const StyledKWButton = styled.button`
+  cursor: pointer;
   width: 100%;
   border: none;
 `;
