@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import searchContext from '../../store/searchContext';
 
@@ -45,7 +45,7 @@ const StyledKWItem = styled.div`
   justify-content: space-between;
   height: 44px;
   align-items: center;
-  padding: 0 20px;
+  padding: 0 13px;
   border: none;
 `;
 const StyledKWButton = styled.button`

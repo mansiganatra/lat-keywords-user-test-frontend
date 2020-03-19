@@ -1,19 +1,27 @@
 import React, { useState, useContext } from 'react';
 import searchContext from '../../store/searchContext';
-import seeMoreArror from '../../lib/see_more_arrow.png';
 import Keyword from '../Keywords/Keyword';
 import xAlt from '../../lib/x_alt.png';
 
 const Model = ({ model }) => {
   const { kw, search_term, id, sorted_kw } = model;
   const [hover, setHover] = useState(false);
-  const { deleteModel, sortBy } = useContext(searchContext);
+  const { deleteModel, sortBy, keywordMode } = useContext(searchContext);
 
   const handleHoverEnable = () => {
     if (!hover) return setHover(true);
   };
   const handleHoverDisable = () => {
     if (hover) return setHover(false);
+  };
+
+  const handleClick = e => {
+    keywordMode.current = true;
+    const message = {
+      call: 'setDocumentListParams', // call
+      args: [{ q: search_term }] // arguments
+    };
+    window.parent.postMessage(message, '*');
   };
 
   return (
@@ -24,14 +32,16 @@ const Model = ({ model }) => {
     >
       <header className="model-header-container">
         <div className="top">
-          <h1>{search_term}</h1>
+          <button onClick={handleClick}>
+            <h1>{search_term}</h1>
+          </button>
           <button>
             <img src={xAlt} alt="x" onClick={e => deleteModel(e, id)} />
           </button>
         </div>
         <div className="bot">
           <div className="word">Word</div>
-          <div className="word-partner">No. of Mentions</div>
+          <div className="word-partner">count</div>
         </div>
       </header>
       <div className="result-list-container">

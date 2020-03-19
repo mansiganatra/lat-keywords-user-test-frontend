@@ -70,10 +70,10 @@ const SearchProvider = ({ children }) => {
     fileDownload(JSON.stringify(docset), 'keyword_list.json');
     return;
   };
-  // mueller
-  // Gen-Hur
-  // coronavirus
-  const getKeywords = async (query, size = 20, docset = 'mueller') => {
+  // mueller m-overview
+  // Gen-Hur gen-hur-ov
+  // coronavirus associator-covid19
+  const getKeywords = async (query, size = 20, docset = 'coronavirus') => {
     try {
       let newData;
       const res = await axiosWithAuth().get(
