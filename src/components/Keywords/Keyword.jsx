@@ -1,13 +1,17 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
 import styled from 'styled-components';
+import searchContext from '../../store/searchContext';
 
 const Keyword = ({ word }) => {
+  const { keywordMode } = useContext(searchContext);
+
   const handleClick = e => {
+    keywordMode.current = true;
     const message = {
       call: 'setDocumentListParams', // call
       args: [{ q: word[0] }] // arguments
     };
-    window.parent.postMessage(message, '*'); // postMessage() with message and origin
+    window.parent.postMessage(message, '*');
   };
 
   return (

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import fileDownload from 'js-file-download';
 
 import axiosWithAuth from '../utils/axiosWithAuth';
@@ -6,6 +6,7 @@ import searchContext from './searchContext';
 
 const SearchProvider = ({ children }) => {
   const [sortBy, setSortBy] = useState('relevance');
+  const keywordMode = useRef(false); // checks if kw is being clicked
   const [docset, setDocset] = useState(
     JSON.parse(localStorage.getItem('docset')) || {
       name: 'coronavirus',
@@ -139,9 +140,11 @@ const SearchProvider = ({ children }) => {
     window.addEventListener('message', e => {
       if (e.data.event === 'notify:documentListParams') {
         const term = e.data.args[0].q;
-        if (term !== undefined) {
-          console.log(term);
+        console.log('in useEffect: ', keywordMode);
+        if (keywordMode.current === false && term !== undefined) {
           getKeywords(term);
+        } else {
+          keywordMode.current = false;
         }
       }
     });
@@ -150,7 +153,7 @@ const SearchProvider = ({ children }) => {
       window.removeEventListener('message', () => {
         console.log('done');
       });
-  }, []);
+  }, [keywordMode]);
 
   return (
     <searchContext.Provider
@@ -161,7 +164,8 @@ const SearchProvider = ({ children }) => {
         sortModels,
         deleteModel,
         setSortBy,
-        sortBy
+        sortBy,
+        keywordMode
       }}
     >
       {children}

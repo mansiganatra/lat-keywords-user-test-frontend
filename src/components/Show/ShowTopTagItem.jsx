@@ -9,7 +9,7 @@ const ShowTopTagItem = ({ tag, selectedId, handleSortModel }) => {
   const { tag_id, term } = tag;
 
   return (
-    <button
+    <div
       className={`history ${selectedId === tag_id && 'selected'}`}
       onClick={() => handleSortModel(tag_id, term)}
     >
@@ -21,7 +21,7 @@ const ShowTopTagItem = ({ tag, selectedId, handleSortModel }) => {
           <img src={xImage} alt="x" />
         )}
       </button>
-    </button>
+    </div>
   );
 };
 
