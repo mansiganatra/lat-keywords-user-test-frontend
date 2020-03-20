@@ -1,9 +1,10 @@
 import React, { useState, useContext } from 'react';
+import styled from 'styled-components';
 import searchContext from '../../store/searchContext';
 import Keyword from '../Keywords/Keyword';
 import xAlt from '../../lib/x_alt.png';
 
-const Model = ({ model }) => {
+const Model = ({ model, topBarColor }) => {
   const { kw, search_term, id, sorted_kw } = model;
   const [hover, setHover] = useState(false);
   const { deleteModel, sortBy, keywordMode } = useContext(searchContext);
@@ -25,40 +26,101 @@ const Model = ({ model }) => {
   };
 
   return (
-    <div
-      className="result-model-container"
+    <StyledModelContainer
+      topBarColor={topBarColor}
       onMouseEnter={handleHoverEnable}
       onMouseLeave={handleHoverDisable}
     >
-      <header className="model-header-container">
-        <div className="top">
+      <StyledModelHeaderContainer>
+        <StyledHeaderTop>
           <button onClick={handleClick}>
             <h1>{search_term}</h1>
           </button>
-          <button>
-            <img src={xAlt} alt="x" onClick={e => deleteModel(e, id)} />
-          </button>
-        </div>
-        <div className="bot">
+        </StyledHeaderTop>
+        <StyledHeaderBot>
           <div className="word">Word</div>
           <div className="word-partner">count</div>
-        </div>
-      </header>
-      <div className="result-list-container">
-        <div className="result-kw-list">
+        </StyledHeaderBot>
+      </StyledModelHeaderContainer>
+      <StyledKeywordListContainer>
+        <StyledKeywordList>
           {sortBy === 'relevance'
             ? kw.map((word, i) => <Keyword key={word} word={word} />)
             : sorted_kw.map((word, i) => <Keyword key={word} word={word} />)}
-        </div>
+        </StyledKeywordList>
         {/* <div className="see-more-container">
           <div className="content">
             <p>SEE MORE</p>
             <img src={seeMoreArror} alt="arrow" />
           </div>
         </div> */}
-      </div>
-    </div>
+      </StyledKeywordListContainer>
+    </StyledModelContainer>
   );
 };
+
+const StyledModelContainer = styled.div`
+  border-top: 5px solid ${({ topBarColor }) => topBarColor};
+  margin-right: 27px;
+  max-width: 180px;
+  min-width: 180px;
+  width: 100%;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.08);
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+`;
+const StyledModelHeaderContainer = styled.header`
+  background-color: #ffffff;
+  padding: 20px 20px 20px;
+
+  h1 {
+    text-transform: capitalize;
+    font-family: 'Helvetica Neue';
+    font-style: normal;
+    font-weight: bold;
+    font-size: 21px;
+    line-height: 26px;
+    color: #172d3b;
+  }
+`;
+const StyledHeaderTop = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  button {
+    cursor: pointer;
+    border: none;
+  }
+
+  img:hover {
+    transform: scale(1.2);
+  }
+`;
+const StyledHeaderBot = styled.div`
+  display: flex;
+  padding-top: 25px;
+  justify-content: space-between;
+
+  div {
+    font-family: 'Helvetica Neue';
+    font-style: normal;
+    font-weight: bold;
+    font-size: 9px;
+    line-height: 11px;
+    text-align: right;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+
+    color: rgba(23, 45, 59, 0.4);
+  }
+`;
+
+const StyledKeywordListContainer = styled.div`
+  background-color: #ffffff;
+`;
+const StyledKeywordList = styled.div`
+  margin: 0 11px;
+`;
 
 export default Model;

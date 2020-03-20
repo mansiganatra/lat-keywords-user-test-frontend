@@ -1,19 +1,39 @@
 import React, { useContext } from 'react';
+import styled from 'styled-components';
 import searchContext from '../../store/searchContext';
 import Model from '../Models/Model';
+import colorArray from '../../utils/colorArray';
 
 const SearchShowBot = () => {
   const { docset } = useContext(searchContext);
   const { models } = docset;
   return (
-    <section className="search-show-bot">
-      <div className="model-list">
+    <StyledSearchShowBot>
+      <StyledModelList>
         {models.map((model, i) => (
-          <Model key={i} model={model} />
+          <Model key={i} model={model} topBarColor={colorArray[i]} />
         ))}
-      </div>
-    </section>
+      </StyledModelList>
+    </StyledSearchShowBot>
   );
 };
+
+const StyledSearchShowBot = styled.section`
+  overflow: auto;
+  overflow-y: hidden;
+  transform: rotateX(180deg);
+  /* padding-top: 25px; */
+  padding-left: 50px;
+  padding-bottom: 20px;
+
+  @media (max-width: 700px) {
+    padding-left: 0;
+  }
+`;
+const StyledModelList = styled.div`
+  display: flex;
+  transform: rotateX(180deg);
+  padding-top: 10px;
+`;
 
 export default SearchShowBot;

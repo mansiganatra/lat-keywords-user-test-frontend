@@ -5,7 +5,6 @@ import { Route } from 'react-router-dom';
 import Metadata from './views/Metadata/Metadata';
 import Show from './views/Show/Show';
 
-import './App.css';
 import LoadingPage from './components/LoadingPage/LoadingPage';
 
 const App = () => {

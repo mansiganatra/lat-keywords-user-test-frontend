@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
 import searchContext from '../../store/searchContext';
 import ShowTopTagItem from './ShowTopTagItem';
-
+import redX from '../../lib/red_x.png';
 import ShowTopHeader from './ShowTopHeader';
 
 const SearchShowTop = () => {
@@ -42,7 +42,8 @@ const SearchShowTop = () => {
         <StyledShowTagsTop>
           <h2>Search Terms:</h2>
           <StyledClearHistoryBtn onClick={handleClearConfirm}>
-            <p>CLEAR ALL</p>{' '}
+            <img src={redX} alt="x" />
+            <p>Clear All</p>{' '}
           </StyledClearHistoryBtn>
         </StyledShowTagsTop>
         <StyledTagHistory>
@@ -109,34 +110,25 @@ const StyledClearHistoryBtn = styled.button`
   cursor: pointer;
   min-width: 77px;
   height: 21px;
-  border-radius: 4px;
-  border: 2px solid #a8226f;
+  border: 0;
   display: flex;
   align-items: center;
   justify-content: center;
 
-  &:active {
-    background-color: #a8226f;
-  }
-
-  &:visited {
-    background-color: white;
-  }
-
   p {
-    font-family: 'Helvetica Neue';
+    font-family: Helvetica Neue;
     font-style: normal;
-    font-weight: bold;
-    font-size: 9px;
-    line-height: 11px;
-    text-align: center;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: #a8226f;
+    font-weight: 500;
+    font-size: 10px;
+    line-height: 12px;
+    text-transform: capitalize;
 
-    &:active p {
-      color: white;
-    }
+    color: #fc3636;
+  }
+
+  img {
+    width: inherit;
+    margin-right: 5px;
   }
 `;
 const StyledSearchShowTagsContainer = styled.div`

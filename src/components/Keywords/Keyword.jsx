@@ -22,7 +22,6 @@ const Keyword = ({ word }) => {
           <StyledFreq>{word[1]}</StyledFreq>
         </StyledKWItem>
       </StyledKWButton>
-      <StyledHR />
     </>
   );
 };
@@ -36,9 +35,14 @@ const StyledText = styled.p`
   text-transform: capitalize;
 `;
 const StyledFreq = styled(StyledText)`
+  font-family: Helvetica Neue;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 12px;
+  line-height: 15px;
   text-align: center;
 
-  color: #747474;
+  color: rgba(23, 45, 59, 0.5);
 `;
 const StyledKWItem = styled.div`
   display: flex;
@@ -52,13 +56,10 @@ const StyledKWButton = styled.button`
   cursor: pointer;
   width: 100%;
   border: none;
-`;
-const StyledHR = styled.hr`
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
-  border-bottom: none;
-  border-left: none;
-  border-right: none;
-  margin: 0 12px;
+
+  background: rgba(244, 244, 244, 0.75);
+  border-radius: 21px;
+  margin-bottom: 7px;
 `;
 
 export default Keyword;

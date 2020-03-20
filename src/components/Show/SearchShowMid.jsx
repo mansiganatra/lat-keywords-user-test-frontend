@@ -14,7 +14,7 @@ const SearchShowMid = () => {
 
   return (
     <StyledShowMidContainer>
-      <StyledShowMidLeft>words associated with:</StyledShowMidLeft>
+      <StyledShowMidLeft>words associated with...</StyledShowMidLeft>
       <StyledShowMidRight>
         <label htmlFor="sort">sort by</label>
         <form>
@@ -37,7 +37,6 @@ const StyledShowMidContainer = styled.section`
   align-items: center;
   display: flex;
   padding-left: 50px;
-  margin-bottom: 18px;
   margin-top: 25px;
 
   @media (max-width: 700px) {
