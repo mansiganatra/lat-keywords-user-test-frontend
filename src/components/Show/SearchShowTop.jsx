@@ -71,6 +71,7 @@ const StyledSearchShowTop = styled.section`
   padding-left: 50px;
   background-color: #fff;
   padding-bottom: 10px;
+  border-bottom: 1px solid rgba(182, 192, 198, 0.5);
 
   @media (max-width: 700px) {
     padding-left: 0;
