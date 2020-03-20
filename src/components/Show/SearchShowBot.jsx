@@ -34,6 +34,7 @@ const StyledModelList = styled.div`
   display: flex;
   transform: rotateX(180deg);
   padding-top: 10px;
+  padding-bottom: 40px;
 `;
 
 export default SearchShowBot;

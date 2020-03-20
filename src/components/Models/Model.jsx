@@ -7,7 +7,9 @@ import xAlt from '../../lib/x_alt.png';
 const Model = ({ model, topBarColor }) => {
   const { kw, search_term, id, sorted_kw } = model;
   const [hover, setHover] = useState(false);
-  const { deleteModel, sortBy, keywordMode } = useContext(searchContext);
+  const { selectedId, selectModel, sortBy, keywordMode } = useContext(
+    searchContext
+  );
 
   const handleHoverEnable = () => {
     if (!hover) return setHover(true);
@@ -16,7 +18,8 @@ const Model = ({ model, topBarColor }) => {
     if (hover) return setHover(false);
   };
 
-  const handleClick = e => {
+  const handleClick = () => {
+    selectModel(id);
     keywordMode.current = true;
     const message = {
       call: 'setDocumentListParams', // call
@@ -27,13 +30,15 @@ const Model = ({ model, topBarColor }) => {
 
   return (
     <StyledModelContainer
+      selected={selectedId === id}
       topBarColor={topBarColor}
+      onClick={handleClick}
       onMouseEnter={handleHoverEnable}
       onMouseLeave={handleHoverDisable}
     >
       <StyledModelHeaderContainer>
         <StyledHeaderTop>
-          <button onClick={handleClick}>
+          <button>
             <h1>{search_term}</h1>
           </button>
         </StyledHeaderTop>
@@ -68,6 +73,7 @@ const StyledModelContainer = styled.div`
   box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.08);
   border-top-left-radius: 3px;
   border-top-right-radius: 3px;
+  margin-top: ${({ selected }) => (selected ? '-25px' : 0)};
 `;
 const StyledModelHeaderContainer = styled.header`
   background-color: #ffffff;

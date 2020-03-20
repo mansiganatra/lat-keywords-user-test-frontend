@@ -16,6 +16,7 @@ const SearchProvider = ({ children }) => {
       alt_arr: []
     }
   );
+  const [selectedId, setSelectedId] = useState(null);
 
   // use browser cache for persistence
   useEffect(() => {
@@ -41,6 +42,10 @@ const SearchProvider = ({ children }) => {
         console.log('done');
       });
   }, [keywordMode]);
+
+  const selectModel = id => {
+    setSelectedId(id);
+  };
 
   const deleteModel = (e, modelId) => {
     e.stopPropagation();
@@ -96,7 +101,7 @@ const SearchProvider = ({ children }) => {
   // mueller m-overview
   // Gen-Hur gen-hur
   // coronavirus associator-covid19
-  const getKeywords = async (query, size = 20, docset = 'mueller') => {
+  const getKeywords = async (query, size = 8, docset = 'mueller') => {
     try {
       let newData;
       const res = await axios.get(
@@ -163,7 +168,9 @@ const SearchProvider = ({ children }) => {
         deleteModel,
         setSortBy,
         sortBy,
-        keywordMode
+        keywordMode,
+        selectedId,
+        selectModel
       }}
     >
       {children}

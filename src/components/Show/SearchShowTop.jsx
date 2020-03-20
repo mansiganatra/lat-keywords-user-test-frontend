@@ -4,16 +4,12 @@ import searchContext from '../../store/searchContext';
 import ShowTopTagItem from './ShowTopTagItem';
 import redX from '../../lib/red_x.png';
 import ShowTopHeader from './ShowTopHeader';
+import colorArray from '../../utils/colorArray';
 
 const SearchShowTop = () => {
   const [clear, setClear] = useState(false);
-  const [selectedId, setSelectedId] = useState(null);
-  const { clearAll, docset, sortModels } = useContext(searchContext);
 
-  const handleSortModel = (id, term) => {
-    setSelectedId(id);
-    sortModels(id, term);
-  };
+  const { clearAll, docset } = useContext(searchContext);
 
   const handleClearConfirm = () => {
     const clearData = window.confirm(
@@ -48,12 +44,11 @@ const SearchShowTop = () => {
         </StyledShowTagsTop>
         <StyledTagHistory>
           <StyledHistoryList>
-            {docset.search_history.map(tag => (
+            {docset.search_history.map((tag, i) => (
               <ShowTopTagItem
                 key={tag.tag_id}
                 tag={tag}
-                handleSortModel={handleSortModel}
-                selectedId={selectedId}
+                color={colorArray[i]}
               />
             ))}
           </StyledHistoryList>
