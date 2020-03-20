@@ -6,10 +6,12 @@ import moreInfo from '../../lib/more_info.png';
 const Header = () => (
   <StyledHeaderMessage>
     <StyledHeaderMain>
-      <StyledHeader>Find words associated with your search term</StyledHeader>
-      <div>
-        <img src={moreInfo} alt="more info" onMouseEnter={() => {}} />
-      </div>
+      <StyledHeader>
+        Find words associated with your search term
+        <span>
+          <img src={moreInfo} alt="more info" onMouseEnter={() => {}} />
+        </span>
+      </StyledHeader>
     </StyledHeaderMain>
     <StyledSubHeader>
       <StyledSubHeaderText>
@@ -36,12 +38,22 @@ const StyledHeader = styled.h1`
   font-family: 'Helvetica Neue';
   font-style: normal;
   font-weight: bold;
-  font-size: 21px;
-  line-height: 26px;
+  font-size: 18px;
+  line-height: 22px;
   text-transform: capitalize;
+
+  color: #172d3b;
 
   width: 100%;
   max-width: 243px;
+
+  span {
+    padding-left: 10px;
+
+    img {
+      width: inherit;
+    }
+  }
 `;
 const StyledSubHeader = styled.div`
   padding-top: 6px;
@@ -49,10 +61,16 @@ const StyledSubHeader = styled.div`
   max-width: 275px;
 `;
 const StyledSubHeaderText = styled.p`
+  font-family: 'Helvetica Neue';
+  font-style: normal;
   font-weight: 500;
-  font-size: 12px;
-  line-height: 16px;
-  color: rgba(0, 0, 0, 0.5);
+  font-size: 10px;
+  line-height: 13px;
+  /* or 130% */
+
+  letter-spacing: 0.03em;
+
+  color: rgba(23, 45, 59, 0.35);
 `;
 
 export default Header;

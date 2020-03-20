@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import fileDownload from 'js-file-download';
-
-import axiosWithAuth from '../utils/hooks/useAxios';
+import axios from 'axios';
 import searchContext from './searchContext';
 
 const SearchProvider = ({ children }) => {
@@ -100,8 +99,8 @@ const SearchProvider = ({ children }) => {
   const getKeywords = async (query, size = 20, docset = 'mueller') => {
     try {
       let newData;
-      const res = await axiosWithAuth().get(
-        `/?term=${query}&docset=${docset}&size=${size}`
+      const res = await axios.get(
+        `http://localhost:8000/api/?term=${query}&docset=${docset}&size=${size}`
       );
 
       // search term does not exist but has similar words

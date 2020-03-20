@@ -1,7 +1,6 @@
 import React from 'react';
 // import { useLocation } from 'react-router-dom';
 
-import './Show.css';
 import SearchResults from '../../components/Show/SearchResults';
 
 // function useQuery() {
@@ -17,9 +16,9 @@ const Show = () => {
   // let [search, setSearch] = useState(null);
 
   return (
-    <main className="show-container">
+    <>
       <SearchResults />
-    </main>
+    </>
   );
 };
 

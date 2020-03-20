@@ -10,18 +10,23 @@ import LoadingPage from './components/LoadingPage/LoadingPage';
 
 const App = () => {
   return (
-    <div className="App">
-      <Route path="/show">
-        <LoadingPage />
-      </Route>
+    <StyledApp>
       {/* <Route path="/show">
-        <Show />
+        <LoadingPage />
       </Route> */}
+      <Route path="/show">
+        <Show />
+      </Route>
       <Route path="/metadata">
         <Metadata />
       </Route>
-    </div>
+    </StyledApp>
   );
 };
+
+const StyledApp = styled.main`
+  height: 100vh;
+  /* background-color: #f9f9fb; */
+`;
 
 export default App;

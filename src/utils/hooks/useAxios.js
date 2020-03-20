@@ -28,7 +28,7 @@ function useAxios(method, endpoint) {
       setResult(res);
     }
     if (method === 'post') {
-      const res = handlePost(apiToken, payload);
+      const res = handlePost(payload);
       console.log('lkjflsj: ', res);
       setResult(res);
     }
@@ -62,7 +62,8 @@ function useAxios(method, endpoint) {
    */
 
   const handlePost = async payload => {
-    const res = await AxiosWithAuth().post(endpoint, payload);
+    console.log(payload);
+    const res = await AxiosWithAuth(apiToken).post(endpoint, payload);
     return res;
   };
 
@@ -73,7 +74,8 @@ function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
 
-const url = 'https://cohorts-api.herokuapp.com/api';
+// const url = 'https://cohorts-api.herokuapp.com/api';
+const url = 'http://localhost:8000/api';
 
 /**
  * set baseurl and authentication headers with axios
@@ -86,7 +88,7 @@ function AxiosWithAuth(apiToken) {
     headers: {
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',
-      Authentication: `Basic ${btoa(`${apiToken}:x-auth-token`)}`
+      Authentication: `Basic ${btoa(apiToken + ':x-auth-token')}`
     },
     baseURL: url
   });

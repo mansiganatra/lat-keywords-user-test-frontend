@@ -1,62 +1,13 @@
 import { css } from 'styled-components';
 
 const Global = css`
-  @font-face {
-    font-family: 'Basic Grotesque Bold';
-    src: url('/fonts/basis_grotesque_bold.otf');
-    font-weight: bold;
-    font-display: auto;
-    font-style: normal;
-  }
-  @font-face {
-    font-family: 'Basic Grotesque Regular';
-    src: url('/fonts/BasisGrotesque-Regular.otf');
-    font-display: auto;
-    font-style: normal;
-  }
-  @font-face {
-    font-family: 'Neue Montreal Bold';
-    src: url('/fonts/NeueMontreal-Bold.otf');
-    font-display: auto;
-    font-style: normal;
-  }
-  @font-face {
-    font-family: 'Neue Montreal Bold Italic';
-    src: url('/fonts/NeueMontreal-BoldItalic.otf');
-    font-display: auto;
-    font-style: normal;
-  }
-  @font-face {
-    font-family: 'Neue Montreal Light';
-    src: url('/fonts/NeueMontreal-Light.otf');
-    font-display: auto;
-    font-style: normal;
-  }
-  @font-face {
-    font-family: 'Neue Montreal';
-    src: url('/fonts/NeueMontreal-Regular.otf');
-    font-display: auto;
-    font-style: normal;
-  }
-  @font-face {
-    font-family: 'Neue Montreal Light Italic';
-    src: url('/fonts/NeueMontreal-LightItalic.otf');
-    font-display: auto;
-    font-style: normal;
-  }
-  @font-face {
-    font-family: 'Syne Regular';
-    src: url('/fonts/Syne-Regular.otf');
-    font-display: auto;
-    font-style: normal;
-  }
   * {
     box-sizing: border-box;
   }
   html {
     font-size: 62.5%;
     scroll-behavior: smooth;
-    background: white;
+    background-color: #f9f9fb;
     background-attachment: fixed;
   }
   h1,
@@ -64,45 +15,43 @@ const Global = css`
   h3,
   h4,
   h5 {
-    font-family: 'Basic Grotesque Bold', 'Work Sans', sans-serif;
-    line-height: 1.8;
-    color: #333333;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-style: normal;
+    font-variant: normal;
+    line-height: 26.4px;
+    color: #172d3b;
   }
   h1 {
-    font-size: 3.8rem;
+    font-size: 1.8rem;
+    font-weight: 700;
   }
   h2 {
-    font-size: 2.4rem;
+    font-size: 1.6rem;
+    font-weight: 700;
+  }
+  h3 {
+    font-size: 1.2rem;
+    font-weight: 700;
   }
   p {
-    font-size: 1.8rem;
-    font-family: 'Basic Grotesque Regular', 'Roboto', sans-serif;
-    color: #333333;
-  }
-  a {
-    text-decoration: none;
-    font-size: 1.8rem;
-    font-family: 'Roboto', sans-serif;
-    color: #333333;
-  }
-  input,
-  textarea,
-  button {
-    -webkit-appearance: none;
-    font-family: 'Roboto', sans-serif;
-    color: #333333;
-  }
-  label {
-    font-size: 1.8rem;
-    font-family: 'Poppins', 'Work Sans', sans-serif;
-    color: #333333;
-  }
-  input {
-    font-family: 'Roboto', sans-serif;
+    font-size: 1rem;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: 400;
+    line-height: 20px;
   }
   img {
     width: 100%;
     height: auto;
+  }
+  pre {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 1.3rem;
+    font-style: normal;
+    font-variant: normal;
+    font-weight: 400;
+    line-height: 18.5714px;
   }
 `;
 
