@@ -101,12 +101,15 @@ const SearchProvider = ({ children }) => {
   // mueller m-overview
   // Gen-Hur gen-hur
   // coronavirus associator-covid19
+  // Banks-Daxzaneous-Forger kimbreall
   const getKeywords = async (query, size = 8, docset = 'mueller') => {
+    const url = 'https://cohorts-api.herokuapp.com/api';
+
     setTerm(query);
     try {
       let newData;
       const res = await axios.get(
-        `http://localhost:8000/api/?term=${query}&docset=${docset}&size=${size}`
+        `${url}/?term=${query}&docset=${docset}&size=${size}`
       );
 
       // search term does not exist but has similar words
@@ -159,7 +162,7 @@ const SearchProvider = ({ children }) => {
       console.log(error);
     }
   };
-
+  console.log(docset);
   return (
     <searchContext.Provider
       value={{

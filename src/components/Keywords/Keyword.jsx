@@ -11,7 +11,7 @@ const Keyword = ({ word }) => {
     keywordMode.current = true;
     const message = {
       call: 'setDocumentListParams', // call
-      args: [{ q: word[0] }] // arguments
+      args: [{ q: `${word[0]}*` }] // arguments
     };
     window.parent.postMessage(message, '*');
   };

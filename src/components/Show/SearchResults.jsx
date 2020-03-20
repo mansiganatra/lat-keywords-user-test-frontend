@@ -21,7 +21,7 @@ const SearchTopResult = () => {
       <SearchShowTop />
       {docset.msg.length > 0 ? (
         <StyledInvalidSearch>
-          <h1>“{term}” doesn’t appear in the document sets</h1>
+          <h1>{docset.msg.match(/^([^:]+)vocabulary./gi)}</h1>
           {docset.alt_arr.length > 0 ? (
             <div className="right">
               <p>But These Related Words Do. Try Searching:</p>

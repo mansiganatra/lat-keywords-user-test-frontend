@@ -16,7 +16,7 @@ const SearchShowMid = () => {
     <StyledShowMidContainer>
       <StyledShowMidLeft>words associated with...</StyledShowMidLeft>
       <StyledShowMidRight>
-        <label htmlFor="sort">sort by</label>
+        <label htmlFor="sort">Sort Associated Words by</label>
         <form>
           <select name="sort" id="sort" onChange={handleChange}>
             <option value="relevance">Relevance</option>

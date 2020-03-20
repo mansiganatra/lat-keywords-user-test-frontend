@@ -19,12 +19,22 @@ const Model = ({ model, topBarColor }) => {
   };
 
   const handleClick = () => {
-    selectModel(id);
+    let message;
+
+    if (selectedId === id) {
+      message = {
+        call: 'setDocumentListParams', // call
+        args: [{ q: `` }] // arguments
+      };
+      selectModel(null);
+    } else {
+      message = {
+        call: 'setDocumentListParams', // call
+        args: [{ q: `${search_term}*` }] // arguments
+      };
+      selectModel(id);
+    }
     keywordMode.current = true;
-    const message = {
-      call: 'setDocumentListParams', // call
-      args: [{ q: search_term }] // arguments
-    };
     window.parent.postMessage(message, '*');
   };
 
@@ -67,8 +77,8 @@ const Model = ({ model, topBarColor }) => {
 const StyledModelContainer = styled.div`
   border-top: 5px solid ${({ topBarColor }) => topBarColor};
   margin-right: 27px;
-  max-width: 180px;
-  min-width: 180px;
+  max-width: 250px;
+  min-width: 250px;
   width: 100%;
   box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.08);
   border-top-left-radius: 3px;

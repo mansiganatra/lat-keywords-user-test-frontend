@@ -128,7 +128,7 @@ const StyledClearHistoryBtn = styled.button`
 `;
 const StyledSearchShowTagsContainer = styled.div`
   position: relative;
-  width: 330px;
+  width: 350px;
   min-height: 120px;
   max-height: 120px;
   background: #ffffff;

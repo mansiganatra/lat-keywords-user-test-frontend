@@ -74,8 +74,8 @@ function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
 
-// const url = 'https://cohorts-api.herokuapp.com/api';
-const url = 'http://localhost:8000/api';
+const url = 'https://cohorts-api.herokuapp.com/api';
+// const url = 'http://localhost:8000/api';
 
 /**
  * set baseurl and authentication headers with axios

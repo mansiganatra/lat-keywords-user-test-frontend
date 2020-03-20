@@ -10,7 +10,23 @@ const ShowTopTagItem = ({ tag, color }) => {
   const { tag_id, term } = tag;
 
   const handleSelectModel = id => {
-    selectModel(id);
+    let message;
+
+    if (selectedId === tag_id) {
+      message = {
+        call: 'setDocumentListParams', // call
+        args: [{ q: `` }] // arguments
+      };
+      selectModel(null);
+    } else {
+      message = {
+        call: 'setDocumentListParams', // call
+        args: [{ q: `${term}` }] // arguments
+      };
+      selectModel(id);
+    }
+
+    window.parent.postMessage(message, '*');
   };
 
   return (
@@ -45,7 +61,7 @@ const StyledHistoryItem = styled.div`
   border: 1px solid rgba(182, 192, 198, 0.6);
   box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.02);
   border-radius: 3px;
-  width: 86px;
+  min-width: 86px;
   padding: 0 10px;
   height: 24px;
 
