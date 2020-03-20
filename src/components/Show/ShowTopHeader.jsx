@@ -1,30 +1,44 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import ToolTipModal from '../ToolTipModal/ToolTipModal';
 import moreInfo from '../../lib/more_info.png';
+import moreInfoAlt from '../../lib/more_info_alt.png';
 
-const Header = () => (
-  <StyledHeaderMessage>
-    <StyledHeaderMain>
-      <StyledHeader>
-        Find words associated with your search term
-        <span>
-          <img src={moreInfo} alt="more info" onMouseEnter={() => {}} />
-        </span>
-      </StyledHeader>
-    </StyledHeaderMain>
-    <StyledSubHeader>
-      <StyledSubHeaderText>
-        Try searching keywords related to each project like “politics” or
-        “money.”
-      </StyledSubHeaderText>
-    </StyledSubHeader>
-  </StyledHeaderMessage>
-);
+const Header = () => {
+  const [hover, setHover] = useState(false);
+  const [modalEnabled, setModalEnabled] = useState(false);
 
+  return (
+    <StyledHeaderMessage>
+      <StyledHeaderMain>
+        <StyledHeader>
+          Find words associated with your search term
+          <span
+            onMouseEnter={() => setHover(true)}
+            onMouseLeave={() => setHover(false)}
+            onClick={() => setModalEnabled(!modalEnabled)}
+          >
+            <img src={hover ? moreInfoAlt : moreInfo} alt="more info" />
+          </span>
+          {modalEnabled && <ToolTipModal setModalEnabled={setModalEnabled} />}
+        </StyledHeader>
+      </StyledHeaderMain>
+      <StyledSubHeader>
+        <StyledSubHeaderText>
+          Try searching keywords related to each project like “politics” or
+          “money.”
+        </StyledSubHeaderText>
+      </StyledSubHeader>
+    </StyledHeaderMessage>
+  );
+};
 const StyledHeaderMessage = styled.header`
   padding-bottom: 40px;
   padding-top: 35px;
+
+  @media (max-width: 625px) {
+    display: none;
+  }
 `;
 const StyledHeaderMain = styled.div`
   display: flex;
@@ -35,6 +49,7 @@ const StyledHeaderMain = styled.div`
   max-width: 404px;
 `;
 const StyledHeader = styled.h1`
+  position: relative;
   font-family: 'Helvetica Neue';
   font-style: normal;
   font-weight: bold;
@@ -49,6 +64,7 @@ const StyledHeader = styled.h1`
 
   span {
     padding-left: 10px;
+    cursor: pointer;
 
     img {
       width: inherit;

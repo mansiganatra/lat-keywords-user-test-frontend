@@ -51,8 +51,6 @@ const LoadingPage = () => {
   const [percent, setPercent] = useState(35);
   const res = useAxios('post', '/upload');
 
-  console.log('helllo: ', res);
-
   return (
     <LoadingPageContainer>
       {completed ? (

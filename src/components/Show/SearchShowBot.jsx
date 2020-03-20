@@ -27,7 +27,7 @@ const StyledSearchShowBot = styled.section`
   padding-bottom: 20px;
 
   @media (max-width: 700px) {
-    padding-left: 0;
+    padding-left: 15px;
   }
 `;
 const StyledModelList = styled.div`

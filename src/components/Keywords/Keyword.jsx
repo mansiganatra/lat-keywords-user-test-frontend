@@ -1,11 +1,13 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 import searchContext from '../../store/searchContext';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 const Keyword = ({ word }) => {
   const { keywordMode } = useContext(searchContext);
 
   const handleClick = e => {
+    e.stopPropagation();
     keywordMode.current = true;
     const message = {
       call: 'setDocumentListParams', // call
@@ -15,14 +17,14 @@ const Keyword = ({ word }) => {
   };
 
   return (
-    <>
+    <CopyToClipboard text={word[0]}>
       <StyledKWButton onClick={handleClick}>
         <StyledKWItem>
           <StyledText>{word[0]}</StyledText>
           <StyledFreq>{word[1]}</StyledFreq>
         </StyledKWItem>
       </StyledKWButton>
-    </>
+    </CopyToClipboard>
   );
 };
 

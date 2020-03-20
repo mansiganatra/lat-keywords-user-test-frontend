@@ -6,6 +6,7 @@ import searchContext from './searchContext';
 const SearchProvider = ({ children }) => {
   const [sortBy, setSortBy] = useState('relevance');
   const keywordMode = useRef(false); // checks if kw is being clicked
+  const [term, setTerm] = useState('');
   const [docset, setDocset] = useState(
     JSON.parse(localStorage.getItem('docset')) || {
       name: 'coronavirus',
@@ -28,7 +29,6 @@ const SearchProvider = ({ children }) => {
     window.addEventListener('message', e => {
       if (e.data.event === 'notify:documentListParams') {
         const term = e.data.args[0].q;
-        console.log('in useEffect: ', keywordMode);
         if (keywordMode.current === false && term !== undefined) {
           getKeywords(term);
         } else {
@@ -102,6 +102,7 @@ const SearchProvider = ({ children }) => {
   // Gen-Hur gen-hur
   // coronavirus associator-covid19
   const getKeywords = async (query, size = 8, docset = 'mueller') => {
+    setTerm(query);
     try {
       let newData;
       const res = await axios.get(
@@ -145,6 +146,7 @@ const SearchProvider = ({ children }) => {
         tag_id: newID,
         term: query
       };
+
       setDocset(prevState => ({
         ...prevState,
         models: [...prevState.models, ...newData],
@@ -170,7 +172,8 @@ const SearchProvider = ({ children }) => {
         sortBy,
         keywordMode,
         selectedId,
-        selectModel
+        selectModel,
+        term
       }}
     >
       {children}

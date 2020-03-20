@@ -40,7 +40,7 @@ const StyledShowMidContainer = styled.section`
   margin-top: 25px;
 
   @media (max-width: 700px) {
-    padding-left: 0;
+    padding-left: 15px;
   }
 
   @media (max-width: 450px) {

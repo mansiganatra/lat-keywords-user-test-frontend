@@ -70,7 +70,7 @@ const StyledSearchShowTop = styled.section`
   border-bottom: 1px solid rgba(182, 192, 198, 0.5);
 
   @media (max-width: 700px) {
-    padding-left: 0;
+    padding-left: 15px;
   }
 
   @media (max-width: 625px) {
