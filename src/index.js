@@ -9,13 +9,13 @@ import SearchProvider from './store/SearchProvider';
 import App from './App.jsx';
 
 ReactDOM.render(
-  <SearchProvider>
-    <Router>
+  <Router>
+    <SearchProvider>
       <ThemeProvider theme={themes}>
         <App />
         <GlobalStyles />
       </ThemeProvider>
-    </Router>
-  </SearchProvider>,
+    </SearchProvider>
+  </Router>,
   document.getElementById('root')
 );

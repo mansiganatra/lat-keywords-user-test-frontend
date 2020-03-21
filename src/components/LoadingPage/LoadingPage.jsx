@@ -1,7 +1,6 @@
 import React, { useReducer, useState, useEffect } from 'react';
 import styled from 'styled-components';
 
-import useAxios from '../../utils/hooks/useAxios';
 import LoadImgOne from '../../lib/loading1.png';
 import LoadImgTwo from '../../lib/loading2.png';
 import LoadImgThree from '../../lib/loading3.png';
@@ -49,7 +48,6 @@ const LoadingPage = () => {
     initialState
   );
   const [percent, setPercent] = useState(35);
-  const res = useAxios('post', '/upload');
 
   return (
     <LoadingPageContainer>
