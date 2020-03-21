@@ -47,8 +47,7 @@ const SearchProvider = ({ children }) => {
     setSelectedId(id);
   };
 
-  const deleteModel = (e, modelId) => {
-    e.stopPropagation();
+  const deleteModel = modelId => {
     setDocset(prev => ({
       ...prev,
       models: prev.models.filter(model => model.id !== modelId),
@@ -102,7 +101,7 @@ const SearchProvider = ({ children }) => {
   // Gen-Hur gen-hur
   // coronavirus associator-covid19
   // Banks-Daxzaneous-Forger kimbreall
-  const getKeywords = async (query, size = 8, docset = 'mueller') => {
+  const getKeywords = async (query, size = 8, docset = 'coronavirus') => {
     const url = 'https://cohorts-api.herokuapp.com/api';
 
     setTerm(query);
