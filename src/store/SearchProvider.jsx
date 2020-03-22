@@ -151,8 +151,11 @@ const SearchProvider = ({ children }) => {
 
       setDocset(prevState => ({
         ...prevState,
-        models: [...prevState.models, ...newData],
-        search_history: [...prevState.search_history, historyObj],
+        models: [...prevState.models.map(model => ({ ...model })), ...newData],
+        search_history: [
+          ...prevState.search_history.map(hist => ({ ...hist })),
+          historyObj
+        ],
         msg: '',
         alt_arr: []
       }));
