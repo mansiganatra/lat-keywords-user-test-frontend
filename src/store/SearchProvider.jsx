@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import searchContext from './searchContext';
-import AxiosWithAuth from '../utils/axiosWithAuth';
+import { axiosWithAuth, testData } from '../utils';
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -11,24 +11,24 @@ function useQuery() {
 const SearchProvider = ({ children }) => {
   const [sortBy, setSortBy] = useState('relevance');
   const [term, setTerm] = useState('');
+  const [selectedId, setSelectedId] = useState(null);
+  let query = useQuery();
   const [docset, setDocset] = useState(
     JSON.parse(localStorage.getItem('docset')) || {
-      name: 'coronavirus',
-      // mueller
       models: [],
       search_history: [],
       msg: '',
-      alt_arr: []
+      alt_arr: [],
+      foundTokens: [],
+      similarTokens: []
     }
   );
-  const [selectedId, setSelectedId] = useState(null);
-  const keywordMode = useRef(false); // checks if kw is being clicked
-  let query = useQuery();
 
-  let apiToken = query.get('apiToken');
-  let server = query.get('server');
-  // let selectionId = query.get('selectionId');
-  let documentSetId = query.get('documentSetId');
+  const keywordMode = useRef(false); // checks if kw is being clicked
+
+  const apiToken = query.get('apiToken');
+  const server = query.get('server');
+  const documentSetId = query.get('documentSetId');
 
   // use browser cache for persistence
   useEffect(() => {
@@ -47,7 +47,6 @@ const SearchProvider = ({ children }) => {
         }
       }
     });
-
     return () =>
       window.removeEventListener('message', () => {
         console.log('done');
@@ -88,11 +87,9 @@ const SearchProvider = ({ children }) => {
     setTerm(term);
     try {
       let newData;
-      const res = await AxiosWithAuth(apiToken).get(
-        `/search?term=${term}&server=${server}&documentSetId${documentSetId}&size=${size}`
+      const res = await axiosWithAuth(apiToken).get(
+        `/search?term=${term}&server=${server}&documentSetId${documentSetId}`
       );
-
-      console.log(res);
       // // search term does not exist but has similar words
       // if (res.data.kw[0].msg) {
       //   setDocset(prevState => ({
@@ -114,31 +111,31 @@ const SearchProvider = ({ children }) => {
 
       // // search term exists
       // // add id and deleted_kw to models by index
-      // const newID = Date.now();
-      // newData = res.data.kw.map((item, i) => {
-      //   const temp = [...item.kw];
-      //   return {
-      //     id: newID,
-      //     ...item,
-      //     sorted_kw: temp.sort((a, b) => b[1] - a[1]),
-      //     deleted_kw: [],
-      //     search_term: term,
-      //     deleted: false
-      //   };
-      // });
-      // const historyObj = {
-      //   tag_id: newID,
-      //   term: term
-      // };
+      const newID = Date.now();
+      newData = res.data.kw.map((item, i) => {
+        const temp = [...item.kw];
+        return {
+          id: newID,
+          ...item,
+          sorted_kw: temp.sort((a, b) => b[1] - a[1]),
+          deleted_kw: [],
+          search_term: term,
+          deleted: false
+        };
+      });
+      const historyObj = {
+        tag_id: newID,
+        term: term
+      };
 
-      // setDocset(prevState => ({
-      //   ...prevState,
-      //   models: [...prevState.models, ...newData],
-      //   search_history: [...prevState.search_history, historyObj],
-      //   msg: '',
-      //   alt_arr: []
-      // }));
-      // return;
+      setDocset(prevState => ({
+        ...prevState,
+        models: [...prevState.models, ...newData],
+        search_history: [...prevState.search_history, historyObj],
+        msg: '',
+        alt_arr: []
+      }));
+      return;
     } catch (error) {
       console.log(error);
     }

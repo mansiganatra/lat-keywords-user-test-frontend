@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import styled from 'styled-components';
 import searchContext from '../../store/searchContext';
 import Model from '../Models/Model';
-import colorArray from '../../utils/colorArray';
+import { colorArray } from '../../utils';
 
 const SearchShowBot = () => {
   const { docset } = useContext(searchContext);

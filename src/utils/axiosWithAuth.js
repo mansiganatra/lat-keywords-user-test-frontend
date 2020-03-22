@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // const url = 'https://cohorts-api.herokuapp.com/api';
 // const url = 'http://localhost:8000/api';
-const url = 'http://localhost:3555';
+const url = 'http://0.0.0.0:3335';
 
 /**
  * set baseurl and authentication headers with axios
@@ -15,7 +15,7 @@ function AxiosWithAuth(apiToken) {
     headers: {
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*',
-      Authentication: `Basic ${btoa(apiToken + ':x-auth-token')}`
+      Authorization: `Basic ${btoa(apiToken + ':x-auth-token')}`
     },
     baseURL: url
   });

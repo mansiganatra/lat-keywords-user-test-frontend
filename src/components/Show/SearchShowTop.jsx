@@ -4,7 +4,7 @@ import searchContext from '../../store/searchContext';
 import ShowTopTagItem from './ShowTopTagItem';
 import redX from '../../lib/red_x.png';
 import ShowTopHeader from './ShowTopHeader';
-import colorArray from '../../utils/colorArray';
+import { colorArray } from '../../utils';
 
 const SearchShowTop = () => {
   const [clear, setClear] = useState(false);
