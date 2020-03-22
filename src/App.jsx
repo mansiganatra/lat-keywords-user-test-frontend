@@ -2,10 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 import { Route } from 'react-router-dom';
 
-import Metadata from './views/Metadata/Metadata';
-import Show from './views/Show/Show';
+import Metadata from './pages/Metadata/Metadata';
+import Show from './pages/Show/Show';
 
-import LoadingPage from './components/LoadingPage/LoadingPage';
+// import LoadingPage from './components/LoadingPage/LoadingPage';
 
 const App = () => {
   return (

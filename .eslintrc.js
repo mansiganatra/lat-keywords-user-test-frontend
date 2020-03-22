@@ -1,12 +1,8 @@
-const OFF = 0;
-
 module.exports = {
-  parser: 'babel-eslint',
   env: {
     browser: true,
     es6: true,
-    jest: true,
-    commonjs: true
+    jest: true
   },
   extends: [
     'airbnb',
@@ -20,11 +16,6 @@ module.exports = {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly'
   },
-  overrides: [
-    {
-      files: ['__test__/*.test.js']
-    }
-  ],
   parserOptions: {
     ecmaFeatures: {
       jsx: true
@@ -32,8 +23,6 @@ module.exports = {
     ecmaVersion: 2018,
     sourceType: 'module'
   },
-  plugins: ['import', 'react'],
-  rules: {
-    'react/jsx-props-no-spreading': OFF
-  }
+  plugins: ['react'],
+  rules: {}
 };

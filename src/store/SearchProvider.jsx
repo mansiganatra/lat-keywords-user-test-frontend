@@ -19,41 +19,12 @@ const SearchProvider = ({ children }) => {
   );
   const [selectedId, setSelectedId] = useState(null);
 
-  // use browser cache for persistence
-  useEffect(() => {
-    localStorage.setItem('docset', JSON.stringify(docset));
-  }, [docset, setDocset]);
-
-  // global search input watcher
-  useEffect(() => {
-    window.addEventListener('message', e => {
-      if (e.data.event === 'notify:documentListParams') {
-        const term = e.data.args[0].q;
-        if (keywordMode.current === false && term !== undefined) {
-          getKeywords(term);
-        } else {
-          keywordMode.current = false;
-        }
-      }
-    });
-
-    return () =>
-      window.removeEventListener('message', () => {
-        console.log('done');
-      });
-  }, [keywordMode]);
-
-  const selectModel = id => {
-    setSelectedId(id);
-  };
-
   const deleteModel = modelId => {
     setDocset(prev => ({
       ...prev,
       models: prev.models.filter(model => model.id !== modelId),
       search_history: prev.search_history.filter(tag => tag.tag_id !== modelId)
     }));
-    return;
   };
 
   const sortModels = (tagIndex, name) => {
@@ -78,7 +49,6 @@ const SearchProvider = ({ children }) => {
       ...prev,
       models: [temp, ...filteredSortedModels]
     }));
-    return;
   };
 
   const clearAll = () => {
@@ -90,13 +60,12 @@ const SearchProvider = ({ children }) => {
       msg: '',
       alt_arr: []
     });
-    return;
   };
 
   const saveToFile = () => {
     fileDownload(JSON.stringify(docset), 'keyword_list.json');
-    return;
   };
+
   // mueller m-overview
   // Gen-Hur gen-hur
   // coronavirus associator-covid19
@@ -106,7 +75,6 @@ const SearchProvider = ({ children }) => {
 
     setTerm(query);
     try {
-      let newData;
       const res = await axios.get(
         `${url}/?term=${query}&docset=${docset}&size=${size}`
       );
@@ -133,7 +101,7 @@ const SearchProvider = ({ children }) => {
       // search term exists
       // add id and deleted_kw to models by index
       const newID = Date.now();
-      newData = res.data.kw.map((item, i) => {
+      const newData = res.data.kw.map((item, i) => {
         const temp = [...item.kw];
         return {
           id: newID,
@@ -164,7 +132,34 @@ const SearchProvider = ({ children }) => {
       console.log(error);
     }
   };
-  console.log(docset);
+
+  // use browser cache for persistence
+  useEffect(() => {
+    localStorage.setItem('docset', JSON.stringify(docset));
+  }, [docset, setDocset]);
+
+  // global search input watcher
+  useEffect(() => {
+    window.addEventListener('message', e => {
+      if (e.data.event === 'notify:documentListParams') {
+        const term = e.data.args[0].q;
+        if (keywordMode.current === false && term !== undefined) {
+          getKeywords(term);
+        } else {
+          keywordMode.current = false;
+        }
+      }
+    });
+    return () =>
+      window.removeEventListener('message', () => {
+        console.log('done');
+      });
+  }, [keywordMode]);
+
+  const selectModel = id => {
+    setSelectedId(id);
+  };
+
   return (
     <searchContext.Provider
       value={{
