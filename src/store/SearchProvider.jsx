@@ -27,7 +27,7 @@ const SearchProvider = ({ children }) => {
     }));
   };
 
-  const sortModels = (tagIndex, name) => {
+  const sortModels = ({ tagIndex, name }) => {
     const sortedModels = [...docset.models];
     let temp;
     // check if tag already in first position
@@ -70,13 +70,17 @@ const SearchProvider = ({ children }) => {
   // Gen-Hur gen-hur
   // coronavirus associator-covid19
   // Banks-Daxzaneous-Forger kimbreall
-  const getKeywords = async (query, size = 8, docset = 'coronavirus') => {
+  const getKeywords = async ({
+    searchedGlobalTerm,
+    size = 8,
+    docset = 'coronavirus'
+  }) => {
     const url = 'https://cohorts-api.herokuapp.com/api';
 
-    setTerm(query);
+    setTerm(searchedGlobalTerm);
     try {
       const res = await axios.get(
-        `${url}/?term=${query}&docset=${docset}&size=${size}`
+        `${url}/?term=${searchedGlobalTerm}&docset=${docset}&size=${size}`
       );
 
       // search term does not exist but has similar words
@@ -108,13 +112,13 @@ const SearchProvider = ({ children }) => {
           ...item,
           sorted_kw: temp.sort((a, b) => b[1] - a[1]),
           deleted_kw: [],
-          search_term: query,
+          search_term: searchedGlobalTerm,
           deleted: false
         };
       });
       const historyObj = {
         tag_id: newID,
-        term: query
+        term: searchedGlobalTerm
       };
 
       setDocset(prevState => ({
@@ -142,9 +146,9 @@ const SearchProvider = ({ children }) => {
   useEffect(() => {
     window.addEventListener('message', e => {
       if (e.data.event === 'notify:documentListParams') {
-        const term = e.data.args[0].q;
+        const searchedGlobalTerm = e.data.args[0].q;
         if (keywordMode.current === false && term !== undefined) {
-          getKeywords(term);
+          getKeywords({ searchedGlobalTerm });
         } else {
           keywordMode.current = false;
         }
@@ -154,7 +158,7 @@ const SearchProvider = ({ children }) => {
       window.removeEventListener('message', () => {
         console.log('done');
       });
-  }, [keywordMode]);
+  }, [term]);
 
   const selectModel = id => {
     setSelectedId(id);

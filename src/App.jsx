@@ -25,7 +25,6 @@ const App = () => {
 
 const StyledApp = styled.main`
   height: 100vh;
-  /* background-color: #f9f9fb; */
 `;
 
 export default App;
