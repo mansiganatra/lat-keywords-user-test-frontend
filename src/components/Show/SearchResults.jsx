@@ -8,6 +8,7 @@ import searchContext from '../../store/searchContext';
 
 const SearchTopResult = () => {
   const { docset, term } = useContext(searchContext);
+  const { token, similarSuggestionslist } = docset;
 
   const handleClick = word => {
     const message = {
@@ -16,17 +17,18 @@ const SearchTopResult = () => {
     };
     window.parent.postMessage(message, '*');
   };
+
   return (
     <>
       <SearchShowTop />
-      {docset.msg.length > 0 ? (
+      {token?.length === 0 && (
         <StyledInvalidSearch>
-          <h1>{docset.msg.match(/^([^:]+)vocabulary./gi)}</h1>
-          {docset.alt_arr.length > 0 ? (
+          <h1>{term}</h1>
+          {similarSuggestionslist?.length > 0 && (
             <div className="right">
               <p>But These Related Words Do. Try Searching:</p>
               <div className="list">
-                {docset.alt_arr.map(item => (
+                {similarSuggestionslist.map(item => (
                   <p
                     key={item}
                     onClick={() => handleClick(item)}
@@ -37,9 +39,9 @@ const SearchTopResult = () => {
                 ))}
               </div>
             </div>
-          ) : null}
+          )}
         </StyledInvalidSearch>
-      ) : null}
+      )}
       <SearchShowMid />
       <SearchShowBot />
     </>

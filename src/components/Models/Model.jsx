@@ -5,7 +5,7 @@ import Keyword from '../Keywords/Keyword';
 import xAlt from '../../lib/x_alt.png';
 
 const Model = ({ model, topBarColor }) => {
-  const { kw, search_term, id, sorted_kw } = model;
+  const { similarTokens, foundTokens, id, sortedSimilarTokensByCount } = model;
   const [hover, setHover] = useState(false);
   const {
     selectedId,
@@ -40,7 +40,7 @@ const Model = ({ model, topBarColor }) => {
     } else {
       message = {
         call: 'setDocumentListParams', // call
-        args: [{ q: `${search_term}` }] // arguments
+        args: [{ q: `${foundTokens[0]}` }] // arguments
       };
       selectModel(id);
     }
@@ -58,7 +58,7 @@ const Model = ({ model, topBarColor }) => {
       <StyledModelHeaderContainer>
         <StyledHeaderTop>
           <button>
-            <h1>{search_term}</h1>
+            <h1>{foundTokens[0]}</h1>
           </button>
           <button onClick={handleDelete}>
             <img src={xAlt} alt="" />
@@ -72,8 +72,10 @@ const Model = ({ model, topBarColor }) => {
       <StyledKeywordListContainer>
         <StyledKeywordList>
           {sortBy === 'relevance'
-            ? kw.map((word, i) => <Keyword key={word} word={word} />)
-            : sorted_kw.map((word, i) => <Keyword key={word} word={word} />)}
+            ? similarTokens.map(word => <Keyword key={word.id} word={word} />)
+            : sortedSimilarTokensByCount.map(word => (
+                <Keyword key={word.id} word={word} />
+              ))}
         </StyledKeywordList>
         {/* <div className="see-more-container">
           <div className="content">

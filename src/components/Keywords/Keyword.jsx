@@ -6,22 +6,24 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 const Keyword = ({ word }) => {
   // const { keywordMode } = useContext(searchContext);
 
+  const { count, similarity, token } = word;
+
   const handleClick = e => {
     e.stopPropagation();
     // keywordMode.current = true;
     const message = {
       call: 'setDocumentListParams', // call
-      args: [{ q: `${word[0]}` }] // arguments
+      args: [{ q: `${token}` }] // arguments
     };
     window.parent.postMessage(message, '*');
   };
 
   return (
-    <CopyToClipboard text={word[0]}>
+    <CopyToClipboard text={token}>
       <StyledKWButton onClick={handleClick}>
         <StyledKWItem>
-          <StyledText>{word[0]}</StyledText>
-          <StyledFreq>{word[1]}</StyledFreq>
+          <StyledText>{token}</StyledText>
+          <StyledFreq>{count}</StyledFreq>
         </StyledKWItem>
       </StyledKWButton>
     </CopyToClipboard>

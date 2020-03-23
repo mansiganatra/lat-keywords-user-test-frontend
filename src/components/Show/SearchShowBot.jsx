@@ -10,9 +10,10 @@ const SearchShowBot = () => {
   return (
     <StyledSearchShowBot>
       <StyledModelList>
-        {models.map((model, i) => (
-          <Model key={i} model={model} topBarColor={colorArray[i]} />
-        ))}
+        {!!models?.length &&
+          models.map((model, i) => (
+            <Model key={i} model={model} topBarColor={colorArray[i]} />
+          ))}
       </StyledModelList>
     </StyledSearchShowBot>
   );

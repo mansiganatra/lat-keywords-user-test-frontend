@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import axios from 'axios';
 import searchContext from './searchContext';
 import { axiosWithAuth, testData } from '../utils';
+import res from '../utils/testData';
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -12,20 +13,13 @@ const SearchProvider = ({ children }) => {
   const [sortBy, setSortBy] = useState('relevance');
   const [term, setTerm] = useState('');
   const [selectedId, setSelectedId] = useState(null);
-  let query = useQuery();
+  const query = useQuery();
+
   const [docset, setDocset] = useState(
-    JSON.parse(localStorage.getItem('docset')) || {
-      models: [],
-      search_history: [],
-      msg: '',
-      alt_arr: [],
-      foundTokens: [],
-      similarTokens: []
-    }
+    JSON.parse(localStorage.getItem('docset')) || {}
   );
 
   const keywordMode = useRef(false); // checks if kw is being clicked
-
   const apiToken = query.get('apiToken');
   const server = query.get('server');
   const documentSetId = query.get('documentSetId');
@@ -41,7 +35,7 @@ const SearchProvider = ({ children }) => {
       if (e.data.event === 'notify:documentListParams') {
         const term = e.data.args[0].q;
         if (keywordMode.current === false && term !== undefined) {
-          getKeywords(term, server, documentSetId);
+          getKeywords({ term, server, documentSetId });
         } else {
           keywordMode.current = false;
         }
@@ -57,12 +51,11 @@ const SearchProvider = ({ children }) => {
     setSelectedId(id);
   };
 
-  const deleteModel = (e, modelId) => {
-    e.stopPropagation();
+  const deleteModel = modelId => {
     setDocset(prev => ({
       ...prev,
       models: prev.models.filter(model => model.id !== modelId),
-      search_history: prev.search_history.filter(tag => tag.tag_id !== modelId)
+      searchHistory: prev.searchHistory.filter(tag => tag.id !== modelId)
     }));
   };
 
@@ -77,66 +70,37 @@ const SearchProvider = ({ children }) => {
     });
   };
 
-  // mueller m-overview
-  // Gen-Hur gen-hur
-  // coronavirus associator-covid19
-  // Banks-Daxzaneous-Forger kimbreall
-  const getKeywords = async (term, server, documentSetId, size = 15) => {
-    setTerm(term);
+  const getKeywords = async ({ token, server, documentSetId }) => {
+    setTerm(token);
     try {
-      let newData;
-      const res = await axiosWithAuth(apiToken).get(
-        `/search?term=${term}&server=${server}&documentSetId${documentSetId}`
-      );
-      // // search term does not exist but has similar words
-      // if (res.data.kw[0].msg) {
-      //   setDocset(prevState => ({
-      //     ...prevState,
-      //     msg: res.data.kw[0].msg,
-      //     alt_arr: [...res.data.kw[0].kw.map(word => word[0])]
-      //   }));
-      //   return;
-      // }
-      // // search term does not exist and has no similar words
-      // if (res.data.kw[0].score < 0) {
-      //   setDocset(prevState => ({
-      //     ...prevState,
-      //     msg: res.data.kw[0].kw[1],
-      //     alt_arr: []
-      //   }));
-      //   return;
-      // }
-
-      // // search term exists
-      // // add id and deleted_kw to models by index
+      // const res = await axiosWithAuth(apiToken).get(
+      //   `/search?term=${token}&server=${server}&documentSetId${documentSetId}`
+      // );
       const newID = Date.now();
-      const newData = res.data.kw.map((item, i) => {
-        const temp = [...item.kw];
-        return {
-          id: newID,
-          ...item,
-          sorted_kw: temp.sort((a, b) => b[1] - a[1]),
-          deleted_kw: [],
-          search_term: term,
-          deleted: false
-        };
-      });
-      const historyObj = {
-        tag_id: newID,
-        term: term
+      const sortedSimilarTokensByCount = res.data.similarTokens.sort(
+        (a, b) => b.count - a.count
+      );
+      const newModel = {
+        id: newID,
+        foundTokens: res.data.foundTokens,
+        similarTokens: res.data.similarTokens,
+        sortedSimilarTokensByCount
+      };
+      const newHistoryItem = {
+        id: newID,
+        term: token
       };
 
       setDocset(prevState => ({
         ...prevState,
-        models: [...prevState.models.map(model => ({ ...model })), ...newData],
+        models: [...prevState.models.map(model => ({ ...model })), ...newModel],
         search_history: [
           ...prevState.search_history.map(hist => ({ ...hist })),
-          historyObj
+          newHistoryItem
         ],
-        msg: '',
-        alt_arr: []
+        token: res.data.foundTokens,
+        similarSuggestionslist: res.data.similarTokens.map(item => item.token)
       }));
-      return;
     } catch (error) {
       console.log(error);
     }

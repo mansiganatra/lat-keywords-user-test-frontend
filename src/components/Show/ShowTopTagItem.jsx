@@ -9,13 +9,13 @@ const ShowTopTagItem = ({ tag, color }) => {
   const { deleteModel, selectedId, selectModel, keywordMode } = useContext(
     searchContext
   );
-  const { tag_id, term } = tag;
+  const { id, token } = tag;
 
-  const handleSelectModel = id => {
+  const handleSelectModel = () => {
     let message;
     keywordMode.current = true;
 
-    if (selectedId === tag_id) {
+    if (selectedId === id) {
       message = {
         call: 'setDocumentListParams', // call
         args: [{ q: `` }] // arguments
@@ -24,7 +24,7 @@ const ShowTopTagItem = ({ tag, color }) => {
     } else {
       message = {
         call: 'setDocumentListParams', // call
-        args: [{ q: `${term}` }] // arguments
+        args: [{ q: `${token}` }] // arguments
       };
       selectModel(id);
     }
@@ -34,22 +34,22 @@ const ShowTopTagItem = ({ tag, color }) => {
 
   const handleDelete = e => {
     e.stopPropagation();
-    deleteModel(tag_id);
+    deleteModel(id);
   };
 
   return (
     <StyledHistoryItem
       color={color}
-      selected={selectedId === tag_id}
-      onClick={() => handleSelectModel(tag_id)}
+      selected={selectedId === id}
+      onClick={() => handleSelectModel(id)}
     >
-      <p>{term}</p>
+      <p>{token}</p>
       <StyleRemoveBtn
         color={color}
-        selected={selectedId === tag_id}
+        selected={selectedId === id}
         onClick={handleDelete}
       >
-        {selectedId === tag_id ? (
+        {selectedId === id ? (
           <img src={xAltImage} alt="x" />
         ) : (
           <img src={xImage} alt="x" />

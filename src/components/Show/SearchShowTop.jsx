@@ -44,13 +44,10 @@ const SearchShowTop = () => {
         </StyledShowTagsTop>
         <StyledTagHistory>
           <StyledHistoryList>
-            {docset.search_history.map((tag, i) => (
-              <ShowTopTagItem
-                key={tag.tag_id}
-                tag={tag}
-                color={colorArray[i]}
-              />
-            ))}
+            {!!docset.searchHistory?.length &&
+              docset.searchHistory?.map((tag, i) => (
+                <ShowTopTagItem key={tag.id} tag={tag} color={colorArray[i]} />
+              ))}
           </StyledHistoryList>
         </StyledTagHistory>
       </StyledSearchShowTagsContainer>
