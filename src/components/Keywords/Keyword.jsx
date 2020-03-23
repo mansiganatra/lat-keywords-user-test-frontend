@@ -4,14 +4,14 @@ import searchContext from '../../store/searchContext';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 const Keyword = ({ word }) => {
-  const { keywordMode } = useContext(searchContext);
+  // const { keywordMode } = useContext(searchContext);
 
   const handleClick = e => {
     e.stopPropagation();
-    keywordMode.current = true;
+    // keywordMode.current = true;
     const message = {
       call: 'setDocumentListParams', // call
-      args: [{ q: `${word[0]}*` }] // arguments
+      args: [{ q: `${word[0]}` }] // arguments
     };
     window.parent.postMessage(message, '*');
   };

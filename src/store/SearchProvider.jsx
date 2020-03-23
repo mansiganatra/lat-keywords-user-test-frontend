@@ -64,7 +64,6 @@ const SearchProvider = ({ children }) => {
       models: prev.models.filter(model => model.id !== modelId),
       search_history: prev.search_history.filter(tag => tag.tag_id !== modelId)
     }));
-    return;
   };
 
   const clearAll = () => {
@@ -76,7 +75,6 @@ const SearchProvider = ({ children }) => {
       msg: '',
       alt_arr: []
     });
-    return;
   };
 
   // mueller m-overview
@@ -112,7 +110,7 @@ const SearchProvider = ({ children }) => {
       // // search term exists
       // // add id and deleted_kw to models by index
       const newID = Date.now();
-      newData = res.data.kw.map((item, i) => {
+      const newData = res.data.kw.map((item, i) => {
         const temp = [...item.kw];
         return {
           id: newID,
@@ -130,8 +128,11 @@ const SearchProvider = ({ children }) => {
 
       setDocset(prevState => ({
         ...prevState,
-        models: [...prevState.models, ...newData],
-        search_history: [...prevState.search_history, historyObj],
+        models: [...prevState.models.map(model => ({ ...model })), ...newData],
+        search_history: [
+          ...prevState.search_history.map(hist => ({ ...hist })),
+          historyObj
+        ],
         msg: '',
         alt_arr: []
       }));

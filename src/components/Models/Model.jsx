@@ -7,9 +7,13 @@ import xAlt from '../../lib/x_alt.png';
 const Model = ({ model, topBarColor }) => {
   const { kw, search_term, id, sorted_kw } = model;
   const [hover, setHover] = useState(false);
-  const { selectedId, selectModel, sortBy, keywordMode } = useContext(
-    searchContext
-  );
+  const {
+    selectedId,
+    selectModel,
+    sortBy,
+    keywordMode,
+    deleteModel
+  } = useContext(searchContext);
 
   const handleHoverEnable = () => {
     if (!hover) return setHover(true);
@@ -18,8 +22,14 @@ const Model = ({ model, topBarColor }) => {
     if (hover) return setHover(false);
   };
 
+  const handleDelete = e => {
+    e.stopPropagation();
+    deleteModel(id);
+  };
+
   const handleClick = () => {
     let message;
+    keywordMode.current = true;
 
     if (selectedId === id) {
       message = {
@@ -30,11 +40,10 @@ const Model = ({ model, topBarColor }) => {
     } else {
       message = {
         call: 'setDocumentListParams', // call
-        args: [{ q: `${search_term}*` }] // arguments
+        args: [{ q: `${search_term}` }] // arguments
       };
       selectModel(id);
     }
-    keywordMode.current = true;
     window.parent.postMessage(message, '*');
   };
 
@@ -50,6 +59,9 @@ const Model = ({ model, topBarColor }) => {
         <StyledHeaderTop>
           <button>
             <h1>{search_term}</h1>
+          </button>
+          <button onClick={handleDelete}>
+            <img src={xAlt} alt="" />
           </button>
         </StyledHeaderTop>
         <StyledHeaderBot>

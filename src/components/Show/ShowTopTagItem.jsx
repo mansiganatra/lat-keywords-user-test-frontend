@@ -6,11 +6,14 @@ import xImage from '../../lib/x.png';
 import xAltImage from '../../lib/x_alt.png';
 
 const ShowTopTagItem = ({ tag, color }) => {
-  const { deleteModel, selectedId, selectModel } = useContext(searchContext);
+  const { deleteModel, selectedId, selectModel, keywordMode } = useContext(
+    searchContext
+  );
   const { tag_id, term } = tag;
 
   const handleSelectModel = id => {
     let message;
+    keywordMode.current = true;
 
     if (selectedId === tag_id) {
       message = {
@@ -29,6 +32,11 @@ const ShowTopTagItem = ({ tag, color }) => {
     window.parent.postMessage(message, '*');
   };
 
+  const handleDelete = e => {
+    e.stopPropagation();
+    deleteModel(tag_id);
+  };
+
   return (
     <StyledHistoryItem
       color={color}
@@ -39,7 +47,7 @@ const ShowTopTagItem = ({ tag, color }) => {
       <StyleRemoveBtn
         color={color}
         selected={selectedId === tag_id}
-        onClick={e => deleteModel(e, tag_id)}
+        onClick={handleDelete}
       >
         {selectedId === tag_id ? (
           <img src={xAltImage} alt="x" />
