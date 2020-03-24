@@ -1,5 +1,16 @@
 import { createContext, useContext } from 'react';
 
+interface Progress {
+  n_ahead_in_queue: number;
+  fraction: number;
+  message: string | null;
+  returncode: number | null;
+  error: string | null;
+}
+interface ModelState {
+  lastProgress: Progress | null;
+  isSuccess: boolean;
+}
 interface ContextInterface {
   docset: {
     models: {
@@ -31,6 +42,7 @@ interface ContextInterface {
   selectModel: (id: number | null) => void;
   term: string | null;
   setSortBy: React.Dispatch<React.SetStateAction<string>>;
+  modelState: ModelState;
 }
 
 const searchContext = createContext<Partial<ContextInterface>>({});

@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef, createContext } from 'react';
 import { useLocation } from 'react-router-dom';
+import oboe from 'oboe';
+
 import searchContext from './searchContext';
 import { axiosWithAuth, testData } from '../utils';
 
@@ -27,6 +29,28 @@ interface Model {
   similarTokens: SimilarToken[];
   sortedSimilarTokensByCount: SimilarToken[];
 }
+
+interface Progress {
+  n_ahead_in_queue: number;
+  fraction: number;
+  message: string | null;
+  returncode: number | null;
+  error: string | null;
+}
+
+/**
+ * State of this docset+apiToken on the server, according to the server.
+ *
+ * !isSuccess && lastProgress === null => this is "UNKNOWN" (server hasn't responded yet)
+ * !isSuccess && lastProgress => server says X (may be an error message!)
+ * isSuccess && lastProgress === null => server says this was done (long ago)
+ * isSuccess && lastProgress => server says this was done (since we started the request)
+ */
+interface ModelState {
+  lastProgress: Progress | null;
+  isSuccess: boolean;
+}
+
 interface Docset {
   models: {
     id: number;
@@ -49,6 +73,7 @@ interface Docset {
   token: string[];
   similarSuggestionslist: string[];
 }
+
 interface ProviderProps {
   children: React.ReactNode;
 }
@@ -58,19 +83,72 @@ const SearchProvider = ({ children }: ProviderProps) => {
   const [term, setTerm] = useState<string | null>('');
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const query = useQuery();
-  const [docset, setDocset] = useState<Docset>(
-    JSON.parse(`${localStorage.getItem('docset')}`) || {}
-  );
+  const [docset, setDocset] = useState<Docset>({
+    models: [],
+    searchHistory: [],
+    token: [],
+    similarSuggestionslist: []
+  });
+
+  const [modelState, setModelState] = useState<ModelState>({
+    lastProgress: null,
+    isSuccess: false
+  });
 
   const keywordMode = useRef(false); // checks if kw is being clicked
-  const apiToken: string | null = query.get('apiToken');
-  const server: string | null = query.get('server');
-  const documentSetId: string | null = query.get('documentSetId');
+  const apiToken: string = query.get('apiToken')!;
+  const server: string = query.get('server')!;
+  const documentSetId: string = query.get('documentSetId')!;
 
-  // use browser cache for persistence
   useEffect(() => {
-    localStorage.setItem('docset', JSON.stringify(docset));
-  }, [docset, setDocset]);
+    const o = oboe({
+      url: 'http://localhost:3335/generate',
+      method: 'POST',
+      body: { server, documentSetId },
+      headers: { Authorization: 'Basic ' + btoa(apiToken + ':x-auth-token') }
+    });
+    // Server will return either:
+    // HTTP 204 -- in which case we're done
+    // HTTP 200 with JSON Array of progress events, like:
+    //   [
+    //      {
+    //          "fraction": 0.2,
+    //          "n_ahead_in_queue": 0,
+    //          ...,
+    //      }
+    //      ...
+    //   ]
+    //
+    // Oboe instance will emit each Progress event until there are no more
+    o.node('!.*', (progress: Progress) => {
+      setModelState({ lastProgress: progress, isSuccess: false });
+      return oboe.drop;
+    });
+    o.fail(
+      ({
+        statusCode,
+        body,
+        error
+      }: {
+        statusCode: number | null;
+        body: String | null;
+        error: Error | null;
+      }) => {
+        console.error(statusCode, body, error);
+      }
+    );
+    o.done(() =>
+      // TODO isSuccess=false if lastProgress.returncode != 0
+      setModelState({
+        lastProgress: modelState.lastProgress,
+        isSuccess: modelState.lastProgress
+          ? modelState.lastProgress.returncode === 0
+          : true
+      })
+    );
+
+    return () => o.abort();
+  }, []);
 
   // global search input watcher
   useEffect(() => {
@@ -172,7 +250,8 @@ const SearchProvider = ({ children }: ProviderProps) => {
         selectedId,
         selectModel,
         term,
-        setSortBy
+        setSortBy,
+        modelState
       }}
     >
       {children}

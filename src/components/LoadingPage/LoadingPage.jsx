@@ -11,7 +11,7 @@ const initialState = {
   subHeader: `Lorem ipsum dolor sit amet, consectetur ala lo adipiscing elit, sed
   do eiusmod tempor incididunt ut labore et dolore magna aliqua.`,
   img: LoadImgOne,
-  completed: true
+  completed: false
 };
 
 const reducer = (state = initialState, action) => {
@@ -41,13 +41,19 @@ const reducer = (state = initialState, action) => {
       return state;
   }
 };
+/**
+ * fraction: 0,
+    message: null,
+    n_ahead_in_queue: null,
+    returncode: null,
+    error: null
+ */
 
 const LoadingPage = () => {
   const [{ header, subHeader, img, completed }, dispatch] = useReducer(
     reducer,
     initialState
   );
-  const [percent, setPercent] = useState(35);
 
   return (
     <LoadingPageContainer>
@@ -73,7 +79,7 @@ const LoadingPage = () => {
             </StyledImgContainer>
           </StyledTopSection>
           <StyledLoadingBar>
-            <StyledLoadingFiller percent={percent} />
+            <StyledLoadingFiller percent={0} />
           </StyledLoadingBar>
         </>
       )}
