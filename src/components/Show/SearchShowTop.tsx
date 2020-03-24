@@ -6,12 +6,12 @@ import redX from '../../lib/red_x.png';
 import ShowTopHeader from './ShowTopHeader';
 import { colorArray } from '../../utils';
 
-const SearchShowTop = () => {
-  const [clear, setClear] = useState(false);
+const SearchShowTop = (props: any): JSX.Element => {
+  const [clear, setClear] = useState<boolean>(false);
 
   const { clearAll, docset } = useContext(searchContext);
 
-  const handleClearConfirm = () => {
+  const handleClearConfirm = (): void => {
     const clearData = window.confirm(
       'Do you really want to clear all tags and results?'
     );
@@ -45,9 +45,15 @@ const SearchShowTop = () => {
         <StyledTagHistory>
           <StyledHistoryList>
             {!!docset.searchHistory?.length &&
-              docset.searchHistory?.map((tag, i) => (
-                <ShowTopTagItem key={tag.id} tag={tag} color={colorArray[i]} />
-              ))}
+              docset.searchHistory?.map(
+                (tag: { id: number; term: string }, i): JSX.Element => (
+                  <ShowTopTagItem
+                    key={tag.id}
+                    tag={tag}
+                    color={colorArray[i]}
+                  />
+                )
+              )}
           </StyledHistoryList>
         </StyledTagHistory>
       </StyledSearchShowTagsContainer>

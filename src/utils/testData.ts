@@ -1,4 +1,7 @@
-const testData = {
+const testData: {
+  foundTokens: string[];
+  similarTokens: { count: number; similarity: number; token: string }[];
+} = {
   foundTokens: ['trump'],
   similarTokens: [
     {

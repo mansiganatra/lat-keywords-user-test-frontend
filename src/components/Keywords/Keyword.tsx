@@ -3,7 +3,15 @@ import styled from 'styled-components';
 import searchContext from '../../store/searchContext';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
-const Keyword = ({ word }) => {
+interface Props {
+  word: {
+    count: number;
+    similarity: number;
+    token: string;
+  };
+}
+
+const Keyword = ({ word }: Props): JSX.Element => {
   // const { keywordMode } = useContext(searchContext);
 
   const { count, similarity, token } = word;

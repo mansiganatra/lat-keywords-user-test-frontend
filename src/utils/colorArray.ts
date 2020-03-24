@@ -1,4 +1,4 @@
-const colorArray = [
+const colorArray: string[] = [
   '#FF6633',
   '#FF33FF',
   '#00B3E6',

@@ -4,7 +4,25 @@ import searchContext from '../../store/searchContext';
 import Keyword from '../Keywords/Keyword';
 import xAlt from '../../lib/x_alt.png';
 
-const Model = ({ model, topBarColor }) => {
+interface Props {
+  model: {
+    id: number;
+    foundTokens: string[];
+    similarTokens: {
+      count: number;
+      similarity: number;
+      token: string;
+    }[];
+    sortedSimilarTokensByCount: {
+      count: number;
+      similarity: number;
+      token: string;
+    }[];
+  };
+  topBarColor: string;
+}
+
+const Model = ({ model, topBarColor }: Props): JSX.Element => {
   const { similarTokens, foundTokens, id, sortedSimilarTokensByCount } = model;
   const [hover, setHover] = useState(false);
   const {
@@ -15,19 +33,19 @@ const Model = ({ model, topBarColor }) => {
     deleteModel
   } = useContext(searchContext);
 
-  const handleHoverEnable = () => {
+  const handleHoverEnable = (): void => {
     if (!hover) return setHover(true);
   };
-  const handleHoverDisable = () => {
+  const handleHoverDisable = (): void => {
     if (hover) return setHover(false);
   };
 
-  const handleDelete = e => {
+  const handleDelete = (e: React.MouseEvent<HTMLButtonElement>): void => {
     e.stopPropagation();
     deleteModel(id);
   };
 
-  const handleClick = () => {
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>): void => {
     let message;
     keywordMode.current = true;
 
@@ -72,9 +90,15 @@ const Model = ({ model, topBarColor }) => {
       <StyledKeywordListContainer>
         <StyledKeywordList>
           {sortBy === 'relevance'
-            ? similarTokens.map(word => <Keyword key={word.id} word={word} />)
+            ? similarTokens.map(
+                (word: {
+                  count: number;
+                  similarity: number;
+                  token: string;
+                }) => <Keyword key={id} word={word} />
+              )
             : sortedSimilarTokensByCount.map(word => (
-                <Keyword key={word.id} word={word} />
+                <Keyword key={id} word={word} />
               ))}
         </StyledKeywordList>
         {/* <div className="see-more-container">
@@ -89,7 +113,8 @@ const Model = ({ model, topBarColor }) => {
 };
 
 const StyledModelContainer = styled.div`
-  border-top: 5px solid ${({ topBarColor }) => topBarColor};
+  border-top: 5px solid
+    ${({ topBarColor }: { topBarColor: string }): string => topBarColor};
   margin-right: 27px;
   max-width: 250px;
   min-width: 250px;
@@ -97,7 +122,7 @@ const StyledModelContainer = styled.div`
   box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.08);
   border-top-left-radius: 3px;
   border-top-right-radius: 3px;
-  margin-top: ${({ selected }) => (selected ? '-25px' : 0)};
+  margin-top: ${({ selected }): string => (selected ? '-25px' : '0')};
 `;
 const StyledModelHeaderContainer = styled.header`
   background-color: #ffffff;

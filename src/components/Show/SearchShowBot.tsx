@@ -4,7 +4,7 @@ import searchContext from '../../store/searchContext';
 import Model from '../Models/Model';
 import { colorArray } from '../../utils';
 
-const SearchShowBot = () => {
+const SearchShowBot = (props: any): JSX.Element => {
   const { docset } = useContext(searchContext);
   const { models } = docset;
   return (
@@ -23,7 +23,6 @@ const StyledSearchShowBot = styled.section`
   overflow: auto;
   overflow-y: hidden;
   transform: rotateX(180deg);
-  /* padding-top: 25px; */
   padding-left: 50px;
   padding-bottom: 20px;
 

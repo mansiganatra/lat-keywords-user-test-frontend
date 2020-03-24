@@ -5,13 +5,21 @@ import searchContext from '../../store/searchContext';
 import xImage from '../../lib/x.png';
 import xAltImage from '../../lib/x_alt.png';
 
-const ShowTopTagItem = ({ tag, color }) => {
+interface Props {
+  tag: {
+    id: number;
+    term: string;
+  };
+  color: string;
+}
+
+const ShowTopTagItem = ({ tag, color }: Props): JSX.Element => {
   const { deleteModel, selectedId, selectModel, keywordMode } = useContext(
     searchContext
   );
-  const { id, token } = tag;
+  const { id, term } = tag;
 
-  const handleSelectModel = () => {
+  const handleSelectModel = (id: number): void => {
     let message;
     keywordMode.current = true;
 
@@ -24,7 +32,7 @@ const ShowTopTagItem = ({ tag, color }) => {
     } else {
       message = {
         call: 'setDocumentListParams', // call
-        args: [{ q: `${token}` }] // arguments
+        args: [{ q: `${term}` }] // arguments
       };
       selectModel(id);
     }
@@ -32,7 +40,7 @@ const ShowTopTagItem = ({ tag, color }) => {
     window.parent.postMessage(message, '*');
   };
 
-  const handleDelete = e => {
+  const handleDelete = (e: React.MouseEvent<HTMLButtonElement>): void => {
     e.stopPropagation();
     deleteModel(id);
   };
@@ -43,7 +51,7 @@ const ShowTopTagItem = ({ tag, color }) => {
       selected={selectedId === id}
       onClick={() => handleSelectModel(id)}
     >
-      <p>{token}</p>
+      <p>{term}</p>
       <StyleRemoveBtn
         color={color}
         selected={selectedId === id}

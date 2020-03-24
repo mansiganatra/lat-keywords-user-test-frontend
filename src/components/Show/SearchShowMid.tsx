@@ -5,10 +5,10 @@ import searchImg from '../../lib/search.png';
 import arrowDown from '../../lib/arrow-down.png';
 import searchContext from '../../store/searchContext';
 
-const SearchShowMid = () => {
+const SearchShowMid = (props: any): JSX.Element => {
   const { setSortBy } = useContext(searchContext);
 
-  const handleChange = e => {
+  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSortBy(e.target.value);
   };
 

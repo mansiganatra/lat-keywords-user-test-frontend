@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // const url = 'https://cohorts-api.herokuapp.com/api';
 // const url = 'http://localhost:8000/api';
-const url = 'http://0.0.0.0:3335';
+const url: string = 'http://0.0.0.0:3335';
 
 /**
  * set baseurl and authentication headers with axios
@@ -10,7 +10,7 @@ const url = 'http://0.0.0.0:3335';
  * @param {string} apiToken token taken from useQuery sent by overview
  */
 
-function AxiosWithAuth(apiToken) {
+function AxiosWithAuth(apiToken: string) {
   return axios.create({
     headers: {
       'Content-Type': 'application/json',

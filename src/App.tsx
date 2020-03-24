@@ -7,7 +7,7 @@ import Show from './pages/Show/Show';
 
 // import LoadingPage from './components/LoadingPage/LoadingPage';
 
-const App = () => {
+const App = (props: any): JSX.Element => {
   return (
     <StyledApp>
       {/* <Route path="/show">

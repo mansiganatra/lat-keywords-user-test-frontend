@@ -6,11 +6,11 @@ import SearchShowBot from './SearchShowBot';
 import SearchShowMid from './SearchShowMid';
 import searchContext from '../../store/searchContext';
 
-const SearchTopResult = () => {
+const SearchTopResult = (props: any): JSX.Element => {
   const { docset, term } = useContext(searchContext);
   const { token, similarSuggestionslist } = docset;
 
-  const handleClick = word => {
+  const handleClick = (word: string): void => {
     const message = {
       call: 'setDocumentListParams', // call
       args: [{ q: word }] // arguments
