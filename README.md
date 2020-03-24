@@ -19,17 +19,27 @@ This is a front end app for LA Times keyword search. This project uses React on 
   keywordMode!.current = true;
 ```
 
+## Technologies Used
+
+- React (CRA)
+- TypeScript
+- React-Router
+- Styled Components
+- axios
+- eslint
+- prettier
+
 ## Local development
 
 ```bash
 $ git clone https://github.com/mansiganatra/lat-keywords-user-test-frontend.git
 $ cd lat-keywords-user-test-frontend
-$ yarn install
-$ yarn start
+$ npm install
+$ npm start
 ```
 
 ## Test
 
 ```bash
-$ yarn test
+$ npm run test
 ```
