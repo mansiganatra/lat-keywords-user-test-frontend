@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import styled from 'styled-components';
 import searchContext from '../../store/searchContext';
 import Model from '../Models/Model';
-import { colorArray } from '../../utils';
+import colorArray from '../../utils/colorArray';
 
 const SearchShowBot = (props: any): JSX.Element => {
   const { docset } = useContext(searchContext);
@@ -10,7 +10,7 @@ const SearchShowBot = (props: any): JSX.Element => {
   return (
     <StyledSearchShowBot>
       <StyledModelList>
-        {!!models?.length &&
+        {models?.length > 0 &&
           models.map(
             (
               model: {
