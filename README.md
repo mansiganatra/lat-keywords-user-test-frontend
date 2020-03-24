@@ -8,8 +8,9 @@ This is a front end app for LA Times keyword search. This project uses React on 
  * variables and functions that are defined in SearchProvider can be undefined. If those vars and functions are used and invoked, TypeScript will error out. To invoke, you must use "!"
  * */
 
-  method!(props)
-  variable!
+  deleteModel!(id);
+  const { models } = docset!;
+  keywordMode!.current = true;
 ```
 
 ## Local development
