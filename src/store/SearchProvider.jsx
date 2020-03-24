@@ -143,23 +143,27 @@ const SearchProvider = ({ children }) => {
     localStorage.setItem('docset', JSON.stringify(docset));
   }, [docset, setDocset]);
 
+  const fn = e => {
+    if (e.data.event === 'notify:documentListParams') {
+      const searchedGlobalTerm = e.data.args[0].q;
+      if (keywordMode.current === false && term !== undefined) {
+        getKeywords({ searchedGlobalTerm });
+      } else {
+        keywordMode.current = false;
+      }
+    }
+  };
+
   // global search input watcher
   useEffect(() => {
     window.addEventListener('message', e => {
-      if (e.data.event === 'notify:documentListParams') {
-        const searchedGlobalTerm = e.data.args[0].q;
-        if (keywordMode.current === false && term !== undefined) {
-          getKeywords({ searchedGlobalTerm });
-        } else {
-          keywordMode.current = false;
-        }
-      }
+      fn(e);
     });
     return () =>
-      window.removeEventListener('message', () => {
-        console.log('done');
+      window.removeEventListener('message', e => {
+        fn(e);
       });
-  }, [term]);
+  }, [keywordMode]);
 
   const selectModel = id => {
     setSelectedId(id);
