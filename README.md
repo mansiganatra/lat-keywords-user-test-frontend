@@ -7,9 +7,15 @@ This is a front end app for LA Times keyword search. This project uses React on 
  * SPECIAL NOTE:
  * variables and functions that are defined in SearchProvider can be undefined. If those vars and functions are used and invoked, TypeScript will error out. To invoke, you must use "!"
  * */
+  const { docset, deleteModel, keywordMode} = useContext(searchContext);
 
+  // func
   deleteModel!(id);
+
+  // destructuring from object
   const { models } = docset!;
+
+  // changing ref value
   keywordMode!.current = true;
 ```
 
