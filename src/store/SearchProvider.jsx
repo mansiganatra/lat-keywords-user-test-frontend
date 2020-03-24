@@ -70,10 +70,11 @@ const SearchProvider = ({ children }) => {
   // Gen-Hur gen-hur
   // coronavirus associator-covid19
   // Banks-Daxzaneous-Forger kimbreall
+  // court_docs m-court-docs
   const getKeywords = async ({
     searchedGlobalTerm,
     size = 8,
-    docset = 'coronavirus'
+    docset = 'court_docs'
   }) => {
     const url = 'https://cohorts-api.herokuapp.com/api';
 
