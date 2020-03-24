@@ -8,7 +8,7 @@ import searchContext from '../../store/searchContext';
 
 const SearchTopResult = (props: any): JSX.Element => {
   const { docset, term } = useContext(searchContext);
-  const { token, similarSuggestionslist } = docset;
+  const { token, similarSuggestionslist } = docset!;
 
   const handleClick = (word: string): void => {
     const message = {
@@ -28,15 +28,17 @@ const SearchTopResult = (props: any): JSX.Element => {
             <div className="right">
               <p>But These Related Words Do. Try Searching:</p>
               <div className="list">
-                {similarSuggestionslist.map(item => (
-                  <p
-                    key={item}
-                    onClick={() => handleClick(item)}
-                    style={{ cursor: 'pointer' }}
-                  >
-                    {item}
-                  </p>
-                ))}
+                {similarSuggestionslist.map(
+                  (item: string): JSX.Element => (
+                    <p
+                      key={item}
+                      onClick={() => handleClick(item)}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      {item}
+                    </p>
+                  )
+                )}
               </div>
             </div>
           )}

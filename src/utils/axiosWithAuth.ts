@@ -10,7 +10,7 @@ const url: string = 'http://0.0.0.0:3335';
  * @param {string} apiToken token taken from useQuery sent by overview
  */
 
-function AxiosWithAuth(apiToken: string) {
+function AxiosWithAuth(apiToken: string | null) {
   return axios.create({
     headers: {
       'Content-Type': 'application/json',

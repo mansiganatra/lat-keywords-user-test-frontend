@@ -6,14 +6,30 @@ import { colorArray } from '../../utils';
 
 const SearchShowBot = (props: any): JSX.Element => {
   const { docset } = useContext(searchContext);
-  const { models } = docset;
+  const { models } = docset!;
   return (
     <StyledSearchShowBot>
       <StyledModelList>
         {!!models?.length &&
-          models.map((model, i) => (
-            <Model key={i} model={model} topBarColor={colorArray[i]} />
-          ))}
+          models.map(
+            (
+              model: {
+                id: number;
+                foundTokens: string[];
+                similarTokens: {
+                  count: number;
+                  similarity: number;
+                  token: string;
+                }[];
+                sortedSimilarTokensByCount: {
+                  count: number;
+                  similarity: number;
+                  token: string;
+                }[];
+              },
+              i: number
+            ) => <Model key={i} model={model} topBarColor={colorArray[i]} />
+          )}
       </StyledModelList>
     </StyledSearchShowBot>
   );

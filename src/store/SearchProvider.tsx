@@ -7,10 +7,10 @@ function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
 interface GetKeywords {
-  token: string;
-  server: string;
-  documentSetId: string;
-  apiToken: string;
+  token: string | null;
+  server: string | null;
+  documentSetId: string | null;
+  apiToken: string | null;
 }
 interface SimilarToken {
   count: number;
@@ -19,7 +19,7 @@ interface SimilarToken {
 }
 interface SearchHistory {
   id: number;
-  term: string;
+  term: string | null;
 }
 interface Model {
   id: number;
@@ -44,7 +44,7 @@ interface Docset {
   }[];
   searchHistory: {
     id: number;
-    term: string;
+    term: string | null;
   }[];
   token: string[];
   similarSuggestionslist: string[];
@@ -55,14 +55,14 @@ interface ProviderProps {
 
 const SearchProvider = ({ children }: ProviderProps) => {
   const [sortBy, setSortBy] = useState<string>('relevance');
-  const [term, setTerm] = useState<string>('');
+  const [term, setTerm] = useState<string | null>('');
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const query = useQuery();
   const [docset, setDocset] = useState<Docset>(
     JSON.parse(`${localStorage.getItem('docset')}`) || {}
   );
 
-  const keywordMode = useRef<React.MutableRefObject<boolean>>(false); // checks if kw is being clicked
+  const keywordMode = useRef(false); // checks if kw is being clicked
   const apiToken: string | null = query.get('apiToken');
   const server: string | null = query.get('server');
   const documentSetId: string | null = query.get('documentSetId');
@@ -95,7 +95,7 @@ const SearchProvider = ({ children }: ProviderProps) => {
       });
   }, [keywordMode]);
 
-  const selectModel = (id: number): void => {
+  const selectModel = (id: number | null): void => {
     setSelectedId(id);
   };
 

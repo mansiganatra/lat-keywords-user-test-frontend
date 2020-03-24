@@ -9,7 +9,7 @@ const SearchShowMid = (props: any): JSX.Element => {
   const { setSortBy } = useContext(searchContext);
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSortBy(e.target.value);
+    setSortBy!(e.target.value);
   };
 
   return (

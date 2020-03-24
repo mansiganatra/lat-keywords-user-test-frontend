@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
-import searchContext from '../../store/searchContext';
+// import searchContext from '../../store/searchContext';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 interface Props {
@@ -16,7 +16,7 @@ const Keyword = ({ word }: Props): JSX.Element => {
 
   const { count, similarity, token } = word;
 
-  const handleClick = e => {
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     // keywordMode.current = true;
     const message = {

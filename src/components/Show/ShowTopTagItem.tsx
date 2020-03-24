@@ -8,7 +8,7 @@ import xAltImage from '../../lib/x_alt.png';
 interface Props {
   tag: {
     id: number;
-    term: string;
+    term: string | null;
   };
   color: string;
 }
@@ -21,20 +21,20 @@ const ShowTopTagItem = ({ tag, color }: Props): JSX.Element => {
 
   const handleSelectModel = (id: number): void => {
     let message;
-    keywordMode.current = true;
+    keywordMode!.current = true;
 
     if (selectedId === id) {
       message = {
         call: 'setDocumentListParams', // call
         args: [{ q: `` }] // arguments
       };
-      selectModel(null);
+      selectModel!(null);
     } else {
       message = {
         call: 'setDocumentListParams', // call
         args: [{ q: `${term}` }] // arguments
       };
-      selectModel(id);
+      selectModel!(id);
     }
 
     window.parent.postMessage(message, '*');
@@ -42,7 +42,7 @@ const ShowTopTagItem = ({ tag, color }: Props): JSX.Element => {
 
   const handleDelete = (e: React.MouseEvent<HTMLButtonElement>): void => {
     e.stopPropagation();
-    deleteModel(id);
+    deleteModel!(id);
   };
 
   return (
@@ -67,13 +67,14 @@ const ShowTopTagItem = ({ tag, color }: Props): JSX.Element => {
   );
 };
 
-const StyledHistoryItem = styled.div`
+const StyledHistoryItem = styled.div<{ selected: boolean; color: string }>`
   cursor: pointer;
   display: flex;
   justify-content: space-between;
   align-items: center;
 
-  background: ${({ selected, color }) => (selected ? color : '#ffffff')};
+  background: ${({ selected, color }): string =>
+    selected ? color : '#ffffff'};
   border: 1px solid rgba(182, 192, 198, 0.6);
   box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.02);
   border-radius: 3px;
@@ -97,9 +98,10 @@ const StyledHistoryItem = styled.div`
     box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.02);
   }
 `;
-const StyleRemoveBtn = styled.button`
+const StyleRemoveBtn = styled.button<{ selected: boolean; color: string }>`
   border: 0;
-  background-color: ${({ selected, color }) => (selected ? color : '#ffffff')};
+  background-color: ${({ selected, color }): string =>
+    selected ? color : '#ffffff'};
   display: flex;
   justify-content: center;
   align-items: center;

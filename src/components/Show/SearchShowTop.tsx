@@ -20,7 +20,7 @@ const SearchShowTop = (props: any): JSX.Element => {
 
   useEffect(() => {
     if (clear) {
-      clearAll();
+      clearAll!();
       const message = {
         call: 'setDocumentListParams', // call
         args: [{ q: '' }] // arguments
@@ -44,9 +44,12 @@ const SearchShowTop = (props: any): JSX.Element => {
         </StyledShowTagsTop>
         <StyledTagHistory>
           <StyledHistoryList>
-            {!!docset.searchHistory?.length &&
-              docset.searchHistory?.map(
-                (tag: { id: number; term: string }, i): JSX.Element => (
+            {!!docset!.searchHistory?.length &&
+              docset!.searchHistory?.map(
+                (
+                  tag: { id: number; term: string | null },
+                  i: number
+                ): JSX.Element => (
                   <ShowTopTagItem
                     key={tag.id}
                     tag={tag}

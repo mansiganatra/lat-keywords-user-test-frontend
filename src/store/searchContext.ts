@@ -1,4 +1,4 @@
-import { createContext } from 'react';
+import { createContext, useContext } from 'react';
 
 interface ContextInterface {
   docset: {
@@ -18,7 +18,7 @@ interface ContextInterface {
     }[];
     searchHistory: {
       id: number;
-      term: string;
+      term: string | null;
     }[];
     token: string[];
     similarSuggestionslist: string[];
@@ -28,11 +28,11 @@ interface ContextInterface {
   sortBy: string;
   keywordMode: React.MutableRefObject<boolean>;
   selectedId: number | null;
-  selectModel: (id: number) => void;
-  term: string;
+  selectModel: (id: number | null) => void;
+  term: string | null;
   setSortBy: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const searchContext = createContext<ContextInterface>();
+const searchContext = createContext<Partial<ContextInterface>>({});
 
 export default searchContext;

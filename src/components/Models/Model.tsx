@@ -20,6 +20,7 @@ interface Props {
     }[];
   };
   topBarColor: string;
+  selected?: boolean;
 }
 
 const Model = ({ model, topBarColor }: Props): JSX.Element => {
@@ -42,25 +43,25 @@ const Model = ({ model, topBarColor }: Props): JSX.Element => {
 
   const handleDelete = (e: React.MouseEvent<HTMLButtonElement>): void => {
     e.stopPropagation();
-    deleteModel(id);
+    deleteModel!(id);
   };
 
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement>): void => {
+  const handleClick = (e: React.MouseEvent<HTMLDivElement>): void => {
     let message;
-    keywordMode.current = true;
+    keywordMode!.current = true;
 
     if (selectedId === id) {
       message = {
         call: 'setDocumentListParams', // call
         args: [{ q: `` }] // arguments
       };
-      selectModel(null);
+      selectModel!(null);
     } else {
       message = {
         call: 'setDocumentListParams', // call
         args: [{ q: `${foundTokens[0]}` }] // arguments
       };
-      selectModel(id);
+      selectModel!(id);
     }
     window.parent.postMessage(message, '*');
   };
@@ -112,7 +113,10 @@ const Model = ({ model, topBarColor }: Props): JSX.Element => {
   );
 };
 
-const StyledModelContainer = styled.div`
+const StyledModelContainer = styled.div<{
+  selected: boolean;
+  topBarColor: string;
+}>`
   border-top: 5px solid
     ${({ topBarColor }: { topBarColor: string }): string => topBarColor};
   margin-right: 27px;
