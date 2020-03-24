@@ -1,13 +1,13 @@
 import { createContext, useContext } from 'react';
 
-interface Progress {
+export interface Progress {
   n_ahead_in_queue: number;
   fraction: number;
   message: string | null;
   returncode: number | null;
   error: string | null;
 }
-interface ModelState {
+export interface ModelState {
   lastProgress: Progress | null;
   isSuccess: boolean;
 }
@@ -45,6 +45,25 @@ interface ContextInterface {
   modelState: ModelState;
 }
 
-const searchContext = createContext<Partial<ContextInterface>>({});
+const searchContext = createContext<ContextInterface>({
+  docset: {
+    models: [],
+    searchHistory: [],
+    token: [],
+    similarSuggestionslist: []
+  },
+  clearAll: () => undefined,
+  deleteModel: id => undefined,
+  sortBy: '',
+  keywordMode: { current: false },
+  selectedId: null,
+  selectModel: id => undefined,
+  term: null,
+  setSortBy: s => undefined,
+  modelState: {
+    lastProgress: null,
+    isSuccess: false
+  }
+});
 
 export default searchContext;

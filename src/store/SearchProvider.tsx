@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useRef, createContext } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  createContext
+} from 'react';
 import { useLocation } from 'react-router-dom';
 import oboe from 'oboe';
 
@@ -96,6 +102,7 @@ const SearchProvider = ({ children }: ProviderProps) => {
   });
 
   const keywordMode = useRef(false); // checks if kw is being clicked
+  const modelStateRef = useRef<ModelState>(modelState);
   const apiToken: string = query.get('apiToken')!;
   const server: string = query.get('server')!;
   const documentSetId: string = query.get('documentSetId')!;
@@ -104,8 +111,13 @@ const SearchProvider = ({ children }: ProviderProps) => {
     const o = oboe({
       url: 'http://localhost:3335/generate',
       method: 'POST',
-      body: { server, documentSetId },
-      headers: { Authorization: 'Basic ' + btoa(apiToken + ':x-auth-token') }
+      body: `server=${encodeURIComponent(
+        server
+      )}&documentSetId=${encodeURIComponent(documentSetId)}`,
+      headers: {
+        Authorization: 'Basic ' + btoa(apiToken + ':x-auth-token'),
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
     });
     // Server will return either:
     // HTTP 204 -- in which case we're done
@@ -150,12 +162,15 @@ const SearchProvider = ({ children }: ProviderProps) => {
     return () => o.abort();
   }, []);
 
-  // global search input watcher
-  useEffect(() => {
-    window.addEventListener('message', (e): void => {
+  const onNotifyDocumentListParams = useCallback(
+    (e: MessageEvent) => {
       if (e.data.event === 'notify:documentListParams') {
         const token: string = e.data.args[0].q;
-        if (keywordMode.current === false && token !== undefined) {
+        if (
+          keywordMode.current === false &&
+          token !== undefined &&
+          modelStateRef.current.isSuccess
+        ) {
           getKeywords({
             token,
             server,
@@ -166,12 +181,16 @@ const SearchProvider = ({ children }: ProviderProps) => {
           keywordMode.current = false;
         }
       }
-    });
+    },
+    [keywordMode, modelStateRef]
+  );
+
+  // global search input watcher
+  useEffect(() => {
+    window.addEventListener('message', onNotifyDocumentListParams);
     return () =>
-      window.removeEventListener('message', () => {
-        console.log('done');
-      });
-  }, [keywordMode]);
+      window.removeEventListener('message', onNotifyDocumentListParams);
+  });
 
   const selectModel = (id: number | null): void => {
     setSelectedId(id);
@@ -203,9 +222,13 @@ const SearchProvider = ({ children }: ProviderProps) => {
   }: GetKeywords): Promise<void> => {
     setTerm(token);
     try {
-      const res = await axiosWithAuth(apiToken).get(
-        `/search?term=${token}&server=${server}&documentSetId${documentSetId}`
-      );
+      const res = await axiosWithAuth(apiToken).get('/search', {
+        params: {
+          term: token,
+          server,
+          documentSetId
+        }
+      });
       const newID: number = Date.now();
       const sortedSimilarTokensByCount: SimilarToken[] = res.data.similarTokens.sort(
         (curItem: SimilarToken, nextItem: SimilarToken): number =>

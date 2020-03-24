@@ -43,12 +43,12 @@ const Model = ({ model, topBarColor }: Props): JSX.Element => {
 
   const handleDelete = (e: React.MouseEvent<HTMLButtonElement>): void => {
     e.stopPropagation();
-    deleteModel!(id);
+    deleteModel(id);
   };
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement>): void => {
     let message;
-    keywordMode!.current = true;
+    keywordMode.current = true;
 
     if (selectedId === id) {
       message = {
@@ -61,7 +61,7 @@ const Model = ({ model, topBarColor }: Props): JSX.Element => {
         call: 'setDocumentListParams', // call
         args: [{ q: `${foundTokens[0]}` }] // arguments
       };
-      selectModel!(id);
+      selectModel(id);
     }
     window.parent.postMessage(message, '*');
   };

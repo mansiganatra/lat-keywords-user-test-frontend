@@ -5,14 +5,9 @@ import { Route } from 'react-router-dom';
 import Metadata from './pages/Metadata/Metadata';
 import Show from './pages/Show/Show';
 
-import LoadingPage from './components/LoadingPage/LoadingPage';
-
 const App = (props: any): JSX.Element => {
   return (
     <StyledApp>
-      <Route path="/">
-        <LoadingPage />
-      </Route>
       <Route path="/show">
         <Show />
       </Route>
