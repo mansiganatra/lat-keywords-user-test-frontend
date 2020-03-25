@@ -103,6 +103,7 @@ const SearchProvider = ({ children }: ProviderProps) => {
 
   const keywordMode = useRef(false); // checks if kw is being clicked
   const modelStateRef = useRef<ModelState>(modelState);
+
   const apiToken: string = query.get('apiToken')!;
   const server: string = query.get('server')!;
   const documentSetId: string = query.get('documentSetId')!;
@@ -118,46 +119,50 @@ const SearchProvider = ({ children }: ProviderProps) => {
         Authorization: 'Basic ' + btoa(apiToken + ':x-auth-token'),
         'Content-Type': 'application/x-www-form-urlencoded'
       }
-    });
-    // Server will return either:
-    // HTTP 204 -- in which case we're done
-    // HTTP 200 with JSON Array of progress events, like:
-    //   [
-    //      {
-    //          "fraction": 0.2,
-    //          "n_ahead_in_queue": 0,
-    //          ...,
-    //      }
-    //      ...
-    //   ]
-    //
-    // Oboe instance will emit each Progress event until there are no more
-    o.node('!.*', (progress: Progress) => {
-      setModelState({ lastProgress: progress, isSuccess: false });
-      return oboe.drop;
-    });
-    o.fail(
-      ({
-        statusCode,
-        body,
-        error
-      }: {
-        statusCode: number | null;
-        body: String | null;
-        error: Error | null;
-      }) => {
-        console.error(statusCode, body, error);
-      }
-    );
-    o.done(() =>
-      // TODO isSuccess=false if lastProgress.returncode != 0
-      setModelState({
-        lastProgress: modelState.lastProgress,
-        isSuccess: modelState.lastProgress
-          ? modelState.lastProgress.returncode === 0
-          : true
+    })
+      .node('!.*', (progress: Progress) => {
+        // Server will return either:
+        // HTTP 204 -- in which case we're done
+        // HTTP 200 with JSON Array of progress events, like:
+        //   [
+        //      {
+        //          "fraction": 0.2,
+        //          "n_ahead_in_queue": 0,
+        //          ...,
+        //      }
+        //      ...
+        //   ]
+        //
+        // Oboe instance will emit each Progress event until there are no more
+        setModelState({ lastProgress: progress, isSuccess: false });
+        return oboe.drop;
       })
-    );
+      .fail(
+        ({
+          statusCode,
+          body,
+          error
+        }: {
+          statusCode: number | null;
+          body: String | null;
+          error: Error | null;
+        }) => {
+          console.error(statusCode, body, error);
+        }
+      )
+      .done(() =>
+        setModelState(prevModelState => {
+          modelStateRef.current = {
+            // state will have stale object
+            lastProgress: prevModelState.lastProgress,
+            isSuccess: true
+          };
+          return {
+            lastProgress: prevModelState.lastProgress,
+            isSuccess: true
+          };
+        })
+      );
 
     return () => o.abort();
   }, []);
@@ -190,7 +195,7 @@ const SearchProvider = ({ children }: ProviderProps) => {
     window.addEventListener('message', onNotifyDocumentListParams);
     return () =>
       window.removeEventListener('message', onNotifyDocumentListParams);
-  });
+  }, []);
 
   const selectModel = (id: number | null): void => {
     setSelectedId(id);
@@ -258,7 +263,7 @@ const SearchProvider = ({ children }: ProviderProps) => {
         )
       }));
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
