@@ -5,7 +5,7 @@ import LoadingPage from '../../components/LoadingPage/LoadingPage';
 import { ProgressState, State } from '../../types';
 
 interface Props {
-  modelState: ProgressState;
+  progressState: ProgressState;
   state: State;
   term: string | null;
   clearSearchAll: () => void;
@@ -18,7 +18,7 @@ interface Props {
 }
 
 const Show = ({
-  modelState,
+  progressState,
   state,
   term,
   clearSearchAll,
@@ -31,7 +31,7 @@ const Show = ({
 }: Props): JSX.Element => {
   return (
     <section>
-      {modelState.isSuccess ? (
+      {progressState.isSuccess ? (
         <SearchResults
           state={state}
           term={term}
@@ -44,7 +44,7 @@ const Show = ({
           sortBy={sortBy}
         />
       ) : (
-        <LoadingPage progress={modelState.lastProgress} />
+        <LoadingPage progress={progressState.lastProgress} />
       )}
     </section>
   );

@@ -28,13 +28,13 @@ const App = ({}: any): JSX.Element => {
     token: [],
     similarSuggestionslist: []
   });
-  const [modelState, setModelState] = useState<ProgressState>({
+  const [progressState, setProgressState] = useState<ProgressState>({
     lastProgress: null,
     isSuccess: false
   });
 
   const keywordModeRef = useRef<boolean>(keywordMode);
-  const modelStateRef = useRef<ProgressState>(modelState);
+  const progressStateRef = useRef<ProgressState>(progressState);
 
   const query = useQuery();
   const apiToken: string = query.get('apiToken')!;
@@ -53,7 +53,7 @@ const App = ({}: any): JSX.Element => {
       if (res.data.store) {
         // store exists
         setState(res.data.store);
-        modelStateRef.current = {
+        progressStateRef.current = {
           lastProgress: {
             n_ahead_in_queue: 0,
             fraction: 1,
@@ -63,7 +63,7 @@ const App = ({}: any): JSX.Element => {
           },
           isSuccess: true
         };
-        setModelState({
+        setProgressState({
           lastProgress: {
             n_ahead_in_queue: 0,
             fraction: 1,
@@ -101,7 +101,7 @@ const App = ({}: any): JSX.Element => {
             //   ]
             // Oboe instance will emit each Progress event until there are no more
             console.log('runnin!');
-            setModelState({ lastProgress: progress, isSuccess: false });
+            setProgressState({ lastProgress: progress, isSuccess: false });
             return oboe.drop;
           })
           .fail(
@@ -118,9 +118,9 @@ const App = ({}: any): JSX.Element => {
             }
           )
           .done(() =>
-            setModelState(prevModelState => {
+            setProgressState(prevModelState => {
               console.log('done! ', prevModelState.lastProgress);
-              modelStateRef.current = {
+              progressStateRef.current = {
                 // state will have stale object
                 lastProgress: prevModelState.lastProgress,
                 isSuccess: prevModelState.lastProgress?.returncode === 0
@@ -153,7 +153,7 @@ const App = ({}: any): JSX.Element => {
         if (
           keywordModeRef.current === false &&
           token !== undefined &&
-          modelStateRef.current.isSuccess
+          progressStateRef.current.isSuccess
         ) {
           getKeywords({
             token,
@@ -166,7 +166,7 @@ const App = ({}: any): JSX.Element => {
         }
       }
     },
-    [keywordModeRef, modelState]
+    [keywordModeRef, progressState]
   );
 
   // global search input watcher
@@ -289,7 +289,7 @@ const App = ({}: any): JSX.Element => {
     <StyledApp>
       <Route path="/show">
         <Show
-          modelState={modelState}
+          progressState={progressState}
           state={state}
           term={term}
           clearSearchAll={clearSearchAll}
