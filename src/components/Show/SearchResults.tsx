@@ -4,9 +4,8 @@ import styled from 'styled-components';
 import SearchShowTop from './SearchShowTop';
 import SearchShowBot from './SearchShowBot';
 import SearchShowMid from './SearchShowMid';
-import LoadComplete from '../../lib/load_complete.png';
-import { State } from '../../types';
 import LoadingSuccess from '../LoadingPage/LoadingSuccess';
+import { State } from '../../types';
 
 interface Props {
   state: State;

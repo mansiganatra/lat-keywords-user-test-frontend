@@ -5,7 +5,7 @@ import LoadComplete from '../../lib/load_complete.png';
 
 interface LoadingSuccessProps {}
 
-const LoadingSuccess = ({}: any): JSX.Element => {
+const LoadingSuccess = (props: LoadingSuccessProps): JSX.Element => {
   return (
     <StyledLoadComplete>
       <StyledImgComplete>

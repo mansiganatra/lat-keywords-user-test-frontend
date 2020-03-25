@@ -1,4 +1,4 @@
-import React, { useReducer, useState, useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 import LoadImgOne from '../../lib/loading1.png';

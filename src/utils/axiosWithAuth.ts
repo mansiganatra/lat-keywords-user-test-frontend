@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // const url = 'https://cohorts-api.herokuapp.com/api';
 // const url = 'http://localhost:8000/api';
-const url: string = 'http://localhost:3335';
+const url: string = 'https://mansi-nlp.data.caltimes.io';
 
 /**
  * set baseurl and authentication headers with axios

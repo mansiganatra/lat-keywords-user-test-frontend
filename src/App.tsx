@@ -17,7 +17,9 @@ import {
   Progress
 } from './types';
 
-const App = ({}: any): JSX.Element => {
+interface AppProps {}
+
+const App = (props: AppProps): JSX.Element => {
   const [sortBy, setSortBy] = useState<string>('relevance');
   const [term, setTerm] = useState<string | null>('');
   const [selectedId, setSelectedId] = useState<number | null>(null);
@@ -43,7 +45,7 @@ const App = ({}: any): JSX.Element => {
 
   const initFetchStore = async () => {
     try {
-      const res = await axios.get('http://localhost:9000/api/v1/store/state', {
+      const res = await axios.get(`${server}/api/v1/store/state`, {
         headers: {
           Authorization: `Basic ${btoa(apiToken + ':x-auth-token')}`,
           'Content-Type': 'application/json'
@@ -51,7 +53,7 @@ const App = ({}: any): JSX.Element => {
       });
 
       if (res.data.store) {
-        // store exists
+        // store exists... update ref and state from overview
         setState(res.data.store);
         progressStateRef.current = {
           lastProgress: {
@@ -77,7 +79,7 @@ const App = ({}: any): JSX.Element => {
         // store doesnt exist... oboe it to existence
 
         return oboe({
-          url: 'http://localhost:3335/generate',
+          url: 'https://mansi-nlp.data.caltimes.io/generate',
           method: 'POST',
           body: `server=${encodeURIComponent(
             server
@@ -88,17 +90,6 @@ const App = ({}: any): JSX.Element => {
           }
         })
           .node('!.*', (progress: Progress) => {
-            // Server will return either:
-            // HTTP 204 -- in which case we're done
-            // HTTP 200 with JSON Array of progress events, like:
-            //   [
-            //      {
-            //          "fraction": 0.2,
-            //          "n_ahead_in_queue": 0,
-            //          ...,
-            //      }
-            //      ...
-            //   ]
             // Oboe instance will emit each Progress event until there are no more
             console.log('runnin!');
             setProgressState({ lastProgress: progress, isSuccess: false });
@@ -193,7 +184,7 @@ const App = ({}: any): JSX.Element => {
   const updateStore = async (stateObj: State): Promise<void> => {
     try {
       await axios.put(
-        'http://localhost:9000/api/v1/store/state',
+        `${server}/api/v1/store/state`,
         { store: stateObj },
         {
           headers: {
