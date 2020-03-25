@@ -2,13 +2,13 @@ import React from 'react';
 
 import SearchResults from '../../components/Show/SearchResults';
 import LoadingPage from '../../components/LoadingPage/LoadingPage';
-import { ModelState, State } from '../../types';
+import { ProgressState, State } from '../../types';
 
 interface Props {
-  modelState: ModelState;
+  modelState: ProgressState;
   state: State;
   term: string | null;
-  setState: React.Dispatch<React.SetStateAction<State>>;
+  clearSearchAll: () => void;
   setSortBy: React.Dispatch<React.SetStateAction<string>>;
   selectModel: (id: number | null) => void;
   deleteModel: (modelId: number) => void;
@@ -21,7 +21,7 @@ const Show = ({
   modelState,
   state,
   term,
-  setState,
+  clearSearchAll,
   selectModel,
   deleteModel,
   selectedId,
@@ -35,7 +35,7 @@ const Show = ({
         <SearchResults
           state={state}
           term={term}
-          setState={setState}
+          clearSearchAll={clearSearchAll}
           selectModel={selectModel}
           deleteModel={deleteModel}
           selectedId={selectedId}

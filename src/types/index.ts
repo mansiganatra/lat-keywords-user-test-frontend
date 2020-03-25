@@ -13,7 +13,7 @@ export interface SearchHistory {
   id: number;
   term: string | null;
 }
-export interface Model {
+export interface SearchedItem {
   id: number;
   foundTokens: string[];
   similarTokens: SimilarToken[];
@@ -36,13 +36,13 @@ export interface Progress {
  * isSuccess && lastProgress === null => server says this was done (long ago)
  * isSuccess && lastProgress => server says this was done (since we started the request)
  */
-export interface ModelState {
+export interface ProgressState {
   lastProgress: Progress | null;
   isSuccess: boolean;
 }
 
 export interface State {
-  models: {
+  searchedList: {
     id: number;
     foundTokens: string[];
     similarTokens: {

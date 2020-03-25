@@ -10,40 +10,38 @@ import { axiosWithAuth, useQuery } from './utils';
 import {
   State,
   GetKeywords,
-  Model,
-  ModelState,
+  SearchedItem,
+  ProgressState,
   SimilarToken,
   SearchHistory,
   Progress
 } from './types';
-import LoadingSuccess from './components/LoadingPage/LoadingSuccess';
-import LoadingPage from './components/LoadingPage/LoadingPage';
 
-const App = (props: any): JSX.Element => {
+const App = ({}: any): JSX.Element => {
   const [sortBy, setSortBy] = useState<string>('relevance');
   const [term, setTerm] = useState<string | null>('');
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [keywordMode, setKeywordMode] = useState<boolean>(false); // checks if kw is being clicked
   const [state, setState] = useState<State>({
-    models: [],
+    searchedList: [],
     searchHistory: [],
     token: [],
     similarSuggestionslist: []
   });
-  const [modelState, setModelState] = useState<ModelState>({
+  const [modelState, setModelState] = useState<ProgressState>({
     lastProgress: null,
     isSuccess: false
   });
 
   const keywordModeRef = useRef<boolean>(keywordMode);
-  const modelStateRef = useRef<ModelState>(modelState);
+  const modelStateRef = useRef<ProgressState>(modelState);
 
   const query = useQuery();
   const apiToken: string = query.get('apiToken')!;
   const server: string = query.get('server')!;
   const documentSetId: string = query.get('documentSetId')!;
 
-  const fetchStore = async () => {
+  const initFetchStore = async () => {
     try {
       const res = await axios.get('http://localhost:9000/api/v1/store/state', {
         headers: {
@@ -54,7 +52,7 @@ const App = (props: any): JSX.Element => {
 
       if (res.data.store) {
         // store exists
-        setState(res.data);
+        setState(res.data.store);
         modelStateRef.current = {
           lastProgress: {
             n_ahead_in_queue: 0,
@@ -76,6 +74,63 @@ const App = (props: any): JSX.Element => {
           isSuccess: true
         });
       } else {
+        // store doesnt exist... oboe it to existence
+
+        return oboe({
+          url: 'http://localhost:3335/generate',
+          method: 'POST',
+          body: `server=${encodeURIComponent(
+            server
+          )}&documentSetId=${encodeURIComponent(documentSetId)}`,
+          headers: {
+            Authorization: 'Basic ' + btoa(apiToken + ':x-auth-token'),
+            'Content-Type': 'application/x-www-form-urlencoded'
+          }
+        })
+          .node('!.*', (progress: Progress) => {
+            // Server will return either:
+            // HTTP 204 -- in which case we're done
+            // HTTP 200 with JSON Array of progress events, like:
+            //   [
+            //      {
+            //          "fraction": 0.2,
+            //          "n_ahead_in_queue": 0,
+            //          ...,
+            //      }
+            //      ...
+            //   ]
+            // Oboe instance will emit each Progress event until there are no more
+            console.log('runnin!');
+            setModelState({ lastProgress: progress, isSuccess: false });
+            return oboe.drop;
+          })
+          .fail(
+            ({
+              statusCode,
+              body,
+              error
+            }: {
+              statusCode: number | null;
+              body: String | null;
+              error: Error | null;
+            }) => {
+              console.error(statusCode, body, error);
+            }
+          )
+          .done(() =>
+            setModelState(prevModelState => {
+              console.log('done! ', prevModelState.lastProgress);
+              modelStateRef.current = {
+                // state will have stale object
+                lastProgress: prevModelState.lastProgress,
+                isSuccess: prevModelState.lastProgress?.returncode === 0
+              };
+              return {
+                lastProgress: prevModelState.lastProgress,
+                isSuccess: prevModelState.lastProgress?.returncode === 0
+              };
+            })
+          );
       }
     } catch (error) {
       console.error(error);
@@ -83,65 +138,7 @@ const App = (props: any): JSX.Element => {
   };
 
   useEffect(() => {
-    fetchStore();
-
-    const o = oboe({
-      url: 'http://localhost:3335/generate',
-      method: 'POST',
-      body: `server=${encodeURIComponent(
-        server
-      )}&documentSetId=${encodeURIComponent(documentSetId)}`,
-      headers: {
-        Authorization: 'Basic ' + btoa(apiToken + ':x-auth-token'),
-        'Content-Type': 'application/x-www-form-urlencoded'
-      }
-    })
-      .node('!.*', (progress: Progress) => {
-        // Server will return either:
-        // HTTP 204 -- in which case we're done
-        // HTTP 200 with JSON Array of progress events, like:
-        //   [
-        //      {
-        //          "fraction": 0.2,
-        //          "n_ahead_in_queue": 0,
-        //          ...,
-        //      }
-        //      ...
-        //   ]
-        // Oboe instance will emit each Progress event until there are no more
-        console.log('runnin!');
-        setModelState({ lastProgress: progress, isSuccess: false });
-        return oboe.drop;
-      })
-      .fail(
-        ({
-          statusCode,
-          body,
-          error
-        }: {
-          statusCode: number | null;
-          body: String | null;
-          error: Error | null;
-        }) => {
-          console.error(statusCode, body, error);
-        }
-      )
-      .done(() =>
-        setModelState(prevModelState => {
-          console.log('done! ', prevModelState.lastProgress);
-          modelStateRef.current = {
-            // state will have stale object
-            lastProgress: prevModelState.lastProgress,
-            isSuccess: prevModelState.lastProgress?.returncode === 0
-          };
-          return {
-            lastProgress: prevModelState.lastProgress,
-            isSuccess: prevModelState.lastProgress?.returncode === 0
-          };
-        })
-      );
-
-    return () => o.abort();
+    initFetchStore();
   }, []);
 
   const setKeywordRef = (bool: boolean): void => {
@@ -186,9 +183,41 @@ const App = (props: any): JSX.Element => {
   const deleteModel = (modelId: number): void => {
     setState(prevDocset => ({
       ...prevDocset,
-      models: prevDocset.models.filter(model => model.id !== modelId),
+      searchedList: prevDocset.searchedList.filter(
+        searchedItem => searchedItem.id !== modelId
+      ),
       searchHistory: prevDocset.searchHistory.filter(tag => tag.id !== modelId)
     }));
+  };
+
+  const updateStore = async (stateObj: State): Promise<void> => {
+    try {
+      await axios.put(
+        'http://localhost:9000/api/v1/store/state',
+        { store: stateObj },
+        {
+          headers: {
+            Authorization: `Basic ${btoa(apiToken + ':x-auth-token')}`,
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+      console.log('saved to store!');
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const clearSearchAll = (): void => {
+    const newObj = {
+      searchedList: [],
+      searchHistory: [],
+      token: [],
+      similarSuggestionslist: []
+    };
+
+    setState(newObj);
+    updateStore(newObj);
   };
 
   const getKeywords = async ({
@@ -211,7 +240,7 @@ const App = (props: any): JSX.Element => {
         (curItem: SimilarToken, nextItem: SimilarToken): number =>
           nextItem.count - curItem.count
       );
-      const newModel: Model = {
+      const newModel: SearchedItem = {
         id: newID,
         foundTokens: res.data.foundTokens,
         similarTokens: res.data.similarTokens,
@@ -222,18 +251,35 @@ const App = (props: any): JSX.Element => {
         term: token
       };
 
-      setState(prevState => ({
-        ...prevState,
-        models: [...prevState.models.map(model => ({ ...model })), newModel],
-        searchHistory: [
+      setState(prevState => {
+        const searchedList = [
+          ...prevState.searchedList.map(searchedItem => ({ ...searchedItem })),
+          newModel
+        ];
+        const searchHistory = [
           ...prevState.searchHistory.map(hist => ({ ...hist })),
           newHistoryItem
-        ],
-        token: res.data.foundTokens,
-        similarSuggestionslist: res.data.similarTokens.map(
+        ];
+        const similarSuggestionslist = res.data.similarTokens.map(
           (item: SimilarToken): string => item.token
-        )
-      }));
+        );
+        const token = res.data.foundTokens;
+
+        updateStore({
+          searchedList,
+          searchHistory,
+          similarSuggestionslist,
+          token
+        });
+
+        return {
+          ...prevState,
+          searchedList,
+          searchHistory,
+          token,
+          similarSuggestionslist
+        };
+      });
     } catch (error) {
       console.error(error);
     }
@@ -246,7 +292,7 @@ const App = (props: any): JSX.Element => {
           modelState={modelState}
           state={state}
           term={term}
-          setState={setState}
+          clearSearchAll={clearSearchAll}
           selectModel={selectModel}
           deleteModel={deleteModel}
           selectedId={selectedId}

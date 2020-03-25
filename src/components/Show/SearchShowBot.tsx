@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import ModelItem from '../Models/Model';
+import SearchedTerm from '../SearchedItem/SearchedItem';
 import colorArray from '../../utils/colorArray';
-import { State, Model } from '../../types';
+import { State, SearchedItem } from '../../types';
 
 interface Props {
   sortBy: string;
@@ -22,16 +22,16 @@ const SearchShowBot = ({
   setKeywordRef,
   deleteModel
 }: Props): JSX.Element => {
-  const { models } = state;
+  const { searchedList } = state;
 
   return (
     <StyledSearchShowBot>
       <StyledModelList>
-        {models?.length > 0 &&
-          models.map((model: Model, i: number) => (
-            <ModelItem
-              key={model.id}
-              model={model}
+        {searchedList?.length > 0 &&
+          searchedList.map((searchedItem: SearchedItem, i: number) => (
+            <SearchedTerm
+              key={searchedItem.id}
+              searchedItem={searchedItem}
               topBarColor={colorArray[i]}
               sortBy={sortBy}
               selectedId={selectedId}

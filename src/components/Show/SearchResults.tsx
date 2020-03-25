@@ -11,7 +11,7 @@ import LoadingSuccess from '../LoadingPage/LoadingSuccess';
 interface Props {
   state: State;
   term: string | null;
-  setState: React.Dispatch<React.SetStateAction<State>>;
+  clearSearchAll: () => void;
   setSortBy: React.Dispatch<React.SetStateAction<string>>;
   selectModel: (id: number | null) => void;
   deleteModel: (modelId: number) => void;
@@ -24,7 +24,7 @@ const SearchTopResult = ({
   state,
   term,
   setSortBy,
-  setState,
+  clearSearchAll,
   selectModel,
   deleteModel,
   selectedId,
@@ -43,13 +43,13 @@ const SearchTopResult = ({
 
   return (
     <>
-      {state.models.length === 0 ? (
+      {state.searchedList.length === 0 ? (
         <LoadingSuccess />
       ) : (
         <>
           <SearchShowTop
             state={state}
-            setState={setState}
+            clearSearchAll={clearSearchAll}
             selectModel={selectModel}
             deleteModel={deleteModel}
             selectedId={selectedId}

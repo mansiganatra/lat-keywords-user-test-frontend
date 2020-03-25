@@ -3,10 +3,10 @@ import styled from 'styled-components';
 
 import Keyword from '../Keywords/Keyword';
 import xAlt from '../../lib/x_alt.png';
-import { Model, SimilarToken } from '../../types';
+import { SearchedItem, SimilarToken } from '../../types';
 
 interface Props {
-  model: Model;
+  searchedItem: SearchedItem;
   topBarColor: string;
   selected?: boolean;
   sortBy: string;
@@ -16,8 +16,8 @@ interface Props {
   deleteModel: (modelId: number) => void;
 }
 
-const ModelItem = ({
-  model,
+const SearchedTerm = ({
+  searchedItem,
   topBarColor,
   sortBy,
   selectedId,
@@ -25,7 +25,12 @@ const ModelItem = ({
   setKeywordRef,
   deleteModel
 }: Props): JSX.Element => {
-  const { similarTokens, foundTokens, id, sortedSimilarTokensByCount } = model;
+  const {
+    similarTokens,
+    foundTokens,
+    id,
+    sortedSimilarTokensByCount
+  } = searchedItem;
   const [hover, setHover] = useState(false);
 
   const handleHoverEnable = (): void => {
@@ -176,4 +181,4 @@ const StyledKeywordList = styled.div`
   margin: 0 11px;
 `;
 
-export default ModelItem;
+export default SearchedTerm;

@@ -9,7 +9,7 @@ import { State, SearchHistory } from '../../types';
 
 interface Props {
   state: State;
-  setState: React.Dispatch<React.SetStateAction<State>>;
+  clearSearchAll: () => void;
   selectModel: (id: number | null) => void;
   deleteModel: (modelId: number) => void;
   selectedId: number | null;
@@ -18,7 +18,7 @@ interface Props {
 
 const SearchShowTop = ({
   state,
-  setState,
+  clearSearchAll,
   selectModel,
   deleteModel,
   selectedId,
@@ -35,12 +35,7 @@ const SearchShowTop = ({
 
   useEffect(() => {
     if (clear) {
-      setState({
-        models: [],
-        searchHistory: [],
-        token: [],
-        similarSuggestionslist: []
-      });
+      clearSearchAll();
       const message = {
         call: 'setDocumentListParams', // call
         args: [{ q: '' }] // arguments
@@ -48,7 +43,7 @@ const SearchShowTop = ({
       window.parent.postMessage(message, '*'); // postMessage() with message and origin
       setClear(false);
     }
-  }, [clear, setClear, setState]);
+  }, [clear, setClear, clearSearchAll]);
   return (
     <StyledSearchShowTop>
       <div className="search-show-header-container">
