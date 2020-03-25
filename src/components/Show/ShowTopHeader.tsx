@@ -14,8 +14,8 @@ const Header = (props: any): JSX.Element => {
         <StyledHeader>
           Find words associated with your search term
           <span
-            onMouseEnter={() => setHover(true)}
-            onMouseLeave={() => setHover(false)}
+            onMouseEnter={(): void => setHover(true)}
+            onMouseLeave={(): void => setHover(false)}
             onClick={() => setModalEnabled(!modalEnabled)}
           >
             <img src={hover ? moreInfoAlt : moreInfo} alt="more info" />

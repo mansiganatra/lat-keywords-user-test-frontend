@@ -1,10 +1,10 @@
 import React, { useReducer, useState, useEffect } from 'react';
 import styled from 'styled-components';
 
-import { Progress } from '../../store/searchContext';
 import LoadImgOne from '../../lib/loading1.png';
 import LoadImgTwo from '../../lib/loading2.png';
 import LoadImgThree from '../../lib/loading3.png';
+import { Progress } from '../../types';
 
 interface Props {
   progress: Progress | null;

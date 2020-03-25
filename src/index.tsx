@@ -5,17 +5,14 @@ import { ThemeProvider } from 'styled-components';
 
 import GlobalStyles from './styles';
 import themes from './styles/themes';
-import SearchProvider from './store/SearchProvider';
 import App from './App';
 
 ReactDOM.render(
   <Router>
-    <SearchProvider>
-      <ThemeProvider theme={themes}>
-        <App />
-        <GlobalStyles />
-      </ThemeProvider>
-    </SearchProvider>
+    <ThemeProvider theme={themes}>
+      <App />
+      <GlobalStyles />
+    </ThemeProvider>
   </Router>,
   document.getElementById('root')
 );

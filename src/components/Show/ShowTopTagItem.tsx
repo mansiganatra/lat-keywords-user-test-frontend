@@ -1,40 +1,45 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import searchContext from '../../store/searchContext';
 
 import xImage from '../../lib/x.png';
 import xAltImage from '../../lib/x_alt.png';
+import { SearchHistory } from '../../types';
 
 interface Props {
-  tag: {
-    id: number;
-    term: string | null;
-  };
+  tag: SearchHistory;
   color: string;
+  selectModel: (id: number | null) => void;
+  deleteModel: (modelId: number) => void;
+  selectedId: number | null;
+  keywordModeRef: { current: boolean };
 }
 
-const ShowTopTagItem = ({ tag, color }: Props): JSX.Element => {
-  const { deleteModel, selectedId, selectModel, keywordMode } = useContext(
-    searchContext
-  );
+const ShowTopTagItem = ({
+  tag,
+  color,
+  deleteModel,
+  selectModel,
+  selectedId,
+  keywordModeRef
+}: Props): JSX.Element => {
   const { id, term } = tag;
 
   const handleSelectModel = (id: number): void => {
     let message;
-    keywordMode!.current = true;
+    keywordModeRef.current = true;
 
     if (selectedId === id) {
       message = {
         call: 'setDocumentListParams', // call
         args: [{ q: `` }] // arguments
       };
-      selectModel!(null);
+      selectModel(null);
     } else {
       message = {
         call: 'setDocumentListParams', // call
         args: [{ q: `${term}` }] // arguments
       };
-      selectModel!(id);
+      selectModel(id);
     }
 
     window.parent.postMessage(message, '*');

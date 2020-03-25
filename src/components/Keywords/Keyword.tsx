@@ -1,24 +1,20 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
-// import searchContext from '../../store/searchContext';
+
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+import { SimilarToken } from '../../types';
 
 interface Props {
-  word: {
-    count: number;
-    similarity: number;
-    token: string;
-  };
+  word: SimilarToken;
+  keywordModeRef: { current: boolean };
 }
 
-const Keyword = ({ word }: Props): JSX.Element => {
-  // const { keywordMode } = useContext(searchContext);
-
+const Keyword = ({ word, keywordModeRef }: Props): JSX.Element => {
   const { count, similarity, token } = word;
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    // keywordMode.current = true;
+    // keywordModeRef.current = true;
     const message = {
       call: 'setDocumentListParams', // call
       args: [{ q: `${token}` }] // arguments

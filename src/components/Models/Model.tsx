@@ -1,38 +1,32 @@
 import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
-import searchContext from '../../store/searchContext';
+
 import Keyword from '../Keywords/Keyword';
 import xAlt from '../../lib/x_alt.png';
+import { Model } from '../../types';
 
 interface Props {
-  model: {
-    id: number;
-    foundTokens: string[];
-    similarTokens: {
-      count: number;
-      similarity: number;
-      token: string;
-    }[];
-    sortedSimilarTokensByCount: {
-      count: number;
-      similarity: number;
-      token: string;
-    }[];
-  };
+  model: Model;
   topBarColor: string;
   selected?: boolean;
+  sortBy: string;
+  selectedId: number | null;
+  selectModel: (id: number | null) => void;
+  keywordModeRef: { current: boolean };
+  deleteModel: (modelId: number) => void;
 }
 
-const Model = ({ model, topBarColor }: Props): JSX.Element => {
+const ModelItem = ({
+  model,
+  topBarColor,
+  sortBy,
+  selectedId,
+  selectModel,
+  keywordModeRef,
+  deleteModel
+}: Props): JSX.Element => {
   const { similarTokens, foundTokens, id, sortedSimilarTokensByCount } = model;
   const [hover, setHover] = useState(false);
-  const {
-    selectedId,
-    selectModel,
-    sortBy,
-    keywordMode,
-    deleteModel
-  } = useContext(searchContext);
 
   const handleHoverEnable = (): void => {
     if (!hover) return setHover(true);
@@ -48,7 +42,7 @@ const Model = ({ model, topBarColor }: Props): JSX.Element => {
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement>): void => {
     let message;
-    keywordMode.current = true;
+    keywordModeRef.current = true;
 
     if (selectedId === id) {
       message = {
@@ -96,10 +90,16 @@ const Model = ({ model, topBarColor }: Props): JSX.Element => {
                   count: number;
                   similarity: number;
                   token: string;
-                }) => <Keyword key={id} word={word} />
+                }) => (
+                  <Keyword
+                    key={id}
+                    word={word}
+                    keywordModeRef={keywordModeRef}
+                  />
+                )
               )
             : sortedSimilarTokensByCount.map(word => (
-                <Keyword key={id} word={word} />
+                <Keyword key={id} word={word} keywordModeRef={keywordModeRef} />
               ))}
         </StyledKeywordList>
         {/* <div className="see-more-container">
@@ -182,4 +182,4 @@ const StyledKeywordList = styled.div`
   margin: 0 11px;
 `;
 
-export default Model;
+export default ModelItem;

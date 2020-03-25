@@ -1,35 +1,45 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import searchContext from '../../store/searchContext';
-import Model from '../Models/Model';
-import colorArray from '../../utils/colorArray';
 
-const SearchShowBot = (props: any): JSX.Element => {
-  const { docset } = useContext(searchContext);
-  const { models } = docset!;
+import ModelItem from '../Models/Model';
+import colorArray from '../../utils/colorArray';
+import { Docset, Model } from '../../types';
+
+interface Props {
+  sortBy: string;
+  docset: Docset;
+  selectedId: number | null;
+  selectModel: (id: number | null) => void;
+  keywordModeRef: { current: boolean };
+  deleteModel: (modelId: number) => void;
+}
+
+const SearchShowBot = ({
+  sortBy,
+  docset,
+  selectedId,
+  selectModel,
+  keywordModeRef,
+  deleteModel
+}: Props): JSX.Element => {
+  const { models } = docset;
+
   return (
     <StyledSearchShowBot>
       <StyledModelList>
         {models?.length > 0 &&
-          models.map(
-            (
-              model: {
-                id: number;
-                foundTokens: string[];
-                similarTokens: {
-                  count: number;
-                  similarity: number;
-                  token: string;
-                }[];
-                sortedSimilarTokensByCount: {
-                  count: number;
-                  similarity: number;
-                  token: string;
-                }[];
-              },
-              i: number
-            ) => <Model key={i} model={model} topBarColor={colorArray[i]} />
-          )}
+          models.map((model: Model, i: number) => (
+            <ModelItem
+              key={i}
+              model={model}
+              topBarColor={colorArray[i]}
+              sortBy={sortBy}
+              selectedId={selectedId}
+              selectModel={selectModel}
+              keywordModeRef={keywordModeRef}
+              deleteModel={deleteModel}
+            />
+          ))}
       </StyledModelList>
     </StyledSearchShowBot>
   );

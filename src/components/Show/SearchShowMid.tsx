@@ -1,13 +1,14 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 import searchImg from '../../lib/search.png';
 import arrowDown from '../../lib/arrow-down.png';
-import searchContext from '../../store/searchContext';
 
-const SearchShowMid = (props: any): JSX.Element => {
-  const { setSortBy } = useContext(searchContext);
+interface Props {
+  setSortBy: React.Dispatch<React.SetStateAction<string>>;
+}
 
+const SearchShowMid = ({ setSortBy }: Props): JSX.Element => {
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSortBy!(e.target.value);
   };

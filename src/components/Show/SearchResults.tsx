@@ -1,15 +1,36 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 import SearchShowTop from './SearchShowTop';
 import SearchShowBot from './SearchShowBot';
 import SearchShowMid from './SearchShowMid';
-import searchContext from '../../store/searchContext';
 import LoadComplete from '../../lib/load_complete.png';
+import { Docset } from '../../types';
 
-const SearchTopResult = (props: any): JSX.Element => {
-  const { docset, term } = useContext(searchContext);
-  const { token, similarSuggestionslist } = docset!;
+interface Props {
+  docset: Docset;
+  term: string | null;
+  setDocset: React.Dispatch<React.SetStateAction<Docset>>;
+  setSortBy: React.Dispatch<React.SetStateAction<string>>;
+  selectModel: (id: number | null) => void;
+  deleteModel: (modelId: number) => void;
+  selectedId: number | null;
+  keywordModeRef: { current: boolean };
+  sortBy: string;
+}
+
+const SearchTopResult = ({
+  docset,
+  term,
+  setSortBy,
+  setDocset,
+  selectModel,
+  deleteModel,
+  selectedId,
+  keywordModeRef,
+  sortBy
+}: Props): JSX.Element => {
+  const { token, similarSuggestionslist } = docset;
 
   const handleClick = (word: string): void => {
     const message = {
@@ -35,7 +56,14 @@ const SearchTopResult = (props: any): JSX.Element => {
         </>
       ) : (
         <>
-          <SearchShowTop />
+          <SearchShowTop
+            docset={docset}
+            setDocset={setDocset}
+            selectModel={selectModel}
+            deleteModel={deleteModel}
+            selectedId={selectedId}
+            keywordModeRef={keywordModeRef}
+          />
           {token?.length === 0 && (
             <StyledInvalidSearch>
               <h1>{term}</h1>
@@ -59,13 +87,21 @@ const SearchTopResult = (props: any): JSX.Element => {
               )}
             </StyledInvalidSearch>
           )}
-          <SearchShowMid />
-          <SearchShowBot />
+          <SearchShowMid setSortBy={setSortBy} />
+          <SearchShowBot
+            sortBy={sortBy}
+            docset={docset}
+            selectedId={selectedId}
+            selectModel={selectModel}
+            keywordModeRef={keywordModeRef}
+            deleteModel={deleteModel}
+          />
         </>
       )}
     </>
   );
 };
+//keywordModeRef, deleteModel
 
 const StyledInvalidSearch = styled.section`
   display: flex;

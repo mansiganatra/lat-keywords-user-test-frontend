@@ -1,15 +1,30 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import searchContext from '../../store/searchContext';
+
 import ShowTopTagItem from './ShowTopTagItem';
 import redX from '../../lib/red_x.png';
 import ShowTopHeader from './ShowTopHeader';
 import { colorArray } from '../../utils';
+import { Docset, SearchHistory } from '../../types';
 
-const SearchShowTop = (props: any): JSX.Element => {
+interface Props {
+  docset: Docset;
+  setDocset: React.Dispatch<React.SetStateAction<Docset>>;
+  selectModel: (id: number | null) => void;
+  deleteModel: (modelId: number) => void;
+  selectedId: number | null;
+  keywordModeRef: { current: boolean };
+}
+
+const SearchShowTop = ({
+  docset,
+  setDocset,
+  selectModel,
+  deleteModel,
+  selectedId,
+  keywordModeRef
+}: Props): JSX.Element => {
   const [clear, setClear] = useState<boolean>(false);
-
-  const { clearAll, docset } = useContext(searchContext);
 
   const handleClearConfirm = (): void => {
     const clearData = window.confirm(
@@ -20,7 +35,12 @@ const SearchShowTop = (props: any): JSX.Element => {
 
   useEffect(() => {
     if (clear) {
-      clearAll!();
+      setDocset({
+        models: [],
+        searchHistory: [],
+        token: [],
+        similarSuggestionslist: []
+      });
       const message = {
         call: 'setDocumentListParams', // call
         args: [{ q: '' }] // arguments
@@ -28,7 +48,7 @@ const SearchShowTop = (props: any): JSX.Element => {
       window.parent.postMessage(message, '*'); // postMessage() with message and origin
       setClear(false);
     }
-  }, [clear, setClear, clearAll]);
+  }, [clear, setClear, setDocset]);
   return (
     <StyledSearchShowTop>
       <div className="search-show-header-container">
@@ -44,16 +64,17 @@ const SearchShowTop = (props: any): JSX.Element => {
         </StyledShowTagsTop>
         <StyledTagHistory>
           <StyledHistoryList>
-            {!!docset!.searchHistory?.length &&
-              docset!.searchHistory?.map(
-                (
-                  tag: { id: number; term: string | null },
-                  i: number
-                ): JSX.Element => (
+            {!!docset.searchHistory?.length &&
+              docset.searchHistory?.map(
+                (tag: SearchHistory, i: number): JSX.Element => (
                   <ShowTopTagItem
                     key={tag.id}
                     tag={tag}
                     color={colorArray[i]}
+                    selectModel={selectModel}
+                    deleteModel={deleteModel}
+                    selectedId={selectedId}
+                    keywordModeRef={keywordModeRef}
                   />
                 )
               )}
