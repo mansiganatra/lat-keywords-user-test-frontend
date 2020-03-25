@@ -15,6 +15,8 @@ import {
   SearchHistory,
   Progress
 } from './types';
+import LoadingSuccess from './components/LoadingPage/LoadingSuccess';
+import LoadingPage from './components/LoadingPage/LoadingPage';
 
 const App = (props: any): JSX.Element => {
   const [sortBy, setSortBy] = useState<string>('relevance');

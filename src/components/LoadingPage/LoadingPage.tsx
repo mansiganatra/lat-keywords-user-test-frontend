@@ -12,7 +12,6 @@ interface Props {
 
 const LoadingPage = ({ progress }: Props) => {
   if (!progress) return <h1>Contacting server</h1>;
-
   const { fraction, n_ahead_in_queue, returncode, error, message } = progress;
 
   if (fraction! === 1 && returncode !== 0)
@@ -45,6 +44,9 @@ const LoadingPage = ({ progress }: Props) => {
 
 const LoadingPageContainer = styled.div`
   padding-top: 75px;
+  width: 100%;
+  max-width: 620px;
+  margin: 0 auto;
 `;
 const StyledTopSection = styled.section`
   align-items: center;
@@ -85,6 +87,7 @@ const StyledImgContainer = styled.div`
 
 const StyledLoadingBar = styled.div`
   position: relative;
+  margin: 0 auto;
   margin-top: 35px;
   width: 100%;
   max-width: 620px;
