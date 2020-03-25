@@ -5,11 +5,11 @@ import ShowTopTagItem from './ShowTopTagItem';
 import redX from '../../lib/red_x.png';
 import ShowTopHeader from './ShowTopHeader';
 import { colorArray } from '../../utils';
-import { Docset, SearchHistory } from '../../types';
+import { State, SearchHistory } from '../../types';
 
 interface Props {
-  docset: Docset;
-  setDocset: React.Dispatch<React.SetStateAction<Docset>>;
+  state: State;
+  setState: React.Dispatch<React.SetStateAction<State>>;
   selectModel: (id: number | null) => void;
   deleteModel: (modelId: number) => void;
   selectedId: number | null;
@@ -17,8 +17,8 @@ interface Props {
 }
 
 const SearchShowTop = ({
-  docset,
-  setDocset,
+  state,
+  setState,
   selectModel,
   deleteModel,
   selectedId,
@@ -35,7 +35,7 @@ const SearchShowTop = ({
 
   useEffect(() => {
     if (clear) {
-      setDocset({
+      setState({
         models: [],
         searchHistory: [],
         token: [],
@@ -48,7 +48,7 @@ const SearchShowTop = ({
       window.parent.postMessage(message, '*'); // postMessage() with message and origin
       setClear(false);
     }
-  }, [clear, setClear, setDocset]);
+  }, [clear, setClear, setState]);
   return (
     <StyledSearchShowTop>
       <div className="search-show-header-container">
@@ -64,8 +64,8 @@ const SearchShowTop = ({
         </StyledShowTagsTop>
         <StyledTagHistory>
           <StyledHistoryList>
-            {!!docset.searchHistory?.length &&
-              docset.searchHistory?.map(
+            {!!state.searchHistory?.length &&
+              state.searchHistory?.map(
                 (tag: SearchHistory, i: number): JSX.Element => (
                   <ShowTopTagItem
                     key={tag.id}

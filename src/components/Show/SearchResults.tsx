@@ -5,13 +5,13 @@ import SearchShowTop from './SearchShowTop';
 import SearchShowBot from './SearchShowBot';
 import SearchShowMid from './SearchShowMid';
 import LoadComplete from '../../lib/load_complete.png';
-import { Docset } from '../../types';
+import { State } from '../../types';
 import LoadingSuccess from '../LoadingPage/LoadingSuccess';
 
 interface Props {
-  docset: Docset;
+  state: State;
   term: string | null;
-  setDocset: React.Dispatch<React.SetStateAction<Docset>>;
+  setState: React.Dispatch<React.SetStateAction<State>>;
   setSortBy: React.Dispatch<React.SetStateAction<string>>;
   selectModel: (id: number | null) => void;
   deleteModel: (modelId: number) => void;
@@ -21,17 +21,17 @@ interface Props {
 }
 
 const SearchTopResult = ({
-  docset,
+  state,
   term,
   setSortBy,
-  setDocset,
+  setState,
   selectModel,
   deleteModel,
   selectedId,
   setKeywordRef,
   sortBy
 }: Props): JSX.Element => {
-  const { token, similarSuggestionslist } = docset;
+  const { token, similarSuggestionslist } = state;
 
   const handleClick = (word: string): void => {
     const message = {
@@ -43,13 +43,13 @@ const SearchTopResult = ({
 
   return (
     <>
-      {docset.models.length === 0 ? (
+      {state.models.length === 0 ? (
         <LoadingSuccess />
       ) : (
         <>
           <SearchShowTop
-            docset={docset}
-            setDocset={setDocset}
+            state={state}
+            setState={setState}
             selectModel={selectModel}
             deleteModel={deleteModel}
             selectedId={selectedId}
@@ -81,7 +81,7 @@ const SearchTopResult = ({
           <SearchShowMid setSortBy={setSortBy} />
           <SearchShowBot
             sortBy={sortBy}
-            docset={docset}
+            state={state}
             selectedId={selectedId}
             selectModel={selectModel}
             setKeywordRef={setKeywordRef}

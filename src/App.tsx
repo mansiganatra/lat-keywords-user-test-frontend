@@ -2,12 +2,13 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import styled from 'styled-components';
 import { Route } from 'react-router-dom';
 import oboe from 'oboe';
+import axios from 'axios';
 
 import Metadata from './pages/Metadata/Metadata';
 import Show from './pages/Show/Show';
 import { axiosWithAuth, useQuery } from './utils';
 import {
-  Docset,
+  State,
   GetKeywords,
   Model,
   ModelState,
@@ -22,8 +23,8 @@ const App = (props: any): JSX.Element => {
   const [sortBy, setSortBy] = useState<string>('relevance');
   const [term, setTerm] = useState<string | null>('');
   const [selectedId, setSelectedId] = useState<number | null>(null);
-  const query = useQuery();
-  const [docset, setDocset] = useState<Docset>({
+  const [keywordMode, setKeywordMode] = useState<boolean>(false); // checks if kw is being clicked
+  const [state, setState] = useState<State>({
     models: [],
     searchHistory: [],
     token: [],
@@ -33,16 +34,57 @@ const App = (props: any): JSX.Element => {
     lastProgress: null,
     isSuccess: false
   });
-  const [keywordMode, setKeywordMode] = useState<boolean>(false); // checks if kw is being clicked
 
   const keywordModeRef = useRef<boolean>(keywordMode);
   const modelStateRef = useRef<ModelState>(modelState);
 
+  const query = useQuery();
   const apiToken: string = query.get('apiToken')!;
   const server: string = query.get('server')!;
   const documentSetId: string = query.get('documentSetId')!;
 
+  const fetchStore = async () => {
+    try {
+      const res = await axios.get('http://localhost:9000/api/v1/store/state', {
+        headers: {
+          Authorization: `Basic ${btoa(apiToken + ':x-auth-token')}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (res.data.store) {
+        // store exists
+        setState(res.data);
+        modelStateRef.current = {
+          lastProgress: {
+            n_ahead_in_queue: 0,
+            fraction: 1,
+            message: null,
+            returncode: 0,
+            error: null
+          },
+          isSuccess: true
+        };
+        setModelState({
+          lastProgress: {
+            n_ahead_in_queue: 0,
+            fraction: 1,
+            message: null,
+            returncode: 0,
+            error: null
+          },
+          isSuccess: true
+        });
+      } else {
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
+    fetchStore();
+
     const o = oboe({
       url: 'http://localhost:3335/generate',
       method: 'POST',
@@ -142,7 +184,7 @@ const App = (props: any): JSX.Element => {
   };
 
   const deleteModel = (modelId: number): void => {
-    setDocset(prevDocset => ({
+    setState(prevDocset => ({
       ...prevDocset,
       models: prevDocset.models.filter(model => model.id !== modelId),
       searchHistory: prevDocset.searchHistory.filter(tag => tag.id !== modelId)
@@ -180,7 +222,7 @@ const App = (props: any): JSX.Element => {
         term: token
       };
 
-      setDocset(prevState => ({
+      setState(prevState => ({
         ...prevState,
         models: [...prevState.models.map(model => ({ ...model })), newModel],
         searchHistory: [
@@ -202,9 +244,9 @@ const App = (props: any): JSX.Element => {
       <Route path="/show">
         <Show
           modelState={modelState}
-          docset={docset}
+          state={state}
           term={term}
-          setDocset={setDocset}
+          setState={setState}
           selectModel={selectModel}
           deleteModel={deleteModel}
           selectedId={selectedId}

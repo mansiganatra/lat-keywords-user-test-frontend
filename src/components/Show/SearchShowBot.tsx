@@ -3,11 +3,11 @@ import styled from 'styled-components';
 
 import ModelItem from '../Models/Model';
 import colorArray from '../../utils/colorArray';
-import { Docset, Model } from '../../types';
+import { State, Model } from '../../types';
 
 interface Props {
   sortBy: string;
-  docset: Docset;
+  state: State;
   selectedId: number | null;
   selectModel: (id: number | null) => void;
   setKeywordRef: (bool: boolean) => void;
@@ -16,13 +16,13 @@ interface Props {
 
 const SearchShowBot = ({
   sortBy,
-  docset,
+  state,
   selectedId,
   selectModel,
   setKeywordRef,
   deleteModel
 }: Props): JSX.Element => {
-  const { models } = docset;
+  const { models } = state;
 
   return (
     <StyledSearchShowBot>

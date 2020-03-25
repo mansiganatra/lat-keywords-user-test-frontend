@@ -2,13 +2,13 @@ import React from 'react';
 
 import SearchResults from '../../components/Show/SearchResults';
 import LoadingPage from '../../components/LoadingPage/LoadingPage';
-import { ModelState, Docset } from '../../types';
+import { ModelState, State } from '../../types';
 
 interface Props {
   modelState: ModelState;
-  docset: Docset;
+  state: State;
   term: string | null;
-  setDocset: React.Dispatch<React.SetStateAction<Docset>>;
+  setState: React.Dispatch<React.SetStateAction<State>>;
   setSortBy: React.Dispatch<React.SetStateAction<string>>;
   selectModel: (id: number | null) => void;
   deleteModel: (modelId: number) => void;
@@ -19,9 +19,9 @@ interface Props {
 
 const Show = ({
   modelState,
-  docset,
+  state,
   term,
-  setDocset,
+  setState,
   selectModel,
   deleteModel,
   selectedId,
@@ -33,9 +33,9 @@ const Show = ({
     <section>
       {modelState.isSuccess ? (
         <SearchResults
-          docset={docset}
+          state={state}
           term={term}
-          setDocset={setDocset}
+          setState={setState}
           selectModel={selectModel}
           deleteModel={deleteModel}
           selectedId={selectedId}

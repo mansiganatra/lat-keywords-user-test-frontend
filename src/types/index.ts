@@ -29,7 +29,7 @@ export interface Progress {
 }
 
 /**
- * State of this docset+apiToken on the server, according to the server.
+ * State of this state+apiToken on the server, according to the server.
  *
  * !isSuccess && lastProgress === null => this is "UNKNOWN" (server hasn't responded yet)
  * !isSuccess && lastProgress => server says X (may be an error message!)
@@ -41,7 +41,7 @@ export interface ModelState {
   isSuccess: boolean;
 }
 
-export interface Docset {
+export interface State {
   models: {
     id: number;
     foundTokens: string[];
