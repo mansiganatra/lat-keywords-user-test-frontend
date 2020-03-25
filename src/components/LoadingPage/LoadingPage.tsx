@@ -15,7 +15,8 @@ const LoadingPage = ({ progress }: Props) => {
 
   const { fraction, n_ahead_in_queue, returncode, error, message } = progress;
 
-  if (returncode !== 0) return <h1>Server crashed: {error}</h1>;
+  if (fraction! === 1 && returncode !== 0)
+    return <h1>Server crashed: {error}</h1>;
   if (n_ahead_in_queue > 0)
     return (
       <h1>
@@ -36,7 +37,7 @@ const LoadingPage = ({ progress }: Props) => {
         </StyledImgContainer>
       </StyledTopSection>
       <StyledLoadingBar>
-        <StyledLoadingFiller fraction={0} />
+        <StyledLoadingFiller fraction={fraction} />
       </StyledLoadingBar>
     </LoadingPageContainer>
   );

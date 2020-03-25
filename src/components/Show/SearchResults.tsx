@@ -15,7 +15,7 @@ interface Props {
   selectModel: (id: number | null) => void;
   deleteModel: (modelId: number) => void;
   selectedId: number | null;
-  keywordModeRef: { current: boolean };
+  setKeywordRef: (bool: boolean) => void;
   sortBy: string;
 }
 
@@ -27,7 +27,7 @@ const SearchTopResult = ({
   selectModel,
   deleteModel,
   selectedId,
-  keywordModeRef,
+  setKeywordRef,
   sortBy
 }: Props): JSX.Element => {
   const { token, similarSuggestionslist } = docset;
@@ -62,7 +62,7 @@ const SearchTopResult = ({
             selectModel={selectModel}
             deleteModel={deleteModel}
             selectedId={selectedId}
-            keywordModeRef={keywordModeRef}
+            setKeywordRef={setKeywordRef}
           />
           {token?.length === 0 && (
             <StyledInvalidSearch>
@@ -93,7 +93,7 @@ const SearchTopResult = ({
             docset={docset}
             selectedId={selectedId}
             selectModel={selectModel}
-            keywordModeRef={keywordModeRef}
+            setKeywordRef={setKeywordRef}
             deleteModel={deleteModel}
           />
         </>
@@ -101,7 +101,7 @@ const SearchTopResult = ({
     </>
   );
 };
-//keywordModeRef, deleteModel
+//setKeywordRef, deleteModel
 
 const StyledInvalidSearch = styled.section`
   display: flex;

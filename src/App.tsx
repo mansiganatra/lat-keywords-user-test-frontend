@@ -27,12 +27,14 @@ const App = (props: any): JSX.Element => {
     token: [],
     similarSuggestionslist: []
   });
-
-  const keywordModeRef = useRef<boolean>(false); // checks if kw is being clicked
-  const modelStateRef = useRef<ModelState>({
+  const [modelState, setModelState] = useState<ModelState>({
     lastProgress: null,
     isSuccess: false
   });
+  const [keywordMode, setKeywordMode] = useState<boolean>(false); // checks if kw is being clicked
+
+  const keywordModeRef = useRef<boolean>(keywordMode);
+  const modelStateRef = useRef<ModelState>(modelState);
 
   const apiToken: string = query.get('apiToken')!;
   const server: string = query.get('server')!;
@@ -63,11 +65,8 @@ const App = (props: any): JSX.Element => {
         //      ...
         //   ]
         // Oboe instance will emit each Progress event until there are no more
-        modelStateRef.current = {
-          // state will have stale object
-          lastProgress: progress,
-          isSuccess: false
-        };
+        console.log('runnin!');
+        setModelState({ lastProgress: progress, isSuccess: false });
         return oboe.drop;
       })
       .fail(
@@ -83,17 +82,28 @@ const App = (props: any): JSX.Element => {
           console.error(statusCode, body, error);
         }
       )
-      .done(
-        () =>
-          (modelStateRef.current = {
+      .done(() =>
+        setModelState(prevModelState => {
+          console.log('done! ', prevModelState.lastProgress);
+          modelStateRef.current = {
             // state will have stale object
-            lastProgress: modelStateRef.current.lastProgress,
-            isSuccess: true
-          })
+            lastProgress: prevModelState.lastProgress,
+            isSuccess: prevModelState.lastProgress?.returncode === 0
+          };
+          return {
+            lastProgress: prevModelState.lastProgress,
+            isSuccess: prevModelState.lastProgress?.returncode === 0
+          };
+        })
       );
 
     return () => o.abort();
   }, []);
+
+  const setKeywordRef = (bool: boolean): void => {
+    keywordModeRef.current = bool;
+    setKeywordMode(bool);
+  };
 
   const onNotifyDocumentListParams = useCallback(
     (e: MessageEvent) => {
@@ -111,11 +121,11 @@ const App = (props: any): JSX.Element => {
             apiToken
           });
         } else {
-          keywordModeRef.current = false;
+          setKeywordRef(false);
         }
       }
     },
-    [keywordModeRef, modelStateRef]
+    [keywordModeRef, modelState]
   );
 
   // global search input watcher
@@ -189,14 +199,14 @@ const App = (props: any): JSX.Element => {
     <StyledApp>
       <Route path="/show">
         <Show
-          modelStateRef={modelStateRef}
+          modelState={modelState}
           docset={docset}
           term={term}
           setDocset={setDocset}
           selectModel={selectModel}
           deleteModel={deleteModel}
           selectedId={selectedId}
-          keywordModeRef={keywordModeRef}
+          setKeywordRef={setKeywordRef}
           setSortBy={setSortBy}
           sortBy={sortBy}
         />

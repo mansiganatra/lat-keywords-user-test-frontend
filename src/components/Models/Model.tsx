@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import Keyword from '../Keywords/Keyword';
 import xAlt from '../../lib/x_alt.png';
-import { Model } from '../../types';
+import { Model, SimilarToken } from '../../types';
 
 interface Props {
   model: Model;
@@ -12,7 +12,7 @@ interface Props {
   sortBy: string;
   selectedId: number | null;
   selectModel: (id: number | null) => void;
-  keywordModeRef: { current: boolean };
+  setKeywordRef: (bool: boolean) => void;
   deleteModel: (modelId: number) => void;
 }
 
@@ -22,7 +22,7 @@ const ModelItem = ({
   sortBy,
   selectedId,
   selectModel,
-  keywordModeRef,
+  setKeywordRef,
   deleteModel
 }: Props): JSX.Element => {
   const { similarTokens, foundTokens, id, sortedSimilarTokensByCount } = model;
@@ -42,7 +42,7 @@ const ModelItem = ({
 
   const handleClick = (e: React.MouseEvent<HTMLDivElement>): void => {
     let message;
-    keywordModeRef.current = true;
+    setKeywordRef(true);
 
     if (selectedId === id) {
       message = {
@@ -86,21 +86,15 @@ const ModelItem = ({
         <StyledKeywordList>
           {sortBy === 'relevance'
             ? similarTokens.map(
-                (word: {
-                  count: number;
-                  similarity: number;
-                  token: string;
-                }) => (
-                  <Keyword
-                    key={id}
-                    word={word}
-                    keywordModeRef={keywordModeRef}
-                  />
+                (word: SimilarToken, i: number): JSX.Element => (
+                  <Keyword key={i} word={word} setKeywordRef={setKeywordRef} />
                 )
               )
-            : sortedSimilarTokensByCount.map(word => (
-                <Keyword key={id} word={word} keywordModeRef={keywordModeRef} />
-              ))}
+            : sortedSimilarTokensByCount.map(
+                (word: SimilarToken, i: number): JSX.Element => (
+                  <Keyword key={i} word={word} setKeywordRef={setKeywordRef} />
+                )
+              )}
         </StyledKeywordList>
         {/* <div className="see-more-container">
           <div className="content">

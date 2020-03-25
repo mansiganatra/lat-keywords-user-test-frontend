@@ -5,7 +5,7 @@ import LoadingPage from '../../components/LoadingPage/LoadingPage';
 import { ModelState, Docset } from '../../types';
 
 interface Props {
-  modelStateRef: { current: ModelState };
+  modelState: ModelState;
   docset: Docset;
   term: string | null;
   setDocset: React.Dispatch<React.SetStateAction<Docset>>;
@@ -13,25 +13,25 @@ interface Props {
   selectModel: (id: number | null) => void;
   deleteModel: (modelId: number) => void;
   selectedId: number | null;
-  keywordModeRef: { current: boolean };
+  setKeywordRef: (bool: boolean) => void;
   sortBy: string;
 }
 
 const Show = ({
-  modelStateRef,
+  modelState,
   docset,
   term,
   setDocset,
   selectModel,
   deleteModel,
   selectedId,
-  keywordModeRef,
+  setKeywordRef,
   setSortBy,
   sortBy
 }: Props): JSX.Element => {
   return (
     <section>
-      {modelStateRef.current.isSuccess ? (
+      {modelState.isSuccess ? (
         <SearchResults
           docset={docset}
           term={term}
@@ -39,12 +39,12 @@ const Show = ({
           selectModel={selectModel}
           deleteModel={deleteModel}
           selectedId={selectedId}
-          keywordModeRef={keywordModeRef}
+          setKeywordRef={setKeywordRef}
           setSortBy={setSortBy}
           sortBy={sortBy}
         />
       ) : (
-        <LoadingPage progress={modelStateRef.current.lastProgress} />
+        <LoadingPage progress={modelState.lastProgress} />
       )}
     </section>
   );

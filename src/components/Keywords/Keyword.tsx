@@ -6,15 +6,15 @@ import { SimilarToken } from '../../types';
 
 interface Props {
   word: SimilarToken;
-  keywordModeRef: { current: boolean };
+  setKeywordRef: (bool: boolean) => void;
 }
 
-const Keyword = ({ word, keywordModeRef }: Props): JSX.Element => {
+const Keyword = ({ word, setKeywordRef }: Props): JSX.Element => {
   const { count, similarity, token } = word;
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    // keywordModeRef.current = true;
+    setKeywordRef(true); // COMMENT TO ENABLE NEW SEARCH ON CLICK
     const message = {
       call: 'setDocumentListParams', // call
       args: [{ q: `${token}` }] // arguments

@@ -13,7 +13,7 @@ interface Props {
   selectModel: (id: number | null) => void;
   deleteModel: (modelId: number) => void;
   selectedId: number | null;
-  keywordModeRef: { current: boolean };
+  setKeywordRef: (bool: boolean) => void;
 }
 
 const SearchShowTop = ({
@@ -22,7 +22,7 @@ const SearchShowTop = ({
   selectModel,
   deleteModel,
   selectedId,
-  keywordModeRef
+  setKeywordRef
 }: Props): JSX.Element => {
   const [clear, setClear] = useState<boolean>(false);
 
@@ -74,7 +74,7 @@ const SearchShowTop = ({
                     selectModel={selectModel}
                     deleteModel={deleteModel}
                     selectedId={selectedId}
-                    keywordModeRef={keywordModeRef}
+                    setKeywordRef={setKeywordRef}
                   />
                 )
               )}

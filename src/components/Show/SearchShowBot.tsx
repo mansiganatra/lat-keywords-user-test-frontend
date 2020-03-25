@@ -10,7 +10,7 @@ interface Props {
   docset: Docset;
   selectedId: number | null;
   selectModel: (id: number | null) => void;
-  keywordModeRef: { current: boolean };
+  setKeywordRef: (bool: boolean) => void;
   deleteModel: (modelId: number) => void;
 }
 
@@ -19,7 +19,7 @@ const SearchShowBot = ({
   docset,
   selectedId,
   selectModel,
-  keywordModeRef,
+  setKeywordRef,
   deleteModel
 }: Props): JSX.Element => {
   const { models } = docset;
@@ -30,13 +30,13 @@ const SearchShowBot = ({
         {models?.length > 0 &&
           models.map((model: Model, i: number) => (
             <ModelItem
-              key={i}
+              key={model.id}
               model={model}
               topBarColor={colorArray[i]}
               sortBy={sortBy}
               selectedId={selectedId}
               selectModel={selectModel}
-              keywordModeRef={keywordModeRef}
+              setKeywordRef={setKeywordRef}
               deleteModel={deleteModel}
             />
           ))}

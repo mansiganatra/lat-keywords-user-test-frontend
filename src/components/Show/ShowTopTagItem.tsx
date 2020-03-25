@@ -11,7 +11,7 @@ interface Props {
   selectModel: (id: number | null) => void;
   deleteModel: (modelId: number) => void;
   selectedId: number | null;
-  keywordModeRef: { current: boolean };
+  setKeywordRef: (bool: boolean) => void;
 }
 
 const ShowTopTagItem = ({
@@ -20,13 +20,13 @@ const ShowTopTagItem = ({
   deleteModel,
   selectModel,
   selectedId,
-  keywordModeRef
+  setKeywordRef
 }: Props): JSX.Element => {
   const { id, term } = tag;
 
   const handleSelectModel = (id: number): void => {
     let message;
-    keywordModeRef.current = true;
+    setKeywordRef(true);
 
     if (selectedId === id) {
       message = {
