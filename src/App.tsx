@@ -63,20 +63,11 @@ const App = (props: AppProps): JSX.Element => {
         }
       }
     },
-    [keywordModeRef, progressState]
+    [keywordModeRef, progressStateRef]
   );
 
   // useEffect(() => {
-  // axios.put(
-  //   `${server}/api/v1/store/state`,
-  //   {},
-  //   {
-  //     headers: {
-  //       Authorization: `Basic ${btoa(apiToken + ':x-auth-token')}`,
-  //       'Content-Type': 'application/json'
-  //     }
-  //   }
-  // );
+  //
   // updateStore({
   //   state: {
   //     searchedList: [],
@@ -84,18 +75,20 @@ const App = (props: AppProps): JSX.Element => {
   //     token: [],
   //     similarSuggestionslist: []
   //   },
-  //   token: [],
-  //   progress: {
-  //     lastProgress: {
-  //       n_ahead_in_queue: 0,
-  //       fraction: 1,
-  //       message: null,
-  //       returncode: 0,
-  //       error: null
-  //     },
-  //     isSuccess: true
-  //   }
   // });
+  // }, []);
+
+  // useEffect(() => {
+  //   axios.put(
+  //     `${server}/api/v1/store/state`,
+  //     {},
+  //     {
+  //       headers: {
+  //         Authorization: `Basic ${btoa(apiToken + ':x-auth-token')}`,
+  //         'Content-Type': 'application/json'
+  //       }
+  //     }
+  //   );
   // }, []);
 
   useEffect(() => {
@@ -107,17 +100,13 @@ const App = (props: AppProps): JSX.Element => {
             'Content-Type': 'application/json'
           }
         });
-
         if (typeof res.data === 'object' && res.data.associatorStore) {
           // store exists... update ref and state from overview
+          const progressObject = { lastProgress: null, isSuccess: true };
 
-          if (res.data.associatorStore.progress) {
-            progressStateRef.current = res.data.associatorStore?.progress;
-            setProgressState(res.data.associatorStore?.progress);
-          }
-          if (res.data.associatorStore.state) {
-            setState(res.data.associatorStore?.state);
-          }
+          setState(res.data.associatorStore?.state);
+          setProgressState(progressObject);
+          progressStateRef.current = progressObject;
         } else {
           // store doesnt exist... oboe it to existence
           const url: string = 'https://mansi-nlp.data.caltimes.io';
@@ -152,30 +141,36 @@ const App = (props: AppProps): JSX.Element => {
                 console.error(statusCode, body, error);
               }
             )
-            .done(() => {
+            .done((hello: any) => {
+              console.log('in done');
               setProgressState(prevProgressState => {
-                if (prevProgressState.lastProgress) {
-                  const sucessObj = {
+                let sucessObj: ProgressState;
+                console.log('prevProgressState in setstate');
+                if (prevProgressState.lastProgress !== null) {
+                  sucessObj = {
                     lastProgress: prevProgressState.lastProgress,
                     isSuccess: prevProgressState.lastProgress?.returncode === 0
                   };
-
                   console.log('done! ', prevProgressState.lastProgress);
 
-                  updateStore({
-                    state: {
-                      searchedList: [],
-                      searchHistory: [],
-                      token: [],
-                      similarSuggestionslist: []
-                    },
-                    token: [],
-                    progress: sucessObj
-                  });
+                  updateStore(state);
                   progressStateRef.current = sucessObj;
                   return sucessObj;
                 } else {
-                  return res.data.associatorStore?.progress || progressStateRef;
+                  sucessObj = {
+                    lastProgress: {
+                      n_ahead_in_queue: 0,
+                      fraction: 1,
+                      message: null,
+                      returncode: 0,
+                      error: null
+                    },
+                    isSuccess: true
+                  };
+
+                  updateStore(state);
+                  progressStateRef.current = sucessObj;
+                  return sucessObj;
                 }
               });
             });
@@ -187,7 +182,7 @@ const App = (props: AppProps): JSX.Element => {
 
     initFetchStore();
   }, []);
-
+  console.log('progressState', progressStateRef.current);
   // global search input watcher
   useEffect(() => {
     window.addEventListener('message', onNotifyDocumentListParams);
@@ -214,23 +209,13 @@ const App = (props: AppProps): JSX.Element => {
     }));
   }
 
-  async function updateStore({
-    state,
-    progress,
-    token
-  }: {
-    state?: State | undefined;
-    progress?: ProgressState | undefined;
-    token?: string[] | undefined;
-  }): Promise<void> {
+  async function updateStore(state: State): Promise<void> {
     try {
       await axios.put(
         `${server}/api/v1/store/state`,
         {
           associatorStore: {
-            state,
-            progress,
-            token
+            state
           }
         },
         {
@@ -252,14 +237,9 @@ const App = (props: AppProps): JSX.Element => {
       token: [],
       similarSuggestionslist: []
     };
-    const newObj: { state: State; progress: ProgressState; token: string[] } = {
-      state: newState,
-      progress: { ...progressStateRef.current },
-      token: []
-    };
 
     setState(newState);
-    updateStore(newObj);
+    updateStore(newState);
   }
 
   async function getKeywords({
@@ -278,14 +258,23 @@ const App = (props: AppProps): JSX.Element => {
         }
       });
       const newID: number = Date.now();
-      const sortedSimilarTokensByCount: SimilarToken[] = res.data.similarTokens.sort(
+      const similarTokens: SimilarToken[] = res.data.similarTokens.map(
+        (token: SimilarToken) => ({ ...token })
+      );
+
+      const similarTokensCopy: SimilarToken[] = res.data.similarTokens.map(
+        (token: SimilarToken) => ({ ...token })
+      );
+
+      const sortedSimilarTokensByCount: SimilarToken[] = similarTokensCopy.sort(
         (curItem: SimilarToken, nextItem: SimilarToken): number =>
           nextItem.count - curItem.count
       );
+
       const newModel: SearchedItem = {
         id: newID,
         foundTokens: res.data.foundTokens,
-        similarTokens: res.data.similarTokens,
+        similarTokens,
         sortedSimilarTokensByCount
       };
       const newHistoryItem: SearchHistory = {
@@ -306,16 +295,13 @@ const App = (props: AppProps): JSX.Element => {
           (item: SimilarToken): string => item.token
         );
         const token = res.data.foundTokens;
-        updateStore({
-          state: {
-            searchedList,
-            searchHistory,
-            similarSuggestionslist,
-            token
-          },
-          token,
-          progress: { ...progressStateRef.current }
-        });
+        const newState = {
+          searchedList,
+          searchHistory,
+          similarSuggestionslist,
+          token
+        };
+        updateStore(newState);
 
         return {
           ...prevState,
