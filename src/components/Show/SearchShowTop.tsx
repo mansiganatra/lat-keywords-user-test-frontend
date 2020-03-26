@@ -1,17 +1,32 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import searchContext from '../../store/searchContext';
+
 import ShowTopTagItem from './ShowTopTagItem';
 import redX from '../../lib/red_x.png';
 import ShowTopHeader from './ShowTopHeader';
-import colorArray from '../../utils/colorArray';
+import { colorArray } from '../../utils';
+import { State, SearchHistory } from '../../types';
 
-const SearchShowTop = () => {
-  const [clear, setClear] = useState(false);
+interface Props {
+  state: State;
+  clearSearchAll: () => void;
+  selectModel: (id: number | null) => void;
+  deleteModel: (modelId: number) => void;
+  selectedId: number | null;
+  setKeywordRef: (bool: boolean) => void;
+}
 
-  const { clearAll, docset } = useContext(searchContext);
+const SearchShowTop = ({
+  state,
+  clearSearchAll,
+  selectModel,
+  deleteModel,
+  selectedId,
+  setKeywordRef
+}: Props): JSX.Element => {
+  const [clear, setClear] = useState<boolean>(false);
 
-  const handleClearConfirm = () => {
+  const handleClearConfirm = (): void => {
     const clearData = window.confirm(
       'Do you really want to clear all tags and results?'
     );
@@ -20,7 +35,7 @@ const SearchShowTop = () => {
 
   useEffect(() => {
     if (clear) {
-      clearAll();
+      clearSearchAll();
       const message = {
         call: 'setDocumentListParams', // call
         args: [{ q: '' }] // arguments
@@ -28,7 +43,7 @@ const SearchShowTop = () => {
       window.parent.postMessage(message, '*'); // postMessage() with message and origin
       setClear(false);
     }
-  }, [clear, setClear, clearAll]);
+  }, [clear, setClear, clearSearchAll]);
   return (
     <StyledSearchShowTop>
       <div className="search-show-header-container">
@@ -44,13 +59,20 @@ const SearchShowTop = () => {
         </StyledShowTagsTop>
         <StyledTagHistory>
           <StyledHistoryList>
-            {docset.search_history.map((tag, i) => (
-              <ShowTopTagItem
-                key={tag.tag_id}
-                tag={tag}
-                color={colorArray[i]}
-              />
-            ))}
+            {!!state.searchHistory?.length &&
+              state.searchHistory?.map(
+                (tag: SearchHistory, i: number): JSX.Element => (
+                  <ShowTopTagItem
+                    key={tag.id}
+                    tag={tag}
+                    color={colorArray[i]}
+                    selectModel={selectModel}
+                    deleteModel={deleteModel}
+                    selectedId={selectedId}
+                    setKeywordRef={setKeywordRef}
+                  />
+                )
+              )}
           </StyledHistoryList>
         </StyledTagHistory>
       </StyledSearchShowTagsContainer>

@@ -1,46 +1,64 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
-import searchContext from '../../store/searchContext';
+
 import Keyword from '../Keywords/Keyword';
 import xAlt from '../../lib/x_alt.png';
+import { SearchedItem, SimilarToken } from '../../types';
 
-const Model = ({ model, topBarColor }) => {
-  const { kw, search_term, id, sorted_kw } = model;
-  const [hover, setHover] = useState(false);
+interface Props {
+  searchedItem: SearchedItem;
+  topBarColor: string;
+  selected?: boolean;
+  sortBy: string;
+  selectedId: number | null;
+  selectModel: (id: number | null) => void;
+  setKeywordRef: (bool: boolean) => void;
+  deleteModel: (modelId: number) => void;
+}
+
+const SearchedTerm = ({
+  searchedItem,
+  topBarColor,
+  sortBy,
+  selectedId,
+  selectModel,
+  setKeywordRef,
+  deleteModel
+}: Props): JSX.Element => {
   const {
-    selectedId,
-    selectModel,
-    sortBy,
-    keywordMode,
-    deleteModel
-  } = useContext(searchContext);
+    similarTokens,
+    foundTokens,
+    id,
+    sortedSimilarTokensByCount
+  } = searchedItem;
+  const [hover, setHover] = useState(false);
 
-  const handleHoverEnable = () => {
+  const handleHoverEnable = (): void => {
     if (!hover) return setHover(true);
   };
-  const handleHoverDisable = () => {
+  const handleHoverDisable = (): void => {
     if (hover) return setHover(false);
   };
 
-  const handleDelete = e => {
+  const handleDelete = (e: React.MouseEvent<HTMLButtonElement>): void => {
     e.stopPropagation();
     deleteModel(id);
   };
 
-  const handleClick = () => {
+  const handleClick = (e: React.MouseEvent<HTMLDivElement>): void => {
     let message;
-    keywordMode.current = true;
+    setKeywordRef(true);
 
     if (selectedId === id) {
       message = {
         call: 'setDocumentListParams', // call
         args: [{ q: `` }] // arguments
       };
-      selectModel(null);
+      selectModel!(null);
     } else {
       message = {
         call: 'setDocumentListParams', // call
-        args: [{ q: `${search_term}` }] // arguments
+        args: [{ q: `${foundTokens[0]}` }] // arguments
       };
       selectModel(id);
     }
@@ -58,7 +76,7 @@ const Model = ({ model, topBarColor }) => {
       <StyledModelHeaderContainer>
         <StyledHeaderTop>
           <button>
-            <h1>{search_term}</h1>
+            <h1>{foundTokens[0]}</h1>
           </button>
           <button onClick={handleDelete}>
             <img src={xAlt} alt="" />
@@ -72,8 +90,16 @@ const Model = ({ model, topBarColor }) => {
       <StyledKeywordListContainer>
         <StyledKeywordList>
           {sortBy === 'relevance'
-            ? kw.map((word, i) => <Keyword key={word} word={word} />)
-            : sorted_kw.map((word, i) => <Keyword key={word} word={word} />)}
+            ? similarTokens.map(
+                (word: SimilarToken, i: number): JSX.Element => (
+                  <Keyword key={i} word={word} setKeywordRef={setKeywordRef} />
+                )
+              )
+            : sortedSimilarTokensByCount.map(
+                (word: SimilarToken, i: number): JSX.Element => (
+                  <Keyword key={i} word={word} setKeywordRef={setKeywordRef} />
+                )
+              )}
         </StyledKeywordList>
         {/* <div className="see-more-container">
           <div className="content">
@@ -86,8 +112,12 @@ const Model = ({ model, topBarColor }) => {
   );
 };
 
-const StyledModelContainer = styled.div`
-  border-top: 5px solid ${({ topBarColor }) => topBarColor};
+const StyledModelContainer = styled.div<{
+  selected: boolean;
+  topBarColor: string;
+}>`
+  border-top: 5px solid
+    ${({ topBarColor }: { topBarColor: string }): string => topBarColor};
   margin-right: 27px;
   max-width: 250px;
   min-width: 250px;
@@ -95,7 +125,7 @@ const StyledModelContainer = styled.div`
   box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.08);
   border-top-left-radius: 3px;
   border-top-right-radius: 3px;
-  margin-top: ${({ selected }) => (selected ? '-25px' : 0)};
+  margin-top: ${({ selected }): string => (selected ? '-25px' : '0')};
 `;
 const StyledModelHeaderContainer = styled.header`
   background-color: #ffffff;
@@ -151,4 +181,4 @@ const StyledKeywordList = styled.div`
   margin: 0 11px;
 `;
 
-export default Model;
+export default SearchedTerm;

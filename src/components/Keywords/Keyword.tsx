@@ -1,27 +1,33 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import searchContext from '../../store/searchContext';
+
 import { CopyToClipboard } from 'react-copy-to-clipboard';
+import { SimilarToken } from '../../types';
 
-const Keyword = ({ word }) => {
-  // const { keywordMode } = useContext(searchContext);
+interface Props {
+  word: SimilarToken;
+  setKeywordRef: (bool: boolean) => void;
+}
 
-  const handleClick = e => {
+const Keyword = ({ word, setKeywordRef }: Props): JSX.Element => {
+  const { count, similarity, token } = word;
+
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    // keywordMode.current = true;
+    setKeywordRef(true); // COMMENT TO ENABLE NEW SEARCH ON CLICK
     const message = {
       call: 'setDocumentListParams', // call
-      args: [{ q: `${word[0]}` }] // arguments
+      args: [{ q: `${token}` }] // arguments
     };
     window.parent.postMessage(message, '*');
   };
 
   return (
-    <CopyToClipboard text={word[0]}>
+    <CopyToClipboard text={token}>
       <StyledKWButton onClick={handleClick}>
         <StyledKWItem>
-          <StyledText>{word[0]}</StyledText>
-          <StyledFreq>{word[1]}</StyledFreq>
+          <StyledText>{token}</StyledText>
+          <StyledFreq>{count}</StyledFreq>
         </StyledKWItem>
       </StyledKWButton>
     </CopyToClipboard>

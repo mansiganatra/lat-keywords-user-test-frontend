@@ -1,21 +1,34 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import searchContext from '../../store/searchContext';
 
 import xImage from '../../lib/x.png';
 import xAltImage from '../../lib/x_alt.png';
+import { SearchHistory } from '../../types';
 
-const ShowTopTagItem = ({ tag, color }) => {
-  const { deleteModel, selectedId, selectModel, keywordMode } = useContext(
-    searchContext
-  );
-  const { tag_id, term } = tag;
+interface Props {
+  tag: SearchHistory;
+  color: string;
+  selectModel: (id: number | null) => void;
+  deleteModel: (modelId: number) => void;
+  selectedId: number | null;
+  setKeywordRef: (bool: boolean) => void;
+}
 
-  const handleSelectModel = id => {
+const ShowTopTagItem = ({
+  tag,
+  color,
+  deleteModel,
+  selectModel,
+  selectedId,
+  setKeywordRef
+}: Props): JSX.Element => {
+  const { id, term } = tag;
+
+  const handleSelectModel = (id: number): void => {
     let message;
-    keywordMode.current = true;
+    setKeywordRef(true);
 
-    if (selectedId === tag_id) {
+    if (selectedId === id) {
       message = {
         call: 'setDocumentListParams', // call
         args: [{ q: `` }] // arguments
@@ -32,24 +45,24 @@ const ShowTopTagItem = ({ tag, color }) => {
     window.parent.postMessage(message, '*');
   };
 
-  const handleDelete = e => {
+  const handleDelete = (e: React.MouseEvent<HTMLButtonElement>): void => {
     e.stopPropagation();
-    deleteModel(tag_id);
+    deleteModel!(id);
   };
 
   return (
     <StyledHistoryItem
       color={color}
-      selected={selectedId === tag_id}
-      onClick={() => handleSelectModel(tag_id)}
+      selected={selectedId === id}
+      onClick={() => handleSelectModel(id)}
     >
       <p>{term}</p>
       <StyleRemoveBtn
         color={color}
-        selected={selectedId === tag_id}
+        selected={selectedId === id}
         onClick={handleDelete}
       >
-        {selectedId === tag_id ? (
+        {selectedId === id ? (
           <img src={xAltImage} alt="x" />
         ) : (
           <img src={xImage} alt="x" />
@@ -59,13 +72,14 @@ const ShowTopTagItem = ({ tag, color }) => {
   );
 };
 
-const StyledHistoryItem = styled.div`
+const StyledHistoryItem = styled.div<{ selected: boolean; color: string }>`
   cursor: pointer;
   display: flex;
   justify-content: space-between;
   align-items: center;
 
-  background: ${({ selected, color }) => (selected ? color : '#ffffff')};
+  background: ${({ selected, color }): string =>
+    selected ? color : '#ffffff'};
   border: 1px solid rgba(182, 192, 198, 0.6);
   box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.02);
   border-radius: 3px;
@@ -89,9 +103,10 @@ const StyledHistoryItem = styled.div`
     box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.02);
   }
 `;
-const StyleRemoveBtn = styled.button`
+const StyleRemoveBtn = styled.button<{ selected: boolean; color: string }>`
   border: 0;
-  background-color: ${({ selected, color }) => (selected ? color : '#ffffff')};
+  background-color: ${({ selected, color }): string =>
+    selected ? color : '#ffffff'};
   display: flex;
   justify-content: center;
   align-items: center;

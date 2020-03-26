@@ -3,8 +3,12 @@ import styled from 'styled-components';
 import modalPointer from '../../lib/modalpointer.png';
 import modalX from '../../lib/modal_x.png';
 
-const ToolTipModal = ({ setModalEnabled }) => {
-  const handleClick = () => {
+interface Props {
+  setModalEnabled: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const ToolTipModal = ({ setModalEnabled }: Props): JSX.Element => {
+  const handleClick = (): void => {
     setModalEnabled(false);
   };
   return (

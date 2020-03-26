@@ -4,9 +4,9 @@ import ToolTipModal from '../ToolTipModal/ToolTipModal';
 import moreInfo from '../../lib/more_info.png';
 import moreInfoAlt from '../../lib/more_info_alt.png';
 
-const Header = () => {
-  const [hover, setHover] = useState(false);
-  const [modalEnabled, setModalEnabled] = useState(false);
+const Header = (props: any): JSX.Element => {
+  const [hover, setHover] = useState<boolean>(false);
+  const [modalEnabled, setModalEnabled] = useState<boolean>(false);
 
   return (
     <StyledHeaderMessage>
@@ -14,8 +14,8 @@ const Header = () => {
         <StyledHeader>
           Find words associated with your search term
           <span
-            onMouseEnter={() => setHover(true)}
-            onMouseLeave={() => setHover(false)}
+            onMouseEnter={(): void => setHover(true)}
+            onMouseLeave={(): void => setHover(false)}
             onClick={() => setModalEnabled(!modalEnabled)}
           >
             <img src={hover ? moreInfoAlt : moreInfo} alt="more info" />
