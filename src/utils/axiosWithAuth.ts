@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // const url = 'https://cohorts-api.herokuapp.com/api';
-// const url = 'http://localhost:8000/api';
+// const url = 'http://localhost:3335';
 const url: string = 'https://mansi-nlp.data.caltimes.io';
 
 /**
@@ -15,7 +15,7 @@ function AxiosWithAuth(apiToken: string | null) {
     headers: {
       Authorization: `Basic ${btoa(apiToken + ':x-auth-token')}`
     },
-    baseURL: url
+    baseURL: process.env.REACT_APP_BASE_URL || url
   });
 }
 

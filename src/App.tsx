@@ -43,100 +43,6 @@ const App = (props: AppProps): JSX.Element => {
   const server: string = query.get('server')!;
   const documentSetId: string = query.get('documentSetId')!;
 
-  const initFetchStore = async () => {
-    try {
-      const res = await axios.get(`${server}/api/v1/store/state`, {
-        headers: {
-          Authorization: `Basic ${btoa(apiToken + ':x-auth-token')}`,
-          'Content-Type': 'application/json'
-        }
-      });
-
-      if (res.data.store) {
-        // store exists... update ref and state from overview
-        setState(res.data.store);
-        progressStateRef.current = {
-          lastProgress: {
-            n_ahead_in_queue: 0,
-            fraction: 1,
-            message: null,
-            returncode: 0,
-            error: null
-          },
-          isSuccess: true
-        };
-        setProgressState({
-          lastProgress: {
-            n_ahead_in_queue: 0,
-            fraction: 1,
-            message: null,
-            returncode: 0,
-            error: null
-          },
-          isSuccess: true
-        });
-      } else {
-        // store doesnt exist... oboe it to existence
-
-        return oboe({
-          url: 'https://mansi-nlp.data.caltimes.io/generate',
-          method: 'POST',
-          body: `server=${encodeURIComponent(
-            server
-          )}&documentSetId=${encodeURIComponent(documentSetId)}`,
-          headers: {
-            Authorization: 'Basic ' + btoa(apiToken + ':x-auth-token'),
-            'Content-Type': 'application/x-www-form-urlencoded'
-          }
-        })
-          .node('!.*', (progress: Progress) => {
-            // Oboe instance will emit each Progress event until there are no more
-            console.log('runnin!');
-            setProgressState({ lastProgress: progress, isSuccess: false });
-            return oboe.drop;
-          })
-          .fail(
-            ({
-              statusCode,
-              body,
-              error
-            }: {
-              statusCode: number | null;
-              body: String | null;
-              error: Error | null;
-            }) => {
-              console.error(statusCode, body, error);
-            }
-          )
-          .done(() =>
-            setProgressState(prevModelState => {
-              console.log('done! ', prevModelState.lastProgress);
-              progressStateRef.current = {
-                // state will have stale object
-                lastProgress: prevModelState.lastProgress,
-                isSuccess: prevModelState.lastProgress?.returncode === 0
-              };
-              return {
-                lastProgress: prevModelState.lastProgress,
-                isSuccess: prevModelState.lastProgress?.returncode === 0
-              };
-            })
-          );
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  useEffect(() => {
-    initFetchStore();
-  }, []);
-
-  const setKeywordRef = (bool: boolean): void => {
-    keywordModeRef.current = bool;
-    setKeywordMode(bool);
-  };
-
   const onNotifyDocumentListParams = useCallback(
     (e: MessageEvent) => {
       if (e.data.event === 'notify:documentListParams') {
@@ -160,6 +66,116 @@ const App = (props: AppProps): JSX.Element => {
     [keywordModeRef, progressState]
   );
 
+  // useEffect(() => {
+  //   updateStore({
+  //     state: {
+  //       searchedList: [],
+  //       searchHistory: [],
+  //       token: [],
+  //       similarSuggestionslist: []
+  //     },
+  //     token: [],
+  //     progress: {
+  //       lastProgress: {
+  //         n_ahead_in_queue: 0,
+  //         fraction: 1,
+  //         message: null,
+  //         returncode: 0,
+  //         error: null
+  //       },
+  //       isSuccess: true
+  //     }
+  //   });
+  // }, []);
+
+  useEffect(() => {
+    async function initFetchStore(): Promise<void> {
+      try {
+        const res = await axios.get(`${server}/api/v1/store/state`, {
+          headers: {
+            Authorization: `Basic ${btoa(apiToken + ':x-auth-token')}`,
+            'Content-Type': 'application/json'
+          }
+        });
+
+        if (typeof res.data === 'object' && res.data.associatorStore.progress) {
+          // progress exists... update ref and state from overview
+
+          progressStateRef.current = res.data.associatorStore.progress;
+          setProgressState(res.data.associatorStore.progress);
+          if (res.data.associatorStore.state) {
+            setState(res.data.associatorStore.state);
+          }
+        } else {
+          // store doesnt exist... oboe it to existence
+          const url: string = 'https://mansi-nlp.data.caltimes.io';
+          return oboe({
+            url: `${process.env.REACT_APP_BASE_URL || url}/generate`,
+            method: 'POST',
+            body: `server=${encodeURIComponent(
+              server
+            )}&documentSetId=${encodeURIComponent(documentSetId)}`,
+            headers: {
+              Authorization: 'Basic ' + btoa(apiToken + ':x-auth-token'),
+              'Content-Type': 'application/x-www-form-urlencoded'
+            }
+          })
+            .node('!.*', (progress: Progress) => {
+              // Oboe instance will emit each Progress event until there are no more
+              console.log('runnin!');
+              console.log(progress);
+              setProgressState({ lastProgress: progress, isSuccess: false });
+              return oboe.drop;
+            })
+            .fail(
+              ({
+                statusCode,
+                body,
+                error
+              }: {
+                statusCode: number | null;
+                body: String | null;
+                error: Error | null;
+              }) => {
+                console.error(statusCode, body, error);
+              }
+            )
+            .done(() => {
+              setProgressState(prevProgressState => {
+                if (prevProgressState.lastProgress) {
+                  const sucessObj = {
+                    lastProgress: prevProgressState.lastProgress,
+                    isSuccess: prevProgressState.lastProgress?.returncode === 0
+                  };
+
+                  console.log('done! ', prevProgressState.lastProgress);
+
+                  updateStore({
+                    state: {
+                      searchedList: [],
+                      searchHistory: [],
+                      token: [],
+                      similarSuggestionslist: []
+                    },
+                    token: [],
+                    progress: sucessObj
+                  });
+                  progressStateRef.current = sucessObj;
+                  return sucessObj;
+                } else {
+                  return res.data.associatorStore.progress;
+                }
+              });
+            });
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    initFetchStore();
+  }, []);
+
   // global search input watcher
   useEffect(() => {
     window.addEventListener('message', onNotifyDocumentListParams);
@@ -167,11 +183,16 @@ const App = (props: AppProps): JSX.Element => {
       window.removeEventListener('message', onNotifyDocumentListParams);
   }, []);
 
-  const selectModel = (id: number | null): void => {
+  function selectModel(id: number | null): void {
     setSelectedId(id);
-  };
+  }
 
-  const deleteModel = (modelId: number): void => {
+  function setKeywordRef(bool: boolean): void {
+    keywordModeRef.current = bool;
+    setKeywordMode(bool);
+  }
+
+  function deleteModel(modelId: number): void {
     setState(prevDocset => ({
       ...prevDocset,
       searchedList: prevDocset.searchedList.filter(
@@ -179,13 +200,27 @@ const App = (props: AppProps): JSX.Element => {
       ),
       searchHistory: prevDocset.searchHistory.filter(tag => tag.id !== modelId)
     }));
-  };
+  }
 
-  const updateStore = async (stateObj: State): Promise<void> => {
+  async function updateStore({
+    state,
+    progress,
+    token
+  }: {
+    state?: State | undefined;
+    progress?: ProgressState | undefined;
+    token?: string[] | undefined;
+  }): Promise<void> {
     try {
       await axios.put(
         `${server}/api/v1/store/state`,
-        { store: stateObj },
+        {
+          associatorStore: {
+            state,
+            progress,
+            token
+          }
+        },
         {
           headers: {
             Authorization: `Basic ${btoa(apiToken + ':x-auth-token')}`,
@@ -193,30 +228,34 @@ const App = (props: AppProps): JSX.Element => {
           }
         }
       );
-      console.log('saved to store!');
     } catch (error) {
       console.error(error);
     }
-  };
+  }
 
-  const clearSearchAll = (): void => {
-    const newObj = {
+  function clearSearchAll(): void {
+    const newState: State = {
       searchedList: [],
       searchHistory: [],
       token: [],
       similarSuggestionslist: []
     };
+    const newObj: { state: State; progress: ProgressState; token: string[] } = {
+      state: newState,
+      progress: { ...progressStateRef.current },
+      token: []
+    };
 
-    setState(newObj);
+    setState(newState);
     updateStore(newObj);
-  };
+  }
 
-  const getKeywords = async ({
+  async function getKeywords({
     token,
     server,
     documentSetId,
     apiToken
-  }: GetKeywords): Promise<void> => {
+  }: GetKeywords): Promise<void> {
     setTerm(token);
     try {
       const res = await axiosWithAuth(apiToken).get('/search', {
@@ -255,12 +294,15 @@ const App = (props: AppProps): JSX.Element => {
           (item: SimilarToken): string => item.token
         );
         const token = res.data.foundTokens;
-
         updateStore({
-          searchedList,
-          searchHistory,
-          similarSuggestionslist,
-          token
+          state: {
+            searchedList,
+            searchHistory,
+            similarSuggestionslist,
+            token
+          },
+          token,
+          progress: { ...progressStateRef.current }
         });
 
         return {
@@ -274,7 +316,7 @@ const App = (props: AppProps): JSX.Element => {
     } catch (error) {
       console.error(error);
     }
-  };
+  }
 
   return (
     <StyledApp>
