@@ -12,6 +12,7 @@ interface Props {
   selectModel: (id: number | null) => void;
   setKeywordRef: (bool: boolean) => void;
   deleteModel: (modelId: number) => void;
+  term: string | null;
 }
 
 const SearchShowBot = ({
@@ -20,7 +21,8 @@ const SearchShowBot = ({
   selectedId,
   selectModel,
   setKeywordRef,
-  deleteModel
+  deleteModel,
+  term
 }: Props): JSX.Element => {
   const { searchedList } = state;
 
@@ -38,6 +40,7 @@ const SearchShowBot = ({
               selectModel={selectModel}
               setKeywordRef={setKeywordRef}
               deleteModel={deleteModel}
+              term={state.searchHistory[i].term}
             />
           ))}
       </StyledModelList>

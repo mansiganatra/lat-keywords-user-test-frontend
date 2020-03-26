@@ -67,25 +67,35 @@ const App = (props: AppProps): JSX.Element => {
   );
 
   // useEffect(() => {
-  //   updateStore({
-  //     state: {
-  //       searchedList: [],
-  //       searchHistory: [],
-  //       token: [],
-  //       similarSuggestionslist: []
-  //     },
-  //     token: [],
-  //     progress: {
-  //       lastProgress: {
-  //         n_ahead_in_queue: 0,
-  //         fraction: 1,
-  //         message: null,
-  //         returncode: 0,
-  //         error: null
-  //       },
-  //       isSuccess: true
+  // axios.put(
+  //   `${server}/api/v1/store/state`,
+  //   {},
+  //   {
+  //     headers: {
+  //       Authorization: `Basic ${btoa(apiToken + ':x-auth-token')}`,
+  //       'Content-Type': 'application/json'
   //     }
-  //   });
+  //   }
+  // );
+  // updateStore({
+  //   state: {
+  //     searchedList: [],
+  //     searchHistory: [],
+  //     token: [],
+  //     similarSuggestionslist: []
+  //   },
+  //   token: [],
+  //   progress: {
+  //     lastProgress: {
+  //       n_ahead_in_queue: 0,
+  //       fraction: 1,
+  //       message: null,
+  //       returncode: 0,
+  //       error: null
+  //     },
+  //     isSuccess: true
+  //   }
+  // });
   // }, []);
 
   useEffect(() => {
@@ -98,13 +108,15 @@ const App = (props: AppProps): JSX.Element => {
           }
         });
 
-        if (typeof res.data === 'object' && res.data.associatorStore.progress) {
-          // progress exists... update ref and state from overview
+        if (typeof res.data === 'object' && res.data.associatorStore) {
+          // store exists... update ref and state from overview
 
-          progressStateRef.current = res.data.associatorStore.progress;
-          setProgressState(res.data.associatorStore.progress);
+          if (res.data.associatorStore.progress) {
+            progressStateRef.current = res.data.associatorStore?.progress;
+            setProgressState(res.data.associatorStore?.progress);
+          }
           if (res.data.associatorStore.state) {
-            setState(res.data.associatorStore.state);
+            setState(res.data.associatorStore?.state);
           }
         } else {
           // store doesnt exist... oboe it to existence
@@ -163,7 +175,7 @@ const App = (props: AppProps): JSX.Element => {
                   progressStateRef.current = sucessObj;
                   return sucessObj;
                 } else {
-                  return res.data.associatorStore.progress;
+                  return res.data.associatorStore?.progress || progressStateRef;
                 }
               });
             });

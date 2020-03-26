@@ -85,6 +85,7 @@ const SearchTopResult = ({
             selectModel={selectModel}
             setKeywordRef={setKeywordRef}
             deleteModel={deleteModel}
+            term={term}
           />
         </>
       )}

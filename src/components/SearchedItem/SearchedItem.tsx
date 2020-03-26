@@ -14,6 +14,7 @@ interface Props {
   selectModel: (id: number | null) => void;
   setKeywordRef: (bool: boolean) => void;
   deleteModel: (modelId: number) => void;
+  term: string | null;
 }
 
 const SearchedTerm = ({
@@ -23,7 +24,8 @@ const SearchedTerm = ({
   selectedId,
   selectModel,
   setKeywordRef,
-  deleteModel
+  deleteModel,
+  term
 }: Props): JSX.Element => {
   const {
     similarTokens,
@@ -76,7 +78,7 @@ const SearchedTerm = ({
       <StyledModelHeaderContainer>
         <StyledHeaderTop>
           <button>
-            <h1>{foundTokens[0]}</h1>
+            <h1>{term}</h1>
           </button>
           <button onClick={handleDelete}>
             <img src={xAlt} alt="" />
