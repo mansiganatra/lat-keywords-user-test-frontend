@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import styled from 'styled-components';
+
 import { Route } from 'react-router-dom';
 import oboe from 'oboe';
 import axios from 'axios';
@@ -16,10 +17,12 @@ import {
   SearchHistory,
   Progress
 } from './types';
+import Snackbar from './components/Snackbar/Snackbar';
 
 interface AppProps {}
 
 const App = (props: AppProps): JSX.Element => {
+  const [notificationIsOpen, setNotificationIsOpen] = useState<boolean>(false);
   const [sortBy, setSortBy] = useState<string>('relevance');
   const [term, setTerm] = useState<string | null>('');
   const [selectedId, setSelectedId] = useState<number | null>(null);
@@ -164,42 +167,39 @@ const App = (props: AppProps): JSX.Element => {
   }, []);
 
   // get suggestion list
-  useEffect(() => {
-    const getSuggestion = async (): Promise<void> => {
-      try {
-        const tokenRes = await axios.get(
-          `${server}/api/v1/document-sets/${documentSetId}/documents`,
-          {
-            headers: {
-              Authorization: `Basic ${btoa(apiToken + ':x-auth-token')}`,
-              'Content-Type': 'application/json'
-            }
-          }
-        );
-        const suggestionRes = await axiosWithAuth(apiToken).get('/search', {
-          params: {
-            term: tokenRes.data.items[0].title
-              .replace(/[^\w\s]/gi, ' ')
-              .split(' ')
-              .slice(0, 2)
-              .join(' ')
-              .trim(),
-            server,
-            documentSetId
-          }
-        });
-        setSuggestedList(
-          suggestionRes.data.similarTokens
-            .slice(0, 4)
-            .map((item: any) => item.token)
-        );
-      } catch (error) {
-        console.error(error);
-      }
-    };
 
-    getSuggestion();
-  }, []);
+  const getSuggestion = async (): Promise<void> => {
+    try {
+      const tokenRes = await axios.get(
+        `${server}/api/v1/document-sets/${documentSetId}/documents`,
+        {
+          headers: {
+            Authorization: `Basic ${btoa(apiToken + ':x-auth-token')}`,
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+      const suggestionRes = await axiosWithAuth(apiToken).get('/search', {
+        params: {
+          term: tokenRes.data.items[0].title
+            .replace(/[^\w\s]/gi, ' ')
+            .split(' ')
+            .slice(0, 2)
+            .join(' ')
+            .trim(),
+          server,
+          documentSetId
+        }
+      });
+      setSuggestedList(
+        suggestionRes.data.similarTokens
+          .slice(0, 4)
+          .map((item: any) => item.token)
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   function selectModel(id: number | null): void {
     setSelectedId(id);
@@ -268,61 +268,84 @@ const App = (props: AppProps): JSX.Element => {
           documentSetId
         }
       });
-      const newID: number = Date.now();
-      const similarTokens: SimilarToken[] = res.data.similarTokens.map(
-        (token: SimilarToken) => ({ ...token })
-      );
 
-      const similarTokensCopy: SimilarToken[] = res.data.similarTokens.map(
-        (token: SimilarToken) => ({ ...token })
-      );
+      if (res.data.foundTokens.length === 0) {
+        console.log('hello');
+        console.log(res.data.similarTokens);
+        console.log(res.data.foundTokens);
 
-      const sortedSimilarTokensByCount: SimilarToken[] = similarTokensCopy.sort(
-        (curItem: SimilarToken, nextItem: SimilarToken): number =>
-          nextItem.count - curItem.count
-      );
+        setNotificationIsOpen(true);
 
-      const newModel: SearchedItem = {
-        id: newID,
-        foundTokens: res.data.foundTokens,
-        similarTokens,
-        sortedSimilarTokensByCount
-      };
-      const newHistoryItem: SearchHistory = {
-        id: newID,
-        term: token
-      };
-
-      setState(prevState => {
-        const searchedList = [
-          ...prevState.searchedList.map(searchedItem => ({ ...searchedItem })),
-          newModel
-        ];
-        const searchHistory = [
-          ...prevState.searchHistory.map(hist => ({ ...hist })),
-          newHistoryItem
-        ];
-        const similarSuggestionslist = res.data.similarTokens.map(
-          (item: SimilarToken): string => item.token
+        setState(prevState => {
+          const newState: State = {
+            ...prevState,
+            similarSuggestionslist: res.data.similarTokens.map(
+              (item: any) => item.token
+            ),
+            token: res.data.foundTokens
+          };
+          updateStore(newState);
+          return newState;
+        });
+      } else {
+        const newID: number = Date.now();
+        const similarTokens: SimilarToken[] = res.data.similarTokens.map(
+          (token: SimilarToken) => ({ ...token })
         );
-        const token = res.data.foundTokens;
 
-        const newState = {
-          searchedList,
-          searchHistory,
-          similarSuggestionslist,
-          token
-        };
-        updateStore(newState);
+        const similarTokensCopy: SimilarToken[] = res.data.similarTokens.map(
+          (token: SimilarToken) => ({ ...token })
+        );
 
-        return {
-          ...prevState,
-          searchedList,
-          searchHistory,
-          token,
-          similarSuggestionslist
+        const sortedSimilarTokensByCount: SimilarToken[] = similarTokensCopy.sort(
+          (curItem: SimilarToken, nextItem: SimilarToken): number =>
+            nextItem.count - curItem.count
+        );
+
+        const newModel: SearchedItem = {
+          id: newID,
+          foundTokens: res.data.foundTokens,
+          similarTokens,
+          sortedSimilarTokensByCount
         };
-      });
+        const newHistoryItem: SearchHistory = {
+          id: newID,
+          term: token
+        };
+
+        setState(prevState => {
+          const searchedList = [
+            ...prevState.searchedList.map(searchedItem => ({
+              ...searchedItem
+            })),
+            newModel
+          ];
+          const searchHistory = [
+            ...prevState.searchHistory.map(hist => ({ ...hist })),
+            newHistoryItem
+          ];
+          const similarSuggestionslist = res.data.similarTokens.map(
+            (item: SimilarToken): string => item.token
+          );
+          const token = res.data.foundTokens;
+
+          const newState = {
+            searchedList,
+            searchHistory,
+            similarSuggestionslist,
+            token
+          };
+          updateStore(newState);
+
+          return {
+            ...prevState,
+            searchedList,
+            searchHistory,
+            token,
+            similarSuggestionslist
+          };
+        });
+      }
     } catch (error) {
       console.error(error);
     }
@@ -330,6 +353,13 @@ const App = (props: AppProps): JSX.Element => {
 
   return (
     <StyledApp>
+      <Snackbar
+        term={term}
+        state={state}
+        notificationIsOpen={notificationIsOpen}
+        setNotificationIsOpen={setNotificationIsOpen}
+      />
+
       <Route path="/show">
         <Show
           progressState={progressState}

@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
+import { StylesProvider } from '@material-ui/core/styles';
 import { ThemeProvider } from 'styled-components';
 
 import GlobalStyles from './styles';
@@ -9,10 +10,12 @@ import App from './App';
 
 ReactDOM.render(
   <Router>
-    <ThemeProvider theme={themes}>
-      <App />
-      <GlobalStyles />
-    </ThemeProvider>
+    <StylesProvider injectFirst>
+      <ThemeProvider theme={themes}>
+        <App />
+        <GlobalStyles />
+      </ThemeProvider>
+    </StylesProvider>
   </Router>,
   document.getElementById('root')
 );

@@ -57,29 +57,6 @@ const SearchTopResult = ({
             setKeywordRef={setKeywordRef}
             suggestedList={suggestedList}
           />
-          {token?.length === 0 && (
-            <StyledInvalidSearch>
-              <h1>{term}</h1>
-              {similarSuggestionslist?.length > 0 && (
-                <div className="right">
-                  <p>But These Related Words Do. Try Searching:</p>
-                  <div className="list">
-                    {similarSuggestionslist.map(
-                      (item: string): JSX.Element => (
-                        <p
-                          key={item}
-                          onClick={() => handleClick(item)}
-                          style={{ cursor: 'pointer' }}
-                        >
-                          {item}
-                        </p>
-                      )
-                    )}
-                  </div>
-                </div>
-              )}
-            </StyledInvalidSearch>
-          )}
           <SearchShowMid setSortBy={setSortBy} />
           <SearchShowBot
             sortBy={sortBy}

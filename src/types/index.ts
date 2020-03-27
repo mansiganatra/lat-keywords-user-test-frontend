@@ -42,24 +42,8 @@ export interface ProgressState {
 }
 
 export interface State {
-  searchedList: {
-    id: number;
-    foundTokens: string[];
-    similarTokens: {
-      count: number;
-      similarity: number;
-      token: string;
-    }[];
-    sortedSimilarTokensByCount: {
-      count: number;
-      similarity: number;
-      token: string;
-    }[];
-  }[];
-  searchHistory: {
-    id: number;
-    term: string | null;
-  }[];
+  searchedList: SearchedItem[];
+  searchHistory: SearchHistory[];
   token: string[];
   similarSuggestionslist: string[];
 }
