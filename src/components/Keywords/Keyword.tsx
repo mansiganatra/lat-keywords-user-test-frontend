@@ -14,7 +14,7 @@ const Keyword = ({ word, setKeywordRef }: Props): JSX.Element => {
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    setKeywordRef(true); // COMMENT TO ENABLE NEW SEARCH ON CLICK
+    // setKeywordRef(true); // COMMENT TO ENABLE NEW SEARCH ON CLICK
     const message = {
       call: 'setDocumentListParams', // call
       args: [{ q: `${token}` }] // arguments

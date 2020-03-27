@@ -182,7 +182,7 @@ const App = (props: AppProps): JSX.Element => {
       const suggestionRes = await axiosWithAuth(apiToken).get('/search', {
         params: {
           term: tokenRes.data.items[0].title
-            .replace(/[^\w\s]/gi, ' ')
+            .replace(/[\W_]/gi, ' ')
             .split(' ')
             .slice(0, 2)
             .join(' ')
