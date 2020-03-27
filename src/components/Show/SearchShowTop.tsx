@@ -90,7 +90,7 @@ const StyledSearchShowTop = styled.section`
   align-items: center;
   padding-left: 50px;
   background-color: #1e2229;
-  padding-bottom: 10px;
+  padding-bottom: 5px;
 
   @media (max-width: 700px) {
     padding-left: 15px;
@@ -104,14 +104,15 @@ const StyledShowTagsTop = styled.div`
   display: flex;
   position: absolute;
   justify-content: space-between;
-  background-color: white;
+  background-color: #1e2229;
   width: 100%;
   align-items: center;
   margin-bottom: 10px;
-  padding: 0 25px;
   padding-top: 20px;
   padding-bottom: 10px;
   z-index: 2;
+  width: 313px;
+  padding-left: 23px;
 
   h2 {
     font-family: 'Helvetica Neue';
@@ -121,7 +122,7 @@ const StyledShowTagsTop = styled.div`
     line-height: 15px;
     text-transform: capitalize;
 
-    color: #172d3b;
+    color: #ffffff;
   }
 `;
 const StyledClearHistoryBtn = styled.button`
@@ -132,6 +133,7 @@ const StyledClearHistoryBtn = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: #1e2229;
 
   p {
     font-family: Helvetica Neue;
@@ -152,11 +154,11 @@ const StyledClearHistoryBtn = styled.button`
 const StyledSearchShowTagsContainer = styled.div`
   position: relative;
   width: 350px;
-  min-height: 120px;
-  max-height: 120px;
-  background: #ffffff;
-  border: 2px solid #f1f2f3;
-  border-radius: 5px;
+  min-height: 130px;
+  max-height: 130px;
+  background-color: #1e2229;
+  border: 2px solid rgba(160, 175, 199, 0.2);
+  border-radius: 6px;
   margin-right: 34px;
 
   @media (max-width: 700px) {
@@ -171,7 +173,7 @@ const StyledHistoryList = styled.div`
 `;
 const StyledTagHistory = styled.div`
   display: flex;
-  width: 105%;
+  width: 100%;
   justify-content: space-between;
   height: 100%;
   max-height: 105px;
@@ -179,6 +181,32 @@ const StyledTagHistory = styled.div`
   padding-left: 25px;
   padding-top: 51px;
   min-height: 72px;
+  padding-bottom: 72px;
+
+  /* Width */
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #3e5372;
+    border-radius: 12px;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #fafafb;
+    border-radius: 6px;
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #ffffff;
+  }
 `;
 
+// #888 handle
+// #f1f1f1 track
+// #555
 export default SearchShowTop;
