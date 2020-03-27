@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import fileDownload from 'js-file-download';
 import axios from 'axios';
 import searchContext from './searchContext';
@@ -66,14 +66,15 @@ const SearchProvider = ({ children }) => {
     fileDownload(JSON.stringify(docset), 'keyword_list.json');
   };
 
-  // mueller m-overview
+  // mueller m-overview/ov-old-associator-mueller
   // Gen-Hur gen-hur
   // coronavirus associator-covid19
   // Banks-Daxzaneous-Forger kimbreall
+  // juul ov-old-associator-juul
   const getKeywords = async ({
     searchedGlobalTerm,
     size = 8,
-    docset = 'coronavirus'
+    docset = 'juul'
   }) => {
     const url = 'https://cohorts-api.herokuapp.com/api';
 
@@ -142,23 +143,21 @@ const SearchProvider = ({ children }) => {
     localStorage.setItem('docset', JSON.stringify(docset));
   }, [docset, setDocset]);
 
+  const fn = useCallback(e => {
+    if (e.data.event === 'notify:documentListParams') {
+      const searchedGlobalTerm = e.data.args[0].q;
+      if (keywordMode.current === false && term !== undefined) {
+        getKeywords({ searchedGlobalTerm });
+      } else {
+        keywordMode.current = false;
+      }
+    }
+  });
   // global search input watcher
   useEffect(() => {
-    window.addEventListener('message', e => {
-      if (e.data.event === 'notify:documentListParams') {
-        const searchedGlobalTerm = e.data.args[0].q;
-        if (keywordMode.current === false && term !== undefined) {
-          getKeywords({ searchedGlobalTerm });
-        } else {
-          keywordMode.current = false;
-        }
-      }
-    });
-    return () =>
-      window.removeEventListener('message', () => {
-        console.log('done');
-      });
-  }, [term]);
+    window.addEventListener('message', fn);
+    return () => window.removeEventListener('message', fn);
+  }, [keywordMode]);
 
   const selectModel = id => {
     setSelectedId(id);
