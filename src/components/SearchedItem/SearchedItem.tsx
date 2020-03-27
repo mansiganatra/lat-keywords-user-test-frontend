@@ -92,16 +92,28 @@ const SearchedTerm = ({
       <StyledKeywordListContainer>
         <StyledKeywordList>
           {sortBy === 'relevance'
-            ? similarTokens.map(
-                (word: SimilarToken, i: number): JSX.Element => (
-                  <Keyword key={i} word={word} setKeywordRef={setKeywordRef} />
+            ? similarTokens
+                .slice(0, 15)
+                .map(
+                  (word: SimilarToken, i: number): JSX.Element => (
+                    <Keyword
+                      key={i}
+                      word={word}
+                      setKeywordRef={setKeywordRef}
+                    />
+                  )
                 )
-              )
-            : sortedSimilarTokensByCount.map(
-                (word: SimilarToken, i: number): JSX.Element => (
-                  <Keyword key={i} word={word} setKeywordRef={setKeywordRef} />
-                )
-              )}
+            : sortedSimilarTokensByCount
+                .slice(0, 15)
+                .map(
+                  (word: SimilarToken, i: number): JSX.Element => (
+                    <Keyword
+                      key={i}
+                      word={word}
+                      setKeywordRef={setKeywordRef}
+                    />
+                  )
+                )}
         </StyledKeywordList>
         {/* <div className="see-more-container">
           <div className="content">

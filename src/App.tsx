@@ -56,6 +56,7 @@ const App = (props: AppProps): JSX.Element => {
           token !== undefined &&
           progressStateRef.current.isSuccess
         ) {
+          console.log('LDF:JL:DSF', e.data.args[0].q);
           getKeywords({
             token,
             server,
@@ -162,6 +163,8 @@ const App = (props: AppProps): JSX.Element => {
   // global search input watcher
   useEffect(() => {
     window.addEventListener('message', onNotifyDocumentListParams);
+
+    window.parent.postMessage({ call: 'notifyDocumentListParams' }, '*');
     return () =>
       window.removeEventListener('message', onNotifyDocumentListParams);
   }, []);
