@@ -14,6 +14,7 @@ interface Props {
   deleteModel: (modelId: number) => void;
   selectedId: number | null;
   setKeywordRef: (bool: boolean) => void;
+  suggestedList: string[];
 }
 
 const SearchShowTop = ({
@@ -22,7 +23,8 @@ const SearchShowTop = ({
   selectModel,
   deleteModel,
   selectedId,
-  setKeywordRef
+  setKeywordRef,
+  suggestedList
 }: Props): JSX.Element => {
   const [clear, setClear] = useState<boolean>(false);
 
@@ -47,7 +49,7 @@ const SearchShowTop = ({
   return (
     <StyledSearchShowTop>
       <div className="search-show-header-container">
-        <ShowTopHeader />
+        <ShowTopHeader suggestedList={suggestedList} />
       </div>
       <StyledSearchShowTagsContainer>
         <StyledShowTagsTop>
@@ -87,9 +89,8 @@ const StyledSearchShowTop = styled.section`
   justify-content: space-between;
   align-items: center;
   padding-left: 50px;
-  background-color: #fff;
+  background-color: #1e2229;
   padding-bottom: 10px;
-  border-bottom: 1px solid rgba(182, 192, 198, 0.5);
 
   @media (max-width: 700px) {
     padding-left: 15px;

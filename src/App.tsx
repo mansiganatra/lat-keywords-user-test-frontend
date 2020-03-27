@@ -16,7 +16,6 @@ import {
   SearchHistory,
   Progress
 } from './types';
-import LoadingSuccess from './components/LoadingPage/LoadingSuccess';
 
 interface AppProps {}
 
@@ -25,6 +24,7 @@ const App = (props: AppProps): JSX.Element => {
   const [term, setTerm] = useState<string | null>('');
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [keywordMode, setKeywordMode] = useState<boolean>(false); // checks if kw is being clicked
+  const [suggestedList, setSuggestedList] = useState<string[]>([]);
   const [state, setState] = useState<State>({
     searchedList: [],
     searchHistory: [],
@@ -99,8 +99,6 @@ const App = (props: AppProps): JSX.Element => {
           })
             .node('!.*', (progress: Progress) => {
               // Oboe instance will emit each Progress event until there are no more
-              console.log('runnin!');
-              console.log(progress);
               setProgressState({ lastProgress: progress, isSuccess: false });
               return oboe.drop;
             })
@@ -117,20 +115,19 @@ const App = (props: AppProps): JSX.Element => {
                 console.error(statusCode, body, error);
               }
             )
-            .done((hello: any) => {
-              console.log('in done');
+            .done(() => {
               setProgressState(prevProgressState => {
                 let sucessObj: ProgressState;
-                console.log('prevProgressState in setstate');
+                updateStore(state);
+
                 if (prevProgressState.lastProgress !== null) {
                   sucessObj = {
                     lastProgress: prevProgressState.lastProgress,
                     isSuccess: prevProgressState.lastProgress?.returncode === 0
                   };
-                  console.log('done! ', prevProgressState.lastProgress);
 
-                  updateStore(state);
                   progressStateRef.current = sucessObj;
+
                   return sucessObj;
                 } else {
                   sucessObj = {
@@ -144,8 +141,8 @@ const App = (props: AppProps): JSX.Element => {
                     isSuccess: true
                   };
 
-                  updateStore(state);
                   progressStateRef.current = sucessObj;
+
                   return sucessObj;
                 }
               });
@@ -158,12 +155,50 @@ const App = (props: AppProps): JSX.Element => {
 
     initFetchStore();
   }, []);
-  console.log('progressState', progressStateRef.current);
+
   // global search input watcher
   useEffect(() => {
     window.addEventListener('message', onNotifyDocumentListParams);
     return () =>
       window.removeEventListener('message', onNotifyDocumentListParams);
+  }, []);
+
+  // get suggestion list
+  useEffect(() => {
+    const getSuggestion = async (): Promise<void> => {
+      try {
+        const tokenRes = await axios.get(
+          `${server}/api/v1/document-sets/${documentSetId}/documents`,
+          {
+            headers: {
+              Authorization: `Basic ${btoa(apiToken + ':x-auth-token')}`,
+              'Content-Type': 'application/json'
+            }
+          }
+        );
+        const suggestionRes = await axiosWithAuth(apiToken).get('/search', {
+          params: {
+            term: tokenRes.data.items[0].title
+              .replace(/[^\w\s]/gi, ' ')
+              .split(' ')
+              .slice(0, 2)
+              .join(' ')
+              .trim(),
+            server,
+            documentSetId
+          }
+        });
+        setSuggestedList(
+          suggestionRes.data.similarTokens
+            .slice(0, 4)
+            .map((item: any) => item.token)
+        );
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    getSuggestion();
   }, []);
 
   function selectModel(id: number | null): void {
@@ -271,6 +306,7 @@ const App = (props: AppProps): JSX.Element => {
           (item: SimilarToken): string => item.token
         );
         const token = res.data.foundTokens;
+
         const newState = {
           searchedList,
           searchHistory,
@@ -294,7 +330,6 @@ const App = (props: AppProps): JSX.Element => {
 
   return (
     <StyledApp>
-      <Route path="/" component={LoadingSuccess} />
       <Route path="/show">
         <Show
           progressState={progressState}
@@ -307,6 +342,7 @@ const App = (props: AppProps): JSX.Element => {
           setKeywordRef={setKeywordRef}
           setSortBy={setSortBy}
           sortBy={sortBy}
+          suggestedList={suggestedList}
         />
       </Route>
       <Route path="/metadata">

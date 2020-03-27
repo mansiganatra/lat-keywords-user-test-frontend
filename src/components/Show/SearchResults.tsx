@@ -17,6 +17,7 @@ interface Props {
   selectedId: number | null;
   setKeywordRef: (bool: boolean) => void;
   sortBy: string;
+  suggestedList: string[];
 }
 
 const SearchTopResult = ({
@@ -28,7 +29,8 @@ const SearchTopResult = ({
   deleteModel,
   selectedId,
   setKeywordRef,
-  sortBy
+  sortBy,
+  suggestedList
 }: Props): JSX.Element => {
   const { token, similarSuggestionslist } = state;
 
@@ -53,6 +55,7 @@ const SearchTopResult = ({
             deleteModel={deleteModel}
             selectedId={selectedId}
             setKeywordRef={setKeywordRef}
+            suggestedList={suggestedList}
           />
           {token?.length === 0 && (
             <StyledInvalidSearch>

@@ -1,37 +1,106 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+
 import ToolTipModal from '../ToolTipModal/ToolTipModal';
 import moreInfo from '../../lib/images/more_info.png';
 import moreInfoAlt from '../../lib/images/more_info_alt.png';
 
-const Header = (props: any): JSX.Element => {
+interface HeaderProps {
+  suggestedList: string[];
+}
+
+const Header = ({ suggestedList }: HeaderProps): JSX.Element => {
   const [hover, setHover] = useState<boolean>(false);
   const [modalEnabled, setModalEnabled] = useState<boolean>(false);
-
+  console.log(suggestedList);
   return (
     <StyledHeaderMessage>
       <StyledHeaderMain>
         <StyledHeader>
           Find words associated with your search term
-          <span
-            onMouseEnter={(): void => setHover(true)}
-            onMouseLeave={(): void => setHover(false)}
-            onClick={() => setModalEnabled(!modalEnabled)}
-          >
-            <img src={hover ? moreInfoAlt : moreInfo} alt="more info" />
+          <span onClick={() => setModalEnabled(!modalEnabled)}>
+            <img src={moreInfo} alt="more info" />
           </span>
           {modalEnabled && <ToolTipModal setModalEnabled={setModalEnabled} />}
         </StyledHeader>
       </StyledHeaderMain>
       <StyledSubHeader>
         <StyledSubHeaderText>
-          Try searching keywords related to each project like “politics” or
-          “money.”
+          Try searching keywords related to each project like:
         </StyledSubHeaderText>
+        <StyledSuggestionListContainer>
+          {suggestedList.map((suggested: any) => {
+            const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+              e.stopPropagation();
+              // setKeywordRef(true); // COMMENT TO ENABLE NEW SEARCH ON CLICK
+              const message = {
+                call: 'setDocumentListParams', // call
+                args: [{ q: `${suggested}` }] // arguments
+              };
+              window.parent.postMessage(message, '*');
+            };
+
+            return (
+              <StyledSuggestionItem key={suggested} onClick={handleClick}>
+                <p>{suggested}</p>
+              </StyledSuggestionItem>
+            );
+          })}
+        </StyledSuggestionListContainer>
       </StyledSubHeader>
     </StyledHeaderMessage>
   );
 };
+
+const StyledSuggestionListContainer = styled.div`
+  display: flex;
+  margin-top: 10px;
+`;
+const StyledSuggestionItem = styled.button`
+  border: 1px solid #a0afc7;
+  box-sizing: border-box;
+  border-radius: 18px;
+  padding: 5px 10px;
+  margin-right: 10px;
+  background-color: #1e2229;
+  width: 100%;
+
+  justify-content: center;
+  align-items: center;
+
+  &:hover {
+    background-color: #a0afc7;
+
+    p {
+      color: #1e2229;
+    }
+  }
+
+  &:active {
+    background-color: #1e2229;
+    p {
+      color: #a0afc7;
+    }
+  }
+
+  p {
+    font-family: 'Archivo';
+    font-style: normal;
+    font-weight: bold;
+    font-size: 10px;
+    line-height: 125%;
+    /* or 12px */
+
+    text-align: center;
+    text-transform: capitalize;
+
+    color: #a0afc7;
+
+    width: 100%;
+    min-width: 45px;
+  }
+`;
+
 const StyledHeaderMessage = styled.header`
   padding-bottom: 40px;
   padding-top: 35px;
@@ -49,15 +118,16 @@ const StyledHeaderMain = styled.div`
   max-width: 404px;
 `;
 const StyledHeader = styled.h1`
-  position: relative;
-  font-family: 'Helvetica Neue';
+  font-family: 'Archivo';
   font-style: normal;
   font-weight: bold;
-  font-size: 18px;
-  line-height: 22px;
-  text-transform: capitalize;
+  font-size: 17px;
+  line-height: 18px;
+  /* or 106% */
 
-  color: #172d3b;
+  /* #FAFAFB */
+
+  color: #fafafb;
 
   width: 100%;
   max-width: 243px;
@@ -77,16 +147,14 @@ const StyledSubHeader = styled.div`
   max-width: 275px;
 `;
 const StyledSubHeaderText = styled.p`
-  font-family: 'Helvetica Neue';
+  font-family: 'Archivo';
   font-style: normal;
-  font-weight: 500;
-  font-size: 10px;
-  line-height: 13px;
-  /* or 130% */
+  font-weight: bold;
+  font-size: 11px;
+  line-height: 125%;
+  /* or 14px */
 
-  letter-spacing: 0.03em;
-
-  color: rgba(23, 45, 59, 0.35);
+  color: rgba(160, 175, 199, 0.6);
 `;
 
 export default Header;

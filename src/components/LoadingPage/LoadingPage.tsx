@@ -23,11 +23,11 @@ interface Props {
 }
 
 const LoadingPage = ({ progress }: Props) => {
-  if (!progress) return <h1>Contacting server</h1>;
+  if (!progress) return <div></div>;
 
   const { fraction, n_ahead_in_queue, returncode, error, message } = progress;
 
-  if (fraction! === 1 && returncode !== 0) {
+  if (error && fraction! === 1 && returncode !== 0) {
     return (
       <ErrorContainer>
         <ErrorImageContainer>

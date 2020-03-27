@@ -1,5 +1,4 @@
 import React from 'react';
-import styled from 'styled-components';
 
 import searchBarSuccess from '../../lib/images/searchbar-success.png';
 import loadingPointer from '../../lib/images/loading-pointer.png';
@@ -8,12 +7,12 @@ import {
   StyledImgComplete,
   StyledSubHeader,
   StyledLoadHeader,
-  StyledHeader
+  StyledLoadingHeader
 } from './LoadingStyles';
 
 interface LoadingSuccessProps {}
 
-const LoadingSuccess = (props: LoadingSuccessProps): JSX.Element => {
+const LoadingSuccess = ({}: LoadingSuccessProps): JSX.Element => {
   return (
     <StyledLoadComplete>
       <StyledImgComplete>
@@ -23,7 +22,7 @@ const LoadingSuccess = (props: LoadingSuccessProps): JSX.Element => {
         <img src={searchBarSuccess} alt="" />
       </StyledImgComplete>
       <StyledLoadHeader>
-        <StyledHeader>Start Searching Now</StyledHeader>
+        <StyledLoadingHeader>Start Searching Now</StyledLoadingHeader>
         <StyledSubHeader>
           Your document set is now ready to be sorted by the Associator. Enter
           your search term into the search bar above to see a list of related

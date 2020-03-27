@@ -19,7 +19,16 @@ export const StyledTopSection = styled.section`
 export const StyledImgContainer = styled.div`
   padding-right: 60px;
 `;
+export const StyledHeader = styled.h1`
+  font-family: 'Helvetica Neue';
+  font-style: normal;
+  font-weight: bold;
+  font-size: 21px;
+  line-height: 26px;
+  text-transform: capitalize;
 
+  color: #172d3b;
+`;
 export const StyledLoadingBar = styled.div`
   position: relative;
   margin: 0 auto;
@@ -81,7 +90,7 @@ export const StyledLoadComplete = styled.div`
   padding-bottom: 25px;
   background-color: #3e5372;
 `;
-export const StyledHeader = styled.h1`
+export const StyledLoadingHeader = styled(StyledHeader)`
   font-family: 'Helvetica Neue';
   font-style: normal;
   font-weight: bold;
