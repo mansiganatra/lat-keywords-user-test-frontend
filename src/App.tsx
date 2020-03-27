@@ -373,6 +373,7 @@ const App = (props: AppProps): JSX.Element => {
           setSortBy={setSortBy}
           sortBy={sortBy}
           suggestedList={suggestedList}
+          getSuggestion={getSuggestion}
         />
       </Route>
       <Route path="/metadata">

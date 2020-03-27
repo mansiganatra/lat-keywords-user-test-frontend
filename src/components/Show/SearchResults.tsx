@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 
 import SearchShowTop from './SearchShowTop';
@@ -18,6 +18,7 @@ interface Props {
   setKeywordRef: (bool: boolean) => void;
   sortBy: string;
   suggestedList: string[];
+  getSuggestion: () => Promise<void>;
 }
 
 const SearchTopResult = ({
@@ -30,17 +31,12 @@ const SearchTopResult = ({
   selectedId,
   setKeywordRef,
   sortBy,
-  suggestedList
+  suggestedList,
+  getSuggestion
 }: Props): JSX.Element => {
-  const { token, similarSuggestionslist } = state;
-
-  const handleClick = (word: string): void => {
-    const message = {
-      call: 'setDocumentListParams', // call
-      args: [{ q: word }] // arguments
-    };
-    window.parent.postMessage(message, '*');
-  };
+  useEffect(() => {
+    getSuggestion();
+  }, []);
 
   return (
     <>

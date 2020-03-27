@@ -16,6 +16,7 @@ interface Props {
   setKeywordRef: (bool: boolean) => void;
   sortBy: string;
   suggestedList: string[];
+  getSuggestion: () => Promise<void>;
 }
 
 const Show = ({
@@ -29,7 +30,8 @@ const Show = ({
   setKeywordRef,
   setSortBy,
   sortBy,
-  suggestedList
+  suggestedList,
+  getSuggestion
 }: Props): JSX.Element => {
   return (
     <section>
@@ -45,6 +47,7 @@ const Show = ({
           setSortBy={setSortBy}
           sortBy={sortBy}
           suggestedList={suggestedList}
+          getSuggestion={getSuggestion}
         />
       ) : (
         <LoadingPage progress={progressState.lastProgress} />
