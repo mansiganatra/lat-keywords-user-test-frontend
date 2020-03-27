@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import modalPointer from '../../lib/modalpointer.png';
-import modalX from '../../lib/modal_x.png';
+import modalPointer from '../../lib/images/modalpointer.png';
+import modalX from '../../lib/images/modal_x.png';
 
 interface Props {
   setModalEnabled: React.Dispatch<React.SetStateAction<boolean>>;

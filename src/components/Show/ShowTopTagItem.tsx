@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import xImage from '../../lib/x.png';
-import xAltImage from '../../lib/x_alt.png';
+import xImage from '../../lib/images/x.png';
+import xAltImage from '../../lib/images/x_alt.png';
 import { SearchHistory } from '../../types';
 
 interface Props {

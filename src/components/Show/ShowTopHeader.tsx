@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import ToolTipModal from '../ToolTipModal/ToolTipModal';
-import moreInfo from '../../lib/more_info.png';
-import moreInfoAlt from '../../lib/more_info_alt.png';
+import moreInfo from '../../lib/images/more_info.png';
+import moreInfoAlt from '../../lib/images/more_info_alt.png';
 
 const Header = (props: any): JSX.Element => {
   const [hover, setHover] = useState<boolean>(false);

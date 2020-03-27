@@ -16,6 +16,7 @@ import {
   SearchHistory,
   Progress
 } from './types';
+import LoadingSuccess from './components/LoadingPage/LoadingSuccess';
 
 interface AppProps {}
 
@@ -65,31 +66,6 @@ const App = (props: AppProps): JSX.Element => {
     },
     [keywordModeRef, progressStateRef]
   );
-
-  // useEffect(() => {
-  //
-  // updateStore({
-  //   state: {
-  //     searchedList: [],
-  //     searchHistory: [],
-  //     token: [],
-  //     similarSuggestionslist: []
-  //   },
-  // });
-  // }, []);
-
-  // useEffect(() => {
-  //   axios.put(
-  //     `${server}/api/v1/store/state`,
-  //     {},
-  //     {
-  //       headers: {
-  //         Authorization: `Basic ${btoa(apiToken + ':x-auth-token')}`,
-  //         'Content-Type': 'application/json'
-  //       }
-  //     }
-  //   );
-  // }, []);
 
   useEffect(() => {
     async function initFetchStore(): Promise<void> {
@@ -209,7 +185,7 @@ const App = (props: AppProps): JSX.Element => {
     }));
   }
 
-  async function updateStore(state: State): Promise<void> {
+  async function updateStore(state: State | undefined): Promise<void> {
     try {
       await axios.put(
         `${server}/api/v1/store/state`,
@@ -318,6 +294,7 @@ const App = (props: AppProps): JSX.Element => {
 
   return (
     <StyledApp>
+      <Route path="/" component={LoadingSuccess} />
       <Route path="/show">
         <Show
           progressState={progressState}

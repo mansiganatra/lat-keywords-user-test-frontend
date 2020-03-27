@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 import ShowTopTagItem from './ShowTopTagItem';
-import redX from '../../lib/red_x.png';
+import redX from '../../lib/images/red_x.png';
 import ShowTopHeader from './ShowTopHeader';
 import { colorArray } from '../../utils';
 import { State, SearchHistory } from '../../types';
