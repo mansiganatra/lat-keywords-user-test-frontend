@@ -10,9 +10,7 @@ import {
   StyledLoadingHeader
 } from './LoadingStyles';
 
-interface LoadingSuccessProps {}
-
-const LoadingSuccess = (props: LoadingSuccessProps): JSX.Element => {
+const LoadingSuccess = (): JSX.Element => {
   return (
     <StyledLoadComplete>
       <StyledImgComplete>
