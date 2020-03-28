@@ -25,7 +25,7 @@ remote: You can generate one at https://gitlab.com/profile/personal_access_token
 ```
 
 ```bash
-$ git clone git clone https://<username>:<deploy_token>@gitlab.com/caltimes/creative-technologist-interns/lat-keywords-user-test-frontend.git
+$ git clone https://<username>:<deploy_token>@gitlab.com/caltimes/creative-technologist-interns/lat-keywords-user-test-frontend.git
 $ cd lat-keywords-user-test-frontend
 $ npm install
 $ npm start
