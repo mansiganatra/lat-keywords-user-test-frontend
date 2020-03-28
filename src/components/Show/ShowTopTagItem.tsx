@@ -24,11 +24,11 @@ const ShowTopTagItem = ({
 }: Props): JSX.Element => {
   const { id, term } = tag;
 
-  const handleSelectModel = (id: number): void => {
+  const handleSelectModel = (tagId: number): void => {
     let message;
     setKeywordRef(true);
 
-    if (selectedId === id) {
+    if (selectedId === tagId) {
       message = {
         call: 'setDocumentListParams', // call
         args: [{ q: `` }] // arguments
@@ -39,15 +39,18 @@ const ShowTopTagItem = ({
         call: 'setDocumentListParams', // call
         args: [{ q: `${term}` }] // arguments
       };
-      selectModel(id);
+      selectModel(tagId);
     }
 
     window.parent.postMessage(message, '*');
   };
 
-  const handleDelete = (e: React.MouseEvent<HTMLButtonElement>): void => {
+  const handleDelete = (
+    e: React.MouseEvent<HTMLButtonElement>,
+    tagId: number
+  ): void => {
     e.stopPropagation();
-    deleteModel!(id);
+    deleteModel!(tagId);
   };
 
   return (
@@ -60,7 +63,7 @@ const ShowTopTagItem = ({
       <StyleRemoveBtn
         color={color}
         selected={selectedId === id}
-        onClick={handleDelete}
+        onClick={e => handleDelete(e, id)}
       >
         {selectedId === id ? (
           <img src={xAltImage} alt="x" />

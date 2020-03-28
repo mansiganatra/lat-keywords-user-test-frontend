@@ -24,5 +24,9 @@ module.exports = {
     sourceType: 'module'
   },
   plugins: ['react'],
-  rules: { 'react/prop-types': 'off', 'react-hooks/exhaustive-deps': 'warn' }
+  rules: {
+    'react/prop-types': 'off',
+    'react-hooks/exhaustive-deps': 'warn',
+    'react-hooks/rules-of-hooks': 'error'
+  }
 };

@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import styled from 'styled-components';
 
 import SearchShowTop from './SearchShowTop';
 import SearchShowBot from './SearchShowBot';
@@ -36,6 +35,7 @@ const SearchTopResult = ({
 }: Props): JSX.Element => {
   useEffect(() => {
     getSuggestion();
+    // eslint-disable-next-line
   }, []);
 
   return (
@@ -68,76 +68,5 @@ const SearchTopResult = ({
     </>
   );
 };
-//setKeywordRef, deleteModel
-
-const StyledInvalidSearch = styled.section`
-  display: flex;
-  justify-content: space-around;
-  background: #172d3b;
-  border-radius: 3px;
-  padding: 40px;
-
-  @media (max-width: 700px) {
-    flex-direction: column;
-    padding: 40px 0;
-    justify-content: center;
-    align-items: center;
-  }
-
-  h1 {
-    font-family: 'Helvetica Neue', sans-serif;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 2.4rem;
-    line-height: 31px;
-    /* or 130% */
-
-    text-transform: capitalize;
-
-    color: #ffffff;
-    width: 100%;
-    max-width: 311px;
-
-    @media (max-width: 700px) {
-      text-align: center;
-      padding-bottom: 15px;
-    }
-  }
-
-  .right {
-    p {
-      font-family: 'Helvetica Neue', sans-serif;
-      font-style: normal;
-      font-weight: bold;
-      font-size: 1.2rem;
-      line-height: 16px;
-      /* or 130% */
-
-      text-transform: capitalize;
-
-      color: #ffffff;
-    }
-
-    .list {
-      padding-top: 10px;
-      display: flex;
-      justify-content: space-evenly;
-      margin-left: -25px;
-      flex-wrap: wrap;
-      p {
-        font-family: 'Helvetica Neue', sans-serif;
-        font-style: normal;
-        font-weight: normal;
-        font-size: 1.2rem;
-        line-height: 16px;
-        /* or 137% */
-
-        text-transform: capitalize;
-
-        color: #ffffff;
-      }
-    }
-  }
-`;
 
 export default SearchTopResult;

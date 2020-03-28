@@ -7,9 +7,9 @@ interface Props {
   word: SimilarToken;
   setKeywordRef: (bool: boolean) => void;
 }
-
-const Keyword = ({ word, setKeywordRef }: Props): JSX.Element => {
-  const { count, similarity, token } = word;
+//setKeywordRef
+const Keyword = ({ word }: Props): JSX.Element => {
+  const { count, token } = word; //similarity
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();

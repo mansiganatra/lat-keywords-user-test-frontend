@@ -38,11 +38,13 @@ const SearchShowTop = ({
   useEffect(() => {
     if (clear) {
       clearSearchAll();
+
+      // delete text content inside global overview search bar
       const message = {
-        call: 'setDocumentListParams', // call
-        args: [{ q: '' }] // arguments
+        call: 'setDocumentListParams',
+        args: [{ q: '' }]
       };
-      window.parent.postMessage(message, '*'); // postMessage() with message and origin
+      window.parent.postMessage(message, '*');
       setClear(false);
     }
   }, [clear, setClear, clearSearchAll]);

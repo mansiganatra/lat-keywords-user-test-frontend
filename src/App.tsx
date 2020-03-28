@@ -47,137 +47,7 @@ const App = (props: AppProps): JSX.Element => {
   const server: string = query.get('server')!;
   const documentSetId: string = query.get('documentSetId')!;
 
-  const onNotifyDocumentListParams = useCallback(
-    (e: MessageEvent) => {
-      if (e.data.event === 'notify:documentListParams') {
-        const token: string = e.data.args[0].q;
-        if (
-          keywordModeRef.current === false &&
-          token !== undefined &&
-          progressStateRef.current.isSuccess
-        ) {
-          console.log('LDF:JL:DSF', e.data.args[0].q);
-          getKeywords({
-            token,
-            server,
-            documentSetId,
-            apiToken
-          });
-        } else {
-          setKeywordRef(false);
-        }
-      }
-    },
-    [keywordModeRef, progressStateRef]
-  );
-
-  useEffect(() => {
-    async function initFetchStore(): Promise<void> {
-      try {
-        // stream the json, will get 200 or 204
-        const progressObject = await oboeJS();
-        setProgressState(progressObject);
-        progressStateRef.current = progressObject;
-
-        // check to see if store exists
-        const res = await axios.get(`${server}/api/v1/store/state`, {
-          headers: {
-            Authorization: `Basic ${btoa(apiToken + ':x-auth-token')}`,
-            'Content-Type': 'application/json'
-          }
-        });
-
-        if (typeof res.data === 'object' && res.data.associatorStore) {
-          setState(res.data.associatorStore?.state);
-        } else {
-          // set default initial values to state
-          setState(state);
-          updateStore(state);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    }
-
-    initFetchStore();
-  }, []);
-
-  // global search input watcher
-  useEffect(() => {
-    window.addEventListener('message', onNotifyDocumentListParams);
-
-    window.parent.postMessage({ call: 'notifyDocumentListParams' }, '*');
-    return () =>
-      window.removeEventListener('message', onNotifyDocumentListParams);
-  }, []);
-
-  function oboeJS(): Promise<ProgressState> {
-    return new Promise((resolve, reject) => {
-      const url: string = 'https://mansi-nlp.data.caltimes.io';
-      oboe({
-        url: `${process.env.REACT_APP_BASE_URL || url}/generate`,
-        method: 'POST',
-        body: `server=${encodeURIComponent(
-          server
-        )}&documentSetId=${encodeURIComponent(documentSetId)}`,
-        headers: {
-          Authorization: 'Basic ' + btoa(apiToken + ':x-auth-token'),
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }
-      })
-        .node('!.*', (progress: Progress) => {
-          // Oboe instance will emit each Progress event until there are no more
-          setProgressState({ lastProgress: progress, isSuccess: false });
-          return oboe.drop;
-        })
-        .fail(
-          ({
-            statusCode,
-            body,
-            error
-          }: {
-            statusCode: number | null;
-            body: String | null;
-            error: Error | null;
-          }) => {
-            reject(`${statusCode} ${body} ${error}`);
-          }
-        )
-        .done(() => {
-          setProgressState(prevProgressState => {
-            let sucessObj: ProgressState;
-
-            if (prevProgressState.lastProgress !== null) {
-              sucessObj = {
-                lastProgress: prevProgressState.lastProgress,
-                isSuccess: prevProgressState.lastProgress?.returncode === 0
-              };
-
-              progressStateRef.current = sucessObj;
-              resolve(sucessObj);
-              return sucessObj;
-            } else {
-              sucessObj = {
-                lastProgress: {
-                  n_ahead_in_queue: 0,
-                  fraction: 1,
-                  message: null,
-                  returncode: 0,
-                  error: null
-                },
-                isSuccess: true
-              };
-
-              progressStateRef.current = sucessObj;
-              resolve(sucessObj);
-              return sucessObj;
-            }
-          });
-        });
-    });
-  }
   // get suggestion list
-
   const getSuggestion = async (): Promise<void> => {
     try {
       const tokenRes = await axios.get(
@@ -211,16 +81,16 @@ const App = (props: AppProps): JSX.Element => {
     }
   };
 
-  function selectModel(id: number | null): void {
+  const selectModel = (id: number | null): void => {
     setSelectedId(id);
-  }
+  };
 
-  function setKeywordRef(bool: boolean): void {
+  const setKeywordRef = (bool: boolean): void => {
     keywordModeRef.current = bool;
     setKeywordMode(bool);
-  }
+  };
 
-  function deleteModel(modelId: number): void {
+  const deleteModel = (modelId: number): void => {
     setState(prevDocset => ({
       ...prevDocset,
       searchedList: prevDocset.searchedList.filter(
@@ -228,30 +98,33 @@ const App = (props: AppProps): JSX.Element => {
       ),
       searchHistory: prevDocset.searchHistory.filter(tag => tag.id !== modelId)
     }));
-  }
+  };
 
-  async function updateStore(state: State | undefined): Promise<void> {
-    try {
-      await axios.put(
-        `${server}/api/v1/store/state`,
-        {
-          associatorStore: {
-            state
+  const updateStore = useCallback(
+    async (state: State | undefined): Promise<void> => {
+      try {
+        await axios.put(
+          `${server}/api/v1/store/state`,
+          {
+            associatorStore: {
+              state
+            }
+          },
+          {
+            headers: {
+              Authorization: `Basic ${btoa(apiToken + ':x-auth-token')}`,
+              'Content-Type': 'application/json'
+            }
           }
-        },
-        {
-          headers: {
-            Authorization: `Basic ${btoa(apiToken + ':x-auth-token')}`,
-            'Content-Type': 'application/json'
-          }
-        }
-      );
-    } catch (error) {
-      console.error(error);
-    }
-  }
+        );
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    [apiToken, server]
+  );
 
-  function clearSearchAll(): void {
+  const clearSearchAll = (): void => {
     const newState: State = {
       searchedList: [],
       searchHistory: [],
@@ -261,105 +134,245 @@ const App = (props: AppProps): JSX.Element => {
 
     setState(newState);
     updateStore(newState);
-  }
+  };
 
-  async function getKeywords({
-    token,
-    server,
-    documentSetId,
-    apiToken
-  }: GetKeywords): Promise<void> {
-    setTerm(token);
-    try {
-      const res = await axiosWithAuth(apiToken).get('/search', {
-        params: {
-          term: token,
-          server,
-          documentSetId
-        }
-      });
-
-      if (res.data.foundTokens.length === 0) {
-        console.log('hello');
-        console.log(res.data.similarTokens);
-        console.log(res.data.foundTokens);
-
-        setNotificationIsOpen(true);
-
-        setState(prevState => {
-          const newState: State = {
-            ...prevState,
-            similarSuggestionslist: res.data.similarTokens.map(
-              (item: any) => item.token
-            ),
-            token: res.data.foundTokens
-          };
-          updateStore(newState);
-          return newState;
+  const getKeywords = useCallback(
+    async ({
+      token,
+      server,
+      documentSetId,
+      apiToken
+    }: GetKeywords): Promise<void> => {
+      setTerm(token);
+      try {
+        const res = await axiosWithAuth(apiToken).get('/search', {
+          params: {
+            term: token,
+            server,
+            documentSetId
+          }
         });
-      } else {
-        const newID: number = Date.now();
-        const similarTokens: SimilarToken[] = res.data.similarTokens.map(
-          (token: SimilarToken) => ({ ...token })
-        );
 
-        const similarTokensCopy: SimilarToken[] = res.data.similarTokens.map(
-          (token: SimilarToken) => ({ ...token })
-        );
+        if (res.data.foundTokens.length === 0) {
+          setNotificationIsOpen(true);
 
-        const sortedSimilarTokensByCount: SimilarToken[] = similarTokensCopy.sort(
-          (curItem: SimilarToken, nextItem: SimilarToken): number =>
-            nextItem.count - curItem.count
-        );
-
-        const newModel: SearchedItem = {
-          id: newID,
-          foundTokens: res.data.foundTokens,
-          similarTokens,
-          sortedSimilarTokensByCount
-        };
-        const newHistoryItem: SearchHistory = {
-          id: newID,
-          term: token
-        };
-
-        setState(prevState => {
-          const searchedList = [
-            ...prevState.searchedList.map(searchedItem => ({
-              ...searchedItem
-            })),
-            newModel
-          ];
-          const searchHistory = [
-            ...prevState.searchHistory.map(hist => ({ ...hist })),
-            newHistoryItem
-          ];
-          const similarSuggestionslist = res.data.similarTokens.map(
-            (item: SimilarToken): string => item.token
+          setState(prevState => {
+            const newState: State = {
+              ...prevState,
+              similarSuggestionslist: res.data.similarTokens.map(
+                (item: any) => item.token
+              ),
+              token: res.data.foundTokens
+            };
+            updateStore(newState);
+            return newState;
+          });
+        } else {
+          const newID: number = Date.now();
+          const similarTokens: SimilarToken[] = res.data.similarTokens.map(
+            (token: SimilarToken) => ({ ...token })
           );
-          const token = res.data.foundTokens;
 
-          const newState = {
-            searchedList,
-            searchHistory,
-            similarSuggestionslist,
-            token
-          };
-          updateStore(newState);
+          const similarTokensCopy: SimilarToken[] = res.data.similarTokens.map(
+            (token: SimilarToken) => ({ ...token })
+          );
 
-          return {
-            ...prevState,
-            searchedList,
-            searchHistory,
-            token,
-            similarSuggestionslist
+          const sortedSimilarTokensByCount: SimilarToken[] = similarTokensCopy.sort(
+            (curItem: SimilarToken, nextItem: SimilarToken): number =>
+              nextItem.count - curItem.count
+          );
+
+          const newModel: SearchedItem = {
+            id: newID,
+            foundTokens: res.data.foundTokens,
+            similarTokens,
+            sortedSimilarTokensByCount
           };
-        });
+          const newHistoryItem: SearchHistory = {
+            id: newID,
+            term: token
+          };
+
+          setState(prevState => {
+            const searchedList = [
+              ...prevState.searchedList.map(searchedItem => ({
+                ...searchedItem
+              })),
+              newModel
+            ];
+            const searchHistory = [
+              ...prevState.searchHistory.map(hist => ({ ...hist })),
+              newHistoryItem
+            ];
+            const similarSuggestionslist = res.data.similarTokens.map(
+              (item: SimilarToken): string => item.token
+            );
+            const token = res.data.foundTokens;
+
+            const newState = {
+              searchedList,
+              searchHistory,
+              similarSuggestionslist,
+              token
+            };
+            updateStore(newState);
+
+            return {
+              ...prevState,
+              searchedList,
+              searchHistory,
+              token,
+              similarSuggestionslist
+            };
+          });
+        }
+      } catch (error) {
+        console.error(error);
       }
-    } catch (error) {
-      console.error(error);
+    },
+    [updateStore]
+  );
+
+  // useEffect(() => {
+  //   keywordModeRef.current = keywordMode;
+  //   progressStateRef.current = progressState;
+  // }, [keywordMode, setKeywordMode, progressState, setProgressState]);
+
+  // json stream and initial logic
+  useEffect(() => {
+    async function initFetchStore(): Promise<void> {
+      try {
+        // stream the json, will get 200 or 204
+        const progressObject = await oboeJS();
+        setProgressState(progressObject);
+        progressStateRef.current = progressObject;
+
+        // check to see if store exists
+        const res = await axios.get(`${server}/api/v1/store/state`, {
+          headers: {
+            Authorization: `Basic ${btoa(apiToken + ':x-auth-token')}`,
+            'Content-Type': 'application/json'
+          }
+        });
+
+        if (typeof res.data === 'object' && res.data.associatorStore) {
+          if (res.data.associatorStore.state.searchedList.length > 0) {
+            setState(res.data.associatorStore?.state);
+          } else {
+            // set default initial values to state
+            const newState: State = {
+              searchedList: [],
+              searchHistory: [],
+              token: [],
+              similarSuggestionslist: []
+            };
+            setState(newState);
+            updateStore(newState);
+          }
+        }
+      } catch (error) {
+        console.error(error);
+      }
     }
-  }
+
+    function oboeJS(): Promise<ProgressState> {
+      return new Promise((resolve, reject) => {
+        const url: string = 'https://mansi-nlp.data.caltimes.io';
+
+        oboe({
+          url: `${process.env.REACT_APP_BASE_URL || url}/generate`,
+          method: 'POST',
+          body: `server=${encodeURIComponent(
+            server
+          )}&documentSetId=${encodeURIComponent(documentSetId)}`,
+          headers: {
+            Authorization: 'Basic ' + btoa(apiToken + ':x-auth-token'),
+            'Content-Type': 'application/x-www-form-urlencoded'
+          }
+        })
+          .node('!.*', (progress: Progress) => {
+            // Oboe instance will emit each Progress event until there are no more
+            setProgressState({ lastProgress: progress, isSuccess: false });
+            return oboe.drop;
+          })
+          .fail(
+            ({
+              statusCode,
+              body,
+              error
+            }: {
+              statusCode: number | null;
+              body: String | null;
+              error: Error | null;
+            }) => {
+              reject(`${statusCode} ${body} ${error}`);
+            }
+          )
+          .done(() => {
+            setProgressState(prevProgressState => {
+              let sucessObj: ProgressState;
+
+              if (prevProgressState.lastProgress !== null) {
+                sucessObj = {
+                  lastProgress: prevProgressState.lastProgress,
+                  isSuccess: prevProgressState.lastProgress?.returncode === 0
+                };
+
+                progressStateRef.current = sucessObj;
+                resolve(sucessObj);
+                return sucessObj;
+              } else {
+                sucessObj = {
+                  lastProgress: {
+                    n_ahead_in_queue: 0,
+                    fraction: 1,
+                    message: null,
+                    returncode: 0,
+                    error: null
+                  },
+                  isSuccess: true
+                };
+
+                progressStateRef.current = sucessObj;
+                resolve(sucessObj);
+                return sucessObj;
+              }
+            });
+          });
+      });
+    }
+
+    initFetchStore();
+  }, [apiToken, documentSetId, server, updateStore]);
+
+  // global search input watcher
+  useEffect(() => {
+    const onNotifyDocumentListParams = (e: MessageEvent) => {
+      if (e.data.event === 'notify:documentListParams') {
+        const token: string = e.data.args[0].q;
+        if (
+          keywordModeRef.current === false &&
+          token !== undefined &&
+          progressStateRef.current.isSuccess
+        ) {
+          getKeywords({
+            token,
+            server,
+            documentSetId,
+            apiToken
+          });
+        } else {
+          setKeywordRef(false);
+        }
+      }
+    };
+
+    window.addEventListener('message', onNotifyDocumentListParams);
+
+    window.parent.postMessage({ call: 'notifyDocumentListParams' }, '*');
+    return () =>
+      window.removeEventListener('message', onNotifyDocumentListParams);
+  }, [apiToken, documentSetId, server, getKeywords]);
 
   return (
     <StyledApp>

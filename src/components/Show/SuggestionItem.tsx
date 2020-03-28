@@ -5,19 +5,19 @@ interface SuggestionItemProps {
   suggested: string;
 }
 
-const SuggestionItem = ({ suggested }: SuggestionItemProps) => {
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation();
-    // setKeywordRef(true); // COMMENT TO ENABLE NEW SEARCH ON CLICK
-    const message = {
-      call: 'setDocumentListParams', // call
-      args: [{ q: `${suggested}` }] // arguments
-    };
-    window.parent.postMessage(message, '*');
+const handleClick = (e: React.MouseEvent<HTMLButtonElement>, text: string) => {
+  e.stopPropagation();
+  // setKeywordRef(true); // COMMENT TO ENABLE NEW SEARCH ON CLICK
+  const message = {
+    call: 'setDocumentListParams', // call
+    args: [{ q: `${text}` }] // arguments
   };
+  window.parent.postMessage(message, '*');
+};
 
+const SuggestionItem = ({ suggested }: SuggestionItemProps) => {
   return (
-    <StyledSuggestionItem onClick={handleClick}>
+    <StyledSuggestionItem onClick={e => handleClick(e, suggested)}>
       <p>{suggested}</p>
     </StyledSuggestionItem>
   );

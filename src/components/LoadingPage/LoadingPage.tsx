@@ -25,7 +25,7 @@ interface Props {
 const LoadingPage = ({ progress }: Props) => {
   if (!progress) return <div></div>;
 
-  const { fraction, n_ahead_in_queue, returncode, error, message } = progress;
+  const { fraction, n_ahead_in_queue, returncode, error } = progress;
 
   if (error && fraction! === 1 && returncode !== 0) {
     return (

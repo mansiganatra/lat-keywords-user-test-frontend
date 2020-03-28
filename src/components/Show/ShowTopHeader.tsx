@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import ToolTipModal from '../ToolTipModal/ToolTipModal';
 import moreInfo from '../../lib/images/more_info.png';
-import moreInfoAlt from '../../lib/images/more_info_alt.png';
 import SuggestionItem from './SuggestionItem';
 
 interface HeaderProps {
@@ -11,15 +10,18 @@ interface HeaderProps {
 }
 
 const Header = ({ suggestedList }: HeaderProps): JSX.Element => {
-  const [hover, setHover] = useState<boolean>(false);
   const [modalEnabled, setModalEnabled] = useState<boolean>(false);
-  console.log(suggestedList);
+
+  const handleClick = () => {
+    setModalEnabled(prevBool => !prevBool);
+  };
+
   return (
     <StyledHeaderMessage>
       <StyledHeaderMain>
         <StyledHeader>
           Find words associated with your search term
-          <span onClick={() => setModalEnabled(!modalEnabled)}>
+          <span onClick={handleClick}>
             <img src={moreInfo} alt="more info" />
           </span>
           {modalEnabled && <ToolTipModal setModalEnabled={setModalEnabled} />}

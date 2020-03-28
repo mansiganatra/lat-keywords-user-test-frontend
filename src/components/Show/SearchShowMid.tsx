@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import searchImg from '../../lib/images/search.png';
 import arrowDown from '../../lib/images/arrow-down.png';
 
 interface Props {

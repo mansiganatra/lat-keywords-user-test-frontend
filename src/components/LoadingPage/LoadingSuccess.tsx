@@ -12,7 +12,7 @@ import {
 
 interface LoadingSuccessProps {}
 
-const LoadingSuccess = ({}: LoadingSuccessProps): JSX.Element => {
+const LoadingSuccess = (props: LoadingSuccessProps): JSX.Element => {
   return (
     <StyledLoadComplete>
       <StyledImgComplete>
