@@ -18,8 +18,14 @@ NOTE: This plugin is meant to be used inside of a local instance of overviewdocs
 
 ## Local development
 
+```
+pre-requisite:
+You must use a personal access token with 'read_repository' or 'write_repository' scope for Git over HTTP.
+remote: You can generate one at https://gitlab.com/profile/personal_access_tokens
+```
+
 ```bash
-$ git clone https://github.com/mansiganatra/lat-keywords-user-test-frontend.git
+$ git clone git clone https://<username>:<deploy_token>@gitlab.com/caltimes/creative-technologist-interns/lat-keywords-user-test-frontend.git
 $ cd lat-keywords-user-test-frontend
 $ npm install
 $ npm start
