@@ -53,10 +53,10 @@ const StyledShowMidContainer = styled.section`
 const StyledShowMidLeft = styled.div`
   display: flex;
   align-items: center;
-  font-family: 'Helvetica Neue';
+  font-family: 'Helvetica Neue', sans-serif;
   font-style: normal;
   font-weight: bold;
-  font-size: 12px;
+  font-size: 1.2rem;
   line-height: 15px;
   text-transform: capitalize;
 
@@ -76,10 +76,10 @@ const StyledShowMidRight = styled.div`
   }
 
   label {
-    font-family: 'Helvetica Neue';
+    font-family: 'Helvetica Neue', sans-serif;
     font-style: normal;
     font-weight: bold;
-    font-size: 12px;
+    font-size: 1.2rem;
     line-height: 15px;
     text-align: right;
     text-transform: capitalize;
@@ -117,10 +117,10 @@ const StyledShowMidRight = styled.div`
       height: 26px;
       text-transform: capitalize;
 
-      font-family: 'Helvetica Neue';
+      font-family: 'Helvetica Neue', sans-serif;
       font-style: normal;
       font-weight: bold;
-      font-size: 10px;
+      font-size: 1rem;
       line-height: 12px;
       padding-left: 10px;
       /* identical to box height */

@@ -115,10 +115,10 @@ const StyledShowTagsTop = styled.div`
   padding-left: 23px;
 
   h2 {
-    font-family: 'Helvetica Neue';
+    font-family: 'Helvetica Neue', sans-serif;
     font-style: normal;
     font-weight: bold;
-    font-size: 12px;
+    font-size: 1.2rem;
     line-height: 15px;
     text-transform: capitalize;
 
@@ -136,10 +136,10 @@ const StyledClearHistoryBtn = styled.button`
   background-color: #1e2229;
 
   p {
-    font-family: Helvetica Neue;
+    font-family: 'Helvetica Neue', sans-serif;
     font-style: normal;
     font-weight: 500;
-    font-size: 10px;
+    font-size: 1rem;
     line-height: 12px;
     text-transform: capitalize;
 

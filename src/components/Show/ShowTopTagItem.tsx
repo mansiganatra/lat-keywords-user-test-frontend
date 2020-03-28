@@ -93,10 +93,10 @@ const StyledHistoryItem = styled.div<{ selected: boolean; color: string }>`
 
   p {
     text-transform: capitalize;
-    font-family: 'Helvetica Neue';
+    font-family: 'Helvetica Neue', sans-serif;
     font-style: normal;
     font-weight: bold;
-    font-size: 9px;
+    font-size: 0.9rem;
     line-height: 11px;
     text-align: center;
     letter-spacing: 0.08em;

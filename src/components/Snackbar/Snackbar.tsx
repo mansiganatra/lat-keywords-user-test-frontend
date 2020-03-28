@@ -83,10 +83,10 @@ const StyledContent = styled.div`
 `;
 
 const StyledNotifMessage = styled.p`
-  font-family: 'Archivo';
+  font-family: 'Archivo', sans-serif;
   font-style: normal;
   font-weight: bold;
-  font-size: 14px;
+  font-size: 1.4rem;
   line-height: 120%;
   /* or 17px */
 
@@ -119,10 +119,10 @@ const StyledNotifyItem = styled.button`
 `;
 
 const StyledNotifyText = styled.p`
-  font-family: 'Archivo';
+  font-family: 'Archivo', sans-serif;
   font-style: normal;
   font-weight: bold;
-  font-size: 11px;
+  font-size: 1.1rem;
   line-height: 125%;
   padding-right: 0;
   /* or 14px */

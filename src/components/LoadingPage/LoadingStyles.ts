@@ -20,10 +20,10 @@ export const StyledImgContainer = styled.div`
   padding-right: 60px;
 `;
 export const StyledHeader = styled.h1`
-  font-family: 'Helvetica Neue';
+  font-family: 'Helvetica Neue', sans-serif;
   font-style: normal;
   font-weight: bold;
-  font-size: 21px;
+  font-size: 2.1rem;
   line-height: 26px;
   text-transform: capitalize;
 
@@ -54,7 +54,7 @@ export const ErrorContainer = styled.div`
     font-family: 'Archivo', sans-serif;
     font-style: normal;
     font-weight: bold;
-    font-size: 17px;
+    font-size: 1.7remx;
     line-height: 18px;
     padding-right: 10px;
 
@@ -64,7 +64,7 @@ export const ErrorContainer = styled.div`
     font-family: 'Archivo', sans-serif;
     font-style: normal;
     font-weight: normal;
-    font-size: 17px;
+    font-size: 1.7rem;
     line-height: 18px;
 
     color: #fc3636;
@@ -91,20 +91,20 @@ export const StyledLoadComplete = styled.div`
   background-color: #3e5372;
 `;
 export const StyledLoadingHeader = styled(StyledHeader)`
-  font-family: 'Helvetica Neue';
+  font-family: 'Helvetica Neue', sans-serif;
   font-style: normal;
   font-weight: bold;
-  font-size: 21px;
+  font-size: 2.1rem;
   line-height: 26px;
   text-transform: capitalize;
 
   color: #ffffff;
 `;
 export const StyledSubHeader = styled.p`
-  font-family: 'Archivo';
+  font-family: 'Archivo', sans-serif;
   font-style: normal;
   font-weight: bold;
-  font-size: 11px;
+  font-size: 1.1rem;
   line-height: 125%;
   /* or 14px */
 

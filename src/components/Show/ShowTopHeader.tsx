@@ -57,16 +57,16 @@ const StyledHeaderMessage = styled.header`
 const StyledHeaderMain = styled.div`
   display: flex;
   align-items: flex-end;
-  font-size: 24px;
+  font-size: 2.4rem;
   line-height: 31px;
   width: 100%;
   max-width: 404px;
 `;
 const StyledHeader = styled.h1`
-  font-family: 'Archivo';
+  font-family: 'Archivo', sans-serif;
   font-style: normal;
   font-weight: bold;
-  font-size: 17px;
+  font-size: 1.7rem;
   line-height: 18px;
   /* or 106% */
 
@@ -92,10 +92,10 @@ const StyledSubHeader = styled.div`
   max-width: 275px;
 `;
 const StyledSubHeaderText = styled.p`
-  font-family: 'Archivo';
+  font-family: 'Archivo', sans-serif;
   font-style: normal;
   font-weight: bold;
-  font-size: 11px;
+  font-size: 1.2rem;
   line-height: 125%;
   /* or 14px */
 

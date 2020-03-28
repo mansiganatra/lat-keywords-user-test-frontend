@@ -147,10 +147,10 @@ const StyledModelHeaderContainer = styled.header`
 
   h1 {
     text-transform: capitalize;
-    font-family: 'Helvetica Neue';
+    font-family: 'Helvetica Neue', sans-serif;
     font-style: normal;
     font-weight: bold;
-    font-size: 21px;
+    font-size: 2.1rem;
     line-height: 26px;
     color: #172d3b;
   }
@@ -175,10 +175,10 @@ const StyledHeaderBot = styled.div`
   justify-content: space-between;
 
   div {
-    font-family: 'Helvetica Neue';
+    font-family: 'Helvetica Neue', sans-serif;
     font-style: normal;
     font-weight: bold;
-    font-size: 9px;
+    font-size: 0.9rem;
     line-height: 11px;
     text-align: right;
     letter-spacing: 0.08em;

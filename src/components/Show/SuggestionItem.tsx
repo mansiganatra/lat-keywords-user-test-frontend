@@ -51,10 +51,10 @@ const StyledSuggestionItem = styled.button`
   }
 
   p {
-    font-family: 'Archivo';
+    font-family: 'Archivo', sans-serif;
     font-style: normal;
     font-weight: bold;
-    font-size: 10px;
+    font-size: 1rem;
     line-height: 125%;
     /* or 12px */
 

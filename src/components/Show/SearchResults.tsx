@@ -85,10 +85,10 @@ const StyledInvalidSearch = styled.section`
   }
 
   h1 {
-    font-family: 'Helvetica Neue';
+    font-family: 'Helvetica Neue', sans-serif;
     font-style: normal;
     font-weight: bold;
-    font-size: 24px;
+    font-size: 2.4rem;
     line-height: 31px;
     /* or 130% */
 
@@ -106,10 +106,10 @@ const StyledInvalidSearch = styled.section`
 
   .right {
     p {
-      font-family: 'Helvetica Neue';
+      font-family: 'Helvetica Neue', sans-serif;
       font-style: normal;
       font-weight: bold;
-      font-size: 12px;
+      font-size: 1.2rem;
       line-height: 16px;
       /* or 130% */
 
@@ -125,10 +125,10 @@ const StyledInvalidSearch = styled.section`
       margin-left: -25px;
       flex-wrap: wrap;
       p {
-        font-family: 'Helvetica Neue';
+        font-family: 'Helvetica Neue', sans-serif;
         font-style: normal;
         font-weight: normal;
-        font-size: 12px;
+        font-size: 1.2rem;
         line-height: 16px;
         /* or 137% */
 

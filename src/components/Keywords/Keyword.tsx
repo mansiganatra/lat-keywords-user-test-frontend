@@ -32,18 +32,18 @@ const Keyword = ({ word, setKeywordRef }: Props): JSX.Element => {
 };
 
 const StyledText = styled.p`
-  font-family: 'Helvetica Neue';
+  font-family: 'Helvetica Neue', sans-serif;
   font-style: normal;
   font-weight: bold;
-  font-size: 12px;
+  font-size: 1.2rem;
   line-height: 15px;
   text-transform: capitalize;
 `;
 const StyledFreq = styled(StyledText)`
-  font-family: Helvetica Neue;
+  font-family: 'Helvetica Neue', sans-serif;
   font-style: normal;
   font-weight: bold;
-  font-size: 12px;
+  font-size: 1.2rem;
   line-height: 15px;
   text-align: center;
 
