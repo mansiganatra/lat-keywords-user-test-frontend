@@ -74,83 +74,25 @@ const App = (props: AppProps): JSX.Element => {
   useEffect(() => {
     async function initFetchStore(): Promise<void> {
       try {
+        // stream the json, will get 200 or 204
+        const progressObject = await oboeJS();
+        setProgressState(progressObject);
+        progressStateRef.current = progressObject;
+
+        // check to see if store exists
         const res = await axios.get(`${server}/api/v1/store/state`, {
           headers: {
             Authorization: `Basic ${btoa(apiToken + ':x-auth-token')}`,
             'Content-Type': 'application/json'
           }
         });
+
         if (typeof res.data === 'object' && res.data.associatorStore) {
-          // store exists... update ref and state from overview
-          const progressObject = { lastProgress: null, isSuccess: true };
-
           setState(res.data.associatorStore?.state);
-          setProgressState(progressObject);
-          progressStateRef.current = progressObject;
         } else {
-          // store doesnt exist... oboe it to existence
-          const url: string = 'https://mansi-nlp.data.caltimes.io';
-          return oboe({
-            url: `${process.env.REACT_APP_BASE_URL || url}/generate`,
-            method: 'POST',
-            body: `server=${encodeURIComponent(
-              server
-            )}&documentSetId=${encodeURIComponent(documentSetId)}`,
-            headers: {
-              Authorization: 'Basic ' + btoa(apiToken + ':x-auth-token'),
-              'Content-Type': 'application/x-www-form-urlencoded'
-            }
-          })
-            .node('!.*', (progress: Progress) => {
-              // Oboe instance will emit each Progress event until there are no more
-              setProgressState({ lastProgress: progress, isSuccess: false });
-              return oboe.drop;
-            })
-            .fail(
-              ({
-                statusCode,
-                body,
-                error
-              }: {
-                statusCode: number | null;
-                body: String | null;
-                error: Error | null;
-              }) => {
-                console.error(statusCode, body, error);
-              }
-            )
-            .done(() => {
-              setProgressState(prevProgressState => {
-                let sucessObj: ProgressState;
-                updateStore(state);
-
-                if (prevProgressState.lastProgress !== null) {
-                  sucessObj = {
-                    lastProgress: prevProgressState.lastProgress,
-                    isSuccess: prevProgressState.lastProgress?.returncode === 0
-                  };
-
-                  progressStateRef.current = sucessObj;
-
-                  return sucessObj;
-                } else {
-                  sucessObj = {
-                    lastProgress: {
-                      n_ahead_in_queue: 0,
-                      fraction: 1,
-                      message: null,
-                      returncode: 0,
-                      error: null
-                    },
-                    isSuccess: true
-                  };
-
-                  progressStateRef.current = sucessObj;
-
-                  return sucessObj;
-                }
-              });
-            });
+          // set default initial values to state
+          setState(state);
+          updateStore(state);
         }
       } catch (error) {
         console.error(error);
@@ -169,6 +111,71 @@ const App = (props: AppProps): JSX.Element => {
       window.removeEventListener('message', onNotifyDocumentListParams);
   }, []);
 
+  function oboeJS(): Promise<ProgressState> {
+    return new Promise((resolve, reject) => {
+      const url: string = 'https://mansi-nlp.data.caltimes.io';
+      oboe({
+        url: `${process.env.REACT_APP_BASE_URL || url}/generate`,
+        method: 'POST',
+        body: `server=${encodeURIComponent(
+          server
+        )}&documentSetId=${encodeURIComponent(documentSetId)}`,
+        headers: {
+          Authorization: 'Basic ' + btoa(apiToken + ':x-auth-token'),
+          'Content-Type': 'application/x-www-form-urlencoded'
+        }
+      })
+        .node('!.*', (progress: Progress) => {
+          // Oboe instance will emit each Progress event until there are no more
+          setProgressState({ lastProgress: progress, isSuccess: false });
+          return oboe.drop;
+        })
+        .fail(
+          ({
+            statusCode,
+            body,
+            error
+          }: {
+            statusCode: number | null;
+            body: String | null;
+            error: Error | null;
+          }) => {
+            reject(`${statusCode} ${body} ${error}`);
+          }
+        )
+        .done(() => {
+          setProgressState(prevProgressState => {
+            let sucessObj: ProgressState;
+
+            if (prevProgressState.lastProgress !== null) {
+              sucessObj = {
+                lastProgress: prevProgressState.lastProgress,
+                isSuccess: prevProgressState.lastProgress?.returncode === 0
+              };
+
+              progressStateRef.current = sucessObj;
+              resolve(sucessObj);
+              return sucessObj;
+            } else {
+              sucessObj = {
+                lastProgress: {
+                  n_ahead_in_queue: 0,
+                  fraction: 1,
+                  message: null,
+                  returncode: 0,
+                  error: null
+                },
+                isSuccess: true
+              };
+
+              progressStateRef.current = sucessObj;
+              resolve(sucessObj);
+              return sucessObj;
+            }
+          });
+        });
+    });
+  }
   // get suggestion list
 
   const getSuggestion = async (): Promise<void> => {

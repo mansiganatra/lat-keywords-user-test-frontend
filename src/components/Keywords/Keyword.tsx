@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { SimilarToken } from '../../types';
 
 interface Props {
@@ -23,14 +22,12 @@ const Keyword = ({ word, setKeywordRef }: Props): JSX.Element => {
   };
 
   return (
-    <CopyToClipboard text={token}>
-      <StyledKWButton onClick={handleClick}>
-        <StyledKWItem>
-          <StyledText>{token}</StyledText>
-          <StyledFreq>{count}</StyledFreq>
-        </StyledKWItem>
-      </StyledKWButton>
-    </CopyToClipboard>
+    <StyledKWButton onClick={handleClick}>
+      <StyledKWItem>
+        <StyledText>{token}</StyledText>
+        <StyledFreq>{count}</StyledFreq>
+      </StyledKWItem>
+    </StyledKWButton>
   );
 };
 
