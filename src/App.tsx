@@ -363,8 +363,7 @@ const App = (): JSX.Element => {
   }, [apiToken, documentSetId, server, getKeywords]);
 
   const pathname = window.location.pathname;
-  if (pathname === '/show') {
-  }
+
   return (
     <StyledApp>
       <Snackbar
