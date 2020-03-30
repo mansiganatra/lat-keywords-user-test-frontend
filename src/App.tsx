@@ -1,13 +1,11 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import styled from 'styled-components';
-
-import { Route } from 'react-router-dom';
 import oboe from 'oboe';
 import axios from 'axios';
 
 import Metadata from './pages/Metadata/Metadata';
 import Show from './pages/Show/Show';
-import { axiosWithAuth, useQuery } from './utils';
+import { axiosWithAuth, query } from './utils';
 import {
   State,
   GetKeywords,
@@ -19,9 +17,7 @@ import {
 } from './types';
 import Snackbar from './components/Snackbar/Snackbar';
 
-interface AppProps {}
-
-const App = (props: AppProps): JSX.Element => {
+const App = (): JSX.Element => {
   const [notificationIsOpen, setNotificationIsOpen] = useState<boolean>(false);
   const [sortBy, setSortBy] = useState<string>('relevance');
   const [term, setTerm] = useState<string | null>('');
@@ -42,10 +38,7 @@ const App = (props: AppProps): JSX.Element => {
   const keywordModeRef = useRef<boolean>(keywordMode);
   const progressStateRef = useRef<ProgressState>(progressState);
 
-  const query = useQuery();
-  const apiToken: string = query.get('apiToken')!;
-  const server: string = query.get('server')!;
-  const documentSetId: string = query.get('documentSetId')!;
+  const { server, apiToken, documentSetId } = query;
 
   // get suggestion list
   const getSuggestion = async (): Promise<void> => {
@@ -233,11 +226,6 @@ const App = (props: AppProps): JSX.Element => {
     [updateStore]
   );
 
-  // useEffect(() => {
-  //   keywordModeRef.current = keywordMode;
-  //   progressStateRef.current = progressState;
-  // }, [keywordMode, setKeywordMode, progressState, setProgressState]);
-
   // json stream and initial logic
   useEffect(() => {
     async function initFetchStore(): Promise<void> {
@@ -374,6 +362,9 @@ const App = (props: AppProps): JSX.Element => {
       window.removeEventListener('message', onNotifyDocumentListParams);
   }, [apiToken, documentSetId, server, getKeywords]);
 
+  const pathname = window.location.pathname;
+  if (pathname === '/show') {
+  }
   return (
     <StyledApp>
       <Snackbar
@@ -382,8 +373,7 @@ const App = (props: AppProps): JSX.Element => {
         notificationIsOpen={notificationIsOpen}
         setNotificationIsOpen={setNotificationIsOpen}
       />
-
-      <Route path="/show">
+      {pathname === '/show' && (
         <Show
           progressState={progressState}
           state={state}
@@ -398,10 +388,8 @@ const App = (props: AppProps): JSX.Element => {
           suggestedList={suggestedList}
           getSuggestion={getSuggestion}
         />
-      </Route>
-      <Route path="/metadata">
-        <Metadata />
-      </Route>
+      )}
+      {pathname === '/metadata' && <Metadata />}
     </StyledApp>
   );
 };

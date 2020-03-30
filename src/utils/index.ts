@@ -1,6 +1,6 @@
 import axiosWithAuth from './axiosWithAuth';
 import colorArray from './colorArray';
 import testData from './testData';
-import useQuery from './useQuery';
+import query from './query';
 
-export { axiosWithAuth, colorArray, testData, useQuery };
+export { axiosWithAuth, colorArray, testData, query };
