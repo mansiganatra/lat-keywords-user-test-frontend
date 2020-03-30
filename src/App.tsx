@@ -43,32 +43,14 @@ const App = (): JSX.Element => {
   // get suggestion list
   const getSuggestion = async (): Promise<void> => {
     try {
-      const tokenRes = await axios.get(
-        `${server}/api/v1/document-sets/${documentSetId}/documents`,
-        {
-          headers: {
-            Authorization: `Basic ${btoa(apiToken + ':x-auth-token')}`,
-            'Content-Type': 'application/json'
-          }
-        }
-      );
-      const suggestionRes = await axiosWithAuth(apiToken).get('/search', {
+      const res = await axiosWithAuth(apiToken).get('/mostfrequent', {
         params: {
-          term: tokenRes.data.items[0].title
-            .replace(/[\W_]/gi, ' ')
-            .split(' ')
-            .slice(0, 2)
-            .join(' ')
-            .trim(),
           server,
           documentSetId
         }
       });
-      setSuggestedList(
-        suggestionRes.data.similarTokens
-          .slice(0, 4)
-          .map((item: any) => item.token)
-      );
+
+      setSuggestedList(res.data.mostFrequentTokens);
     } catch (error) {
       console.error(error);
     }
