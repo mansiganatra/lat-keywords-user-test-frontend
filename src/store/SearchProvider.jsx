@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
+// eslint-disable-next-line import/no-unresolved
 import fileDownload from 'js-file-download';
 import axios from 'axios';
 import searchContext from './searchContext';
@@ -71,10 +72,11 @@ const SearchProvider = ({ children }) => {
   // coronavirus associator-covid19
   // Banks-Daxzaneous-Forger kimbreall
   // juul ov-old-associator-juul
+  // bill associator-bill
   const getKeywords = async ({
     searchedGlobalTerm,
     size = 8,
-    docset = 'juul'
+    docset = 'bill'
   }) => {
     const url = 'https://cohorts-api.herokuapp.com/api';
 
