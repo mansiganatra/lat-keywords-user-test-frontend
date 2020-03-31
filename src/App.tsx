@@ -201,8 +201,18 @@ const App = (): JSX.Element => {
             };
           });
         }
+        scrollToLastChild();
       } catch (error) {
         console.error(error);
+      }
+
+      function scrollToLastChild() {
+        const el = document.querySelector('.item:last-child');
+        const scrollIntoViewOptions: any = {
+          behavior: 'smooth',
+          block: 'start'
+        };
+        el?.scrollIntoView(scrollIntoViewOptions);
       }
     },
     [updateStore]

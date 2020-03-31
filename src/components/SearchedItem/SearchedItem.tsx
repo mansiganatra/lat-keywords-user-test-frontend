@@ -74,6 +74,7 @@ const SearchedTerm = ({
       onClick={handleClick}
       onMouseEnter={handleHoverEnable}
       onMouseLeave={handleHoverDisable}
+      className="item"
     >
       <StyledModelHeaderContainer>
         <StyledHeaderTop>
