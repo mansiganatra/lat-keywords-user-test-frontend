@@ -75,14 +75,14 @@ const ShowTopTagItem = ({
   );
 };
 
-const StyledHistoryItem = styled.div<{ selected: boolean; color: string }>`
+const StyledHistoryItem = styled.button<{ selected: boolean; color: string }>`
   cursor: pointer;
   display: flex;
   justify-content: space-between;
   align-items: center;
-
-  background: ${({ selected, color }): string =>
-    selected ? color : '#ffffff'};
+  background-color: white;
+  background-color: ${({ selected, color }): string =>
+    selected ? `${color}30` : '#ffffff'};
   border: 1px solid rgba(182, 192, 198, 0.6);
   box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.02);
   border-radius: 3px;
@@ -109,7 +109,7 @@ const StyledHistoryItem = styled.div<{ selected: boolean; color: string }>`
 const StyleRemoveBtn = styled.button<{ selected: boolean; color: string }>`
   border: 0;
   background-color: ${({ selected, color }): string =>
-    selected ? color : '#ffffff'};
+    selected ? `transparent` : '#ffffff'};
   display: flex;
   justify-content: center;
   align-items: center;
