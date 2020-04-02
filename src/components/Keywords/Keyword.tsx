@@ -7,8 +7,10 @@ interface Props {
   word: SimilarToken;
   setKeywordRef: (bool: boolean) => void;
   color: string;
-  handleTokenSelect: (token: string) => void;
+  handleTokenSelect: (token: string, id: number) => void;
   selectedToken: string | null;
+  searchedId: number;
+  tokenId: number | null;
 }
 //setKeywordRef
 const Keyword = ({
@@ -16,7 +18,9 @@ const Keyword = ({
   setKeywordRef,
   color,
   handleTokenSelect,
-  selectedToken
+  selectedToken,
+  searchedId,
+  tokenId
 }: Props): JSX.Element => {
   const { count, token } = word; //similarity
 
@@ -26,7 +30,7 @@ const Keyword = ({
   ) => {
     e.stopPropagation();
     setKeywordRef(true); // COMMENT TO ENABLE NEW SEARCH ON CLICK
-    handleTokenSelect(token);
+    handleTokenSelect(token, searchedId);
     const message = {
       call: 'setDocumentListParams', // call
       args: [{ q: `${token}` }] // arguments
@@ -37,7 +41,7 @@ const Keyword = ({
   return (
     <StyledKWButton
       onClick={e => handleClick(e, token)}
-      selected={selectedToken === token}
+      selected={selectedToken === token && tokenId === searchedId}
       color={color}
     >
       <StyledKWItem>
@@ -54,7 +58,7 @@ const StyledKWButton = styled.button<{ selected: boolean; color: string }>`
   border: none;
 
   background: ${({ selected, color }) =>
-    selected ? `${color}50` : 'rgba(244, 244, 244, 0.75)'};
+    selected ? `${color}30` : 'rgba(244, 244, 244, 0.75)'};
   border-radius: 21px;
   margin-bottom: 7px;
 `;

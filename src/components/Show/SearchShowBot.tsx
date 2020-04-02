@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import SearchedTerm from '../SearchedItem/SearchedItem';
@@ -28,6 +28,13 @@ const SearchShowBot = ({
   suggestedList
 }: Props): JSX.Element => {
   const { searchedList } = state;
+  const [tokenId, setTokenId] = useState<number | null>(null);
+  const [selectedToken, setSelectedToken] = useState<string | null>(null);
+
+  const handleTokenSelect = (token: string, id: number): void => {
+    setSelectedToken(token);
+    setTokenId(id);
+  };
 
   return (
     <>
@@ -46,6 +53,9 @@ const SearchShowBot = ({
                   setKeywordRef={setKeywordRef}
                   deleteModel={deleteModel}
                   term={state.searchHistory[i].term}
+                  selectedToken={selectedToken}
+                  handleTokenSelect={handleTokenSelect}
+                  tokenId={tokenId}
                 />
               ))}
           </StyledModelList>

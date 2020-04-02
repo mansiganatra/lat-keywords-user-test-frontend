@@ -15,6 +15,9 @@ interface Props {
   setKeywordRef: (bool: boolean) => void;
   deleteModel: (modelId: number) => void;
   term: string | null;
+  selectedToken: string | null;
+  handleTokenSelect: (token: string, id: number) => void;
+  tokenId: number | null;
 }
 
 const SearchedTerm = ({
@@ -25,7 +28,10 @@ const SearchedTerm = ({
   selectModel,
   setKeywordRef,
   deleteModel,
-  term
+  term,
+  selectedToken,
+  handleTokenSelect,
+  tokenId
 }: Props): JSX.Element => {
   const {
     similarTokens,
@@ -34,11 +40,7 @@ const SearchedTerm = ({
     sortedSimilarTokensByCount
   } = searchedItem;
   const [hover, setHover] = useState<Boolean>(false);
-  const [selectedToken, setSelectedToken] = useState<string | null>(null);
 
-  const handleTokenSelect = (token: string): void => {
-    setSelectedToken(token);
-  };
   const handleHoverEnable = (): void => {
     if (!hover) return setHover(true);
   };
@@ -108,6 +110,8 @@ const SearchedTerm = ({
                         color={topBarColor}
                         handleTokenSelect={handleTokenSelect}
                         selectedToken={selectedToken}
+                        searchedId={id}
+                        tokenId={tokenId}
                       />
                     )
                   )
@@ -122,6 +126,8 @@ const SearchedTerm = ({
                         color={topBarColor}
                         handleTokenSelect={handleTokenSelect}
                         selectedToken={selectedToken}
+                        searchedId={id}
+                        tokenId={tokenId}
                       />
                     )
                   )}
