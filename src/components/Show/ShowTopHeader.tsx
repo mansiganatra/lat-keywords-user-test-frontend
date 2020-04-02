@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import ToolTipModal from '../ToolTipModal/ToolTipModal';
 import moreInfo from '../../lib/images/more_info.png';
-import SuggestionItem from './SuggestionItem';
+import SuggestionItem from '../shared/SuggestionItem';
 
 interface HeaderProps {
   suggestedList: string[];

@@ -40,31 +40,25 @@ const SearchTopResult = ({
 
   return (
     <>
-      {state.searchedList.length === 0 ? (
-        <LoadingSuccess />
-      ) : (
-        <>
-          <SearchShowTop
-            state={state}
-            clearSearchAll={clearSearchAll}
-            selectModel={selectModel}
-            deleteModel={deleteModel}
-            selectedId={selectedId}
-            setKeywordRef={setKeywordRef}
-            suggestedList={suggestedList}
-          />
-          <SearchShowMid setSortBy={setSortBy} />
-          <SearchShowBot
-            sortBy={sortBy}
-            state={state}
-            selectedId={selectedId}
-            selectModel={selectModel}
-            setKeywordRef={setKeywordRef}
-            deleteModel={deleteModel}
-            term={term}
-          />
-        </>
-      )}
+      <SearchShowTop
+        state={state}
+        clearSearchAll={clearSearchAll}
+        selectModel={selectModel}
+        deleteModel={deleteModel}
+        selectedId={selectedId}
+        setKeywordRef={setKeywordRef}
+        suggestedList={suggestedList}
+      />
+      {state.searchedList.length > 0 && <SearchShowMid setSortBy={setSortBy} />}
+      <SearchShowBot
+        sortBy={sortBy}
+        state={state}
+        selectedId={selectedId}
+        selectModel={selectModel}
+        setKeywordRef={setKeywordRef}
+        deleteModel={deleteModel}
+        term={term}
+      />
     </>
   );
 };

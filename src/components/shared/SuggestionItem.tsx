@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 interface SuggestionItemProps {
   suggested: string;
+  inversed?: boolean;
 }
 
 const handleClick = (e: React.MouseEvent<HTMLButtonElement>, text: string) => {
@@ -15,31 +16,39 @@ const handleClick = (e: React.MouseEvent<HTMLButtonElement>, text: string) => {
   window.parent.postMessage(message, '*');
 };
 
-const SuggestionItem = ({ suggested }: SuggestionItemProps) => {
+const SuggestionItem = ({
+  suggested,
+  inversed = false
+}: SuggestionItemProps) => {
   return (
-    <StyledSuggestionItem onClick={e => handleClick(e, suggested)}>
+    <StyledSuggestionItem
+      onClick={e => handleClick(e, suggested)}
+      inversed={inversed}
+    >
       <p>{suggested}</p>
     </StyledSuggestionItem>
   );
 };
 
-const StyledSuggestionItem = styled.button`
+const StyledSuggestionItem = styled.button<{ inversed: boolean }>`
+  cursor: pointer;
   border: 1px solid #a0afc7;
-  box-sizing: border-box;
   border-radius: 18px;
   padding: 5px 10px;
   margin-right: 10px;
-  background-color: #1e2229;
+  background-color: ${({ inversed }): string =>
+    inversed ? 'transparent' : '#1e2229'};
   width: 100%;
-
+  display: flex;
   justify-content: center;
   align-items: center;
 
   &:hover {
-    background-color: #a0afc7;
+    background-color: ${({ inversed }): string =>
+      inversed ? '#1e2229' : '#a0afc7'};
 
     p {
-      color: #1e2229;
+      color: ${({ inversed }): string => (inversed ? '#a0afc7' : '#1e2229')};
     }
   }
 

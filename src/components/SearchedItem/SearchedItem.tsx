@@ -60,7 +60,7 @@ const SearchedTerm = ({
     } else {
       message = {
         call: 'setDocumentListParams', // call
-        args: [{ q: `${foundTokens[0]}` }] // arguments
+        args: [{ q: `${term}` }] // arguments
       };
       selectModel(id);
     }
@@ -68,74 +68,80 @@ const SearchedTerm = ({
   };
 
   return (
-    <StyledModelContainer
-      selected={selectedId === id}
-      topBarColor={topBarColor}
-      onClick={handleClick}
-      onMouseEnter={handleHoverEnable}
-      onMouseLeave={handleHoverDisable}
-      className="item"
-    >
-      <StyledModelHeaderContainer>
-        <StyledHeaderTop>
-          <button>
-            <h1>{term}</h1>
-          </button>
-          <button onClick={handleDelete}>
-            <img src={xAlt} alt="" />
-          </button>
-        </StyledHeaderTop>
-        <StyledHeaderBot>
-          <div className="word">Word</div>
-          <div className="word-partner">count</div>
-        </StyledHeaderBot>
-      </StyledModelHeaderContainer>
-      <StyledKeywordListContainer>
-        <StyledKeywordList>
-          {sortBy === 'relevance'
-            ? similarTokens
-                .slice(0, 15)
-                .map(
-                  (word: SimilarToken, i: number): JSX.Element => (
-                    <Keyword
-                      key={i}
-                      word={word}
-                      setKeywordRef={setKeywordRef}
-                    />
+    <StyledContainer className="item">
+      <StyledModelContainer
+        selected={selectedId === id}
+        topBarColor={topBarColor}
+        onClick={handleClick}
+        onMouseEnter={handleHoverEnable}
+        onMouseLeave={handleHoverDisable}
+      >
+        <StyledModelHeaderContainer>
+          <StyledHeaderTop>
+            <button>
+              <h1>{term}</h1>
+            </button>
+            <button onClick={handleDelete}>
+              <img src={xAlt} alt="" />
+            </button>
+          </StyledHeaderTop>
+          <StyledHeaderBot>
+            <div className="word">Word</div>
+            <div className="word-partner">count</div>
+          </StyledHeaderBot>
+        </StyledModelHeaderContainer>
+        <StyledKeywordListContainer>
+          <StyledKeywordList>
+            {sortBy === 'relevance'
+              ? similarTokens
+                  .slice(0, 15)
+                  .map(
+                    (word: SimilarToken, i: number): JSX.Element => (
+                      <Keyword
+                        key={i}
+                        word={word}
+                        setKeywordRef={setKeywordRef}
+                      />
+                    )
                   )
-                )
-            : sortedSimilarTokensByCount
-                .slice(0, 15)
-                .map(
-                  (word: SimilarToken, i: number): JSX.Element => (
-                    <Keyword
-                      key={i}
-                      word={word}
-                      setKeywordRef={setKeywordRef}
-                    />
-                  )
-                )}
-        </StyledKeywordList>
-        {/* <div className="see-more-container">
+              : sortedSimilarTokensByCount
+                  .slice(0, 15)
+                  .map(
+                    (word: SimilarToken, i: number): JSX.Element => (
+                      <Keyword
+                        key={i}
+                        word={word}
+                        setKeywordRef={setKeywordRef}
+                      />
+                    )
+                  )}
+          </StyledKeywordList>
+          {/* <div className="see-more-container">
           <div className="content">
             <p>SEE MORE</p>
             <img src={seeMoreArror} alt="arrow" />
           </div>
         </div> */}
-      </StyledKeywordListContainer>
-    </StyledModelContainer>
+        </StyledKeywordListContainer>
+      </StyledModelContainer>
+    </StyledContainer>
   );
 };
 
+const StyledContainer = styled.div`
+  width: 100%;
+  max-width: 200px;
+  min-width: 200px;
+`;
 const StyledModelContainer = styled.div<{
   selected: boolean;
   topBarColor: string;
 }>`
   border-top: 5px solid
     ${({ topBarColor }: { topBarColor: string }): string => topBarColor};
-  margin-right: 27px;
-  max-width: 250px;
-  min-width: 250px;
+  margin-right: 20px;
+  max-width: 181px;
+  min-width: 181px;
   width: 100%;
   box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.08);
   border-top-left-radius: 3px;
@@ -154,6 +160,9 @@ const StyledModelHeaderContainer = styled.header`
     font-size: 2.1rem;
     line-height: 26px;
     color: #172d3b;
+    width: 100%;
+    max-width: 150px;
+    text-align: left;
   }
 `;
 const StyledHeaderTop = styled.div`

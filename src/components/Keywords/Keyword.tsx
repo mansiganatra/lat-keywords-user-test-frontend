@@ -8,12 +8,12 @@ interface Props {
   setKeywordRef: (bool: boolean) => void;
 }
 //setKeywordRef
-const Keyword = ({ word }: Props): JSX.Element => {
+const Keyword = ({ word, setKeywordRef }: Props): JSX.Element => {
   const { count, token } = word; //similarity
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
-    // setKeywordRef(true); // COMMENT TO ENABLE NEW SEARCH ON CLICK
+    setKeywordRef(true); // COMMENT TO ENABLE NEW SEARCH ON CLICK
     const message = {
       call: 'setDocumentListParams', // call
       args: [{ q: `${token}` }] // arguments
