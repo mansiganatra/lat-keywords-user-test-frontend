@@ -6,14 +6,27 @@ import { SimilarToken } from '../../types';
 interface Props {
   word: SimilarToken;
   setKeywordRef: (bool: boolean) => void;
+  color: string;
+  handleTokenSelect: (token: string) => void;
+  selectedToken: string | null;
 }
 //setKeywordRef
-const Keyword = ({ word, setKeywordRef }: Props): JSX.Element => {
+const Keyword = ({
+  word,
+  setKeywordRef,
+  color,
+  handleTokenSelect,
+  selectedToken
+}: Props): JSX.Element => {
   const { count, token } = word; //similarity
 
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleClick = (
+    e: React.MouseEvent<HTMLButtonElement>,
+    token: string
+  ) => {
     e.stopPropagation();
     setKeywordRef(true); // COMMENT TO ENABLE NEW SEARCH ON CLICK
+    handleTokenSelect(token);
     const message = {
       call: 'setDocumentListParams', // call
       args: [{ q: `${token}` }] // arguments
@@ -22,7 +35,11 @@ const Keyword = ({ word, setKeywordRef }: Props): JSX.Element => {
   };
 
   return (
-    <StyledKWButton onClick={handleClick}>
+    <StyledKWButton
+      onClick={e => handleClick(e, token)}
+      selected={selectedToken === token}
+      color={color}
+    >
       <StyledKWItem>
         <StyledText>{token}</StyledText>
         <StyledFreq>{count}</StyledFreq>
@@ -30,6 +47,17 @@ const Keyword = ({ word, setKeywordRef }: Props): JSX.Element => {
     </StyledKWButton>
   );
 };
+
+const StyledKWButton = styled.button<{ selected: boolean; color: string }>`
+  cursor: pointer;
+  width: 100%;
+  border: none;
+
+  background: ${({ selected, color }) =>
+    selected ? `${color}50` : 'rgba(244, 244, 244, 0.75)'};
+  border-radius: 21px;
+  margin-bottom: 7px;
+`;
 
 const StyledText = styled.p`
   font-family: 'Helvetica Neue', sans-serif;
@@ -56,15 +84,6 @@ const StyledKWItem = styled.div`
   align-items: center;
   padding: 0 13px;
   border: none;
-`;
-const StyledKWButton = styled.button`
-  cursor: pointer;
-  width: 100%;
-  border: none;
-
-  background: rgba(244, 244, 244, 0.75);
-  border-radius: 21px;
-  margin-bottom: 7px;
 `;
 
 export default Keyword;

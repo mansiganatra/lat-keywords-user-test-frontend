@@ -33,8 +33,12 @@ const SearchedTerm = ({
     id,
     sortedSimilarTokensByCount
   } = searchedItem;
-  const [hover, setHover] = useState(false);
+  const [hover, setHover] = useState<Boolean>(false);
+  const [selectedToken, setSelectedToken] = useState<string | null>(null);
 
+  const handleTokenSelect = (token: string): void => {
+    setSelectedToken(token);
+  };
   const handleHoverEnable = (): void => {
     if (!hover) return setHover(true);
   };
@@ -101,6 +105,9 @@ const SearchedTerm = ({
                         key={i}
                         word={word}
                         setKeywordRef={setKeywordRef}
+                        color={topBarColor}
+                        handleTokenSelect={handleTokenSelect}
+                        selectedToken={selectedToken}
                       />
                     )
                   )
@@ -112,6 +119,9 @@ const SearchedTerm = ({
                         key={i}
                         word={word}
                         setKeywordRef={setKeywordRef}
+                        color={topBarColor}
+                        handleTokenSelect={handleTokenSelect}
+                        selectedToken={selectedToken}
                       />
                     )
                   )}

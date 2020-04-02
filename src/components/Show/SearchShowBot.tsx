@@ -14,6 +14,7 @@ interface Props {
   setKeywordRef: (bool: boolean) => void;
   deleteModel: (modelId: number) => void;
   term: string | null;
+  suggestedList: string[];
 }
 
 const SearchShowBot = ({
@@ -23,11 +24,10 @@ const SearchShowBot = ({
   selectModel,
   setKeywordRef,
   deleteModel,
-  term
+  term,
+  suggestedList
 }: Props): JSX.Element => {
   const { searchedList } = state;
-
-  const suggestedList: string[] = ['donald', 'money', 'politics', 'Politics'];
 
   return (
     <>

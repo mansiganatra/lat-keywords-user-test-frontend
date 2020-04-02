@@ -58,6 +58,7 @@ const SearchTopResult = ({
         setKeywordRef={setKeywordRef}
         deleteModel={deleteModel}
         term={term}
+        suggestedList={suggestedList}
       />
     </>
   );
