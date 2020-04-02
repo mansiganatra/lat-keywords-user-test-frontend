@@ -39,7 +39,7 @@ const SearchedTerm = ({
     id,
     sortedSimilarTokensByCount
   } = searchedItem;
-  const [hover, setHover] = useState<Boolean>(false);
+  const [hover, setHover] = useState<boolean>(false);
 
   const handleHoverEnable = (): void => {
     if (!hover) return setHover(true);

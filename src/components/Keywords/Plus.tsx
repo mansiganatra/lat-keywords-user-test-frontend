@@ -2,9 +2,10 @@ import React from 'react';
 
 interface PlusProps {
   color: string;
+  hover: boolean;
 }
 
-const Plus = ({ color }: PlusProps) => {
+const Plus = ({ color, hover }: PlusProps) => {
   return (
     <svg
       width="10"
@@ -18,7 +19,7 @@ const Plus = ({ color }: PlusProps) => {
         y1="5"
         x2="9"
         y2="5"
-        stroke={color}
+        stroke={hover ? 'white' : color}
         stroke-width="2"
         stroke-linecap="round"
       />
@@ -27,7 +28,7 @@ const Plus = ({ color }: PlusProps) => {
         y1="9"
         x2="5"
         y2="1"
-        stroke={color}
+        stroke={hover ? 'white' : color}
         stroke-width="2"
         stroke-linecap="round"
       />

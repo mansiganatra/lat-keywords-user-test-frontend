@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
-import plus from '../../lib/images/plus.png';
 import { SimilarToken } from '../../types';
 import Plus from './Plus';
 
@@ -25,6 +24,14 @@ const Keyword = ({
   tokenId
 }: Props): JSX.Element => {
   const { count, token, similarity } = word;
+  const [hover, setHover] = useState<boolean>(false);
+
+  const handleHoverEnable = (): void => {
+    if (!hover) return setHover(true);
+  };
+  const handleHoverDisable = (): void => {
+    if (hover) return setHover(false);
+  };
 
   const handleClick = (
     e: React.MouseEvent<HTMLButtonElement>,
@@ -84,8 +91,14 @@ const Keyword = ({
         </StyledKWItem>
       </StyledKWButton>
       {selectedToken === token && tokenId === searchedId && (
-        <StyledPlus color={color} onClick={e => handleNewClick(e, token)}>
-          <Plus color={color} />
+        <StyledPlus
+          color={color}
+          onClick={e => handleNewClick(e, token)}
+          onMouseEnter={handleHoverEnable}
+          onMouseLeave={handleHoverDisable}
+          hover={hover}
+        >
+          <Plus color={color} hover={hover} />
         </StyledPlus>
       )}
     </StyledContainer>
@@ -135,7 +148,8 @@ const StyledKWItem = styled.div`
   border: none;
 `;
 
-const StyledPlus = styled.button<{ color: string }>`
+const StyledPlus = styled.button<{ color: string; hover: boolean }>`
+  cursor: pointer;
   position: absolute;
   display: flex;
   justify-content: center;
@@ -145,7 +159,7 @@ const StyledPlus = styled.button<{ color: string }>`
   border-radius: 50%;
   border: 1px solid ${({ color }): string => color};
 
-  background: #fafafb;
+  background: ${({ hover, color }) => (hover ? color : '#fafafb')};
   box-shadow: 0px 4px 20px rgba(23, 45, 59, 0.2);
 
   right: -35px;

@@ -29,15 +29,15 @@ const Header = ({ suggestedList }: HeaderProps): JSX.Element => {
       </StyledHeaderMain>
       <StyledSubHeader>
         <StyledSubHeaderText>
-          Try searching keywords related to each project like:
+          Try searching keywords related to each project.
         </StyledSubHeaderText>
-        <StyledSuggestionListContainer>
+        {/* <StyledSuggestionListContainer>
           {suggestedList.map(
             (suggested: string): JSX.Element => (
               <SuggestionItem key={suggested} suggested={suggested} />
             )
           )}
-        </StyledSuggestionListContainer>
+        </StyledSuggestionListContainer> */}
       </StyledSubHeader>
     </StyledHeaderMessage>
   );
