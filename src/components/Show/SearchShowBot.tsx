@@ -43,20 +43,22 @@ const SearchShowBot = ({
           <StyledModelList>
             {searchedList?.length > 0 &&
               searchedList.map((searchedItem: SearchedItem, i: number) => (
-                <SearchedTerm
-                  key={searchedItem.id}
-                  searchedItem={searchedItem}
-                  topBarColor={colorArray[i]}
-                  sortBy={sortBy}
-                  selectedId={selectedId}
-                  selectModel={selectModel}
-                  setKeywordRef={setKeywordRef}
-                  deleteModel={deleteModel}
-                  term={state.searchHistory[i].term}
-                  selectedToken={selectedToken}
-                  handleTokenSelect={handleTokenSelect}
-                  tokenId={tokenId}
-                />
+                <>
+                  <SearchedTerm
+                    key={searchedItem.id}
+                    searchedItem={searchedItem}
+                    topBarColor={colorArray[i]}
+                    sortBy={sortBy}
+                    selectedId={selectedId}
+                    selectModel={selectModel}
+                    setKeywordRef={setKeywordRef}
+                    deleteModel={deleteModel}
+                    term={state.searchHistory[i].term}
+                    selectedToken={selectedToken}
+                    handleTokenSelect={handleTokenSelect}
+                    tokenId={tokenId}
+                  />
+                </>
               ))}
           </StyledModelList>
         </StyledSearchShowBot>
@@ -91,6 +93,7 @@ const SearchShowBot = ({
 
 const StyledFallbackMessage = styled.section`
   padding-top: 70px;
+  min-height: 100vh;
 
   .message-container {
     margin: 0 auto;

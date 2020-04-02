@@ -24,7 +24,7 @@ const Keyword = ({
   searchedId,
   tokenId
 }: Props): JSX.Element => {
-  const { count, token } = word; //similarity
+  const { count, token, similarity } = word;
 
   const handleClick = (
     e: React.MouseEvent<HTMLButtonElement>,
@@ -69,7 +69,18 @@ const Keyword = ({
       >
         <StyledKWItem>
           <StyledText>{token}</StyledText>
-          <StyledFreq>{count}</StyledFreq>
+          <StyledFreq
+            color={color}
+            selected={selectedToken === token && tokenId === searchedId}
+          >
+            {count}
+          </StyledFreq>
+          <StyledFreq
+            color={color}
+            selected={selectedToken === token && tokenId === searchedId}
+          >
+            {`${(similarity / 1).toFixed(2)}%`.slice(2)}
+          </StyledFreq>
         </StyledKWItem>
       </StyledKWButton>
       {selectedToken === token && tokenId === searchedId && (
@@ -104,7 +115,7 @@ const StyledText = styled.p`
   line-height: 15px;
   text-transform: capitalize;
 `;
-const StyledFreq = styled(StyledText)`
+const StyledFreq = styled(StyledText)<{ color: string; selected: boolean }>`
   font-family: 'Helvetica Neue', sans-serif;
   font-style: normal;
   font-weight: bold;
@@ -112,7 +123,8 @@ const StyledFreq = styled(StyledText)`
   line-height: 15px;
   text-align: center;
 
-  color: rgba(23, 45, 59, 0.5);
+  color: ${({ color, selected }) =>
+    selected ? color : 'rgba(23, 45, 59, 0.5)'};
 `;
 const StyledKWItem = styled.div`
   display: flex;

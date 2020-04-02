@@ -94,6 +94,7 @@ const SearchedTerm = ({
           <StyledHeaderBot>
             <div className="word">Word</div>
             <div className="word-partner">count</div>
+            <div className="word-partner">Similarity</div>
           </StyledHeaderBot>
         </StyledModelHeaderContainer>
         <StyledKeywordListContainer>
@@ -146,8 +147,8 @@ const SearchedTerm = ({
 
 const StyledContainer = styled.div`
   width: 100%;
-  max-width: 200px;
-  min-width: 200px;
+  max-width: 220px;
+  min-width: 220px;
 `;
 const StyledModelContainer = styled.div<{
   selected: boolean;
@@ -156,8 +157,8 @@ const StyledModelContainer = styled.div<{
   border-top: 5px solid
     ${({ topBarColor }: { topBarColor: string }): string => topBarColor};
   margin-right: 20px;
-  max-width: 181px;
-  min-width: 181px;
+  max-width: 200px;
+  min-width: 200px;
   width: 100%;
   box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.08);
   border-top-left-radius: 3px;

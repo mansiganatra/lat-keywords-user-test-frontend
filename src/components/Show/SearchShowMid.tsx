@@ -19,7 +19,7 @@ const SearchShowMid = ({ setSortBy }: Props): JSX.Element => {
         <label htmlFor="sort">Sort Associated Words by</label>
         <form>
           <select name="sort" id="sort" onChange={handleChange}>
-            <option value="relevance">Relevance</option>
+            <option value="relevance">Similarity</option>
             <option value="freq">Frequency</option>
           </select>
           <div>
