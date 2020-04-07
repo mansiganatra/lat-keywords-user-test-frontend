@@ -19,7 +19,7 @@ const Plus = ({ color, hover }: PlusProps) => {
         y1="5"
         x2="9"
         y2="5"
-        stroke={hover ? 'white' : color}
+        stroke={hover ? 'white' : '#3E5372'}
         stroke-width="2"
         stroke-linecap="round"
       />
@@ -28,7 +28,7 @@ const Plus = ({ color, hover }: PlusProps) => {
         y1="9"
         x2="5"
         y2="1"
-        stroke={hover ? 'white' : color}
+        stroke={hover ? 'white' : '#3E5372'}
         stroke-width="2"
         stroke-linecap="round"
       />

@@ -27,30 +27,13 @@ const Header = ({ suggestedList }: HeaderProps): JSX.Element => {
           {modalEnabled && <ToolTipModal setModalEnabled={setModalEnabled} />}
         </StyledHeader>
       </StyledHeaderMain>
-      <StyledSubHeader>
-        <StyledSubHeaderText>
-          Try searching keywords related to each project.
-        </StyledSubHeaderText>
-        {/* <StyledSuggestionListContainer>
-          {suggestedList.map(
-            (suggested: string): JSX.Element => (
-              <SuggestionItem key={suggested} suggested={suggested} />
-            )
-          )}
-        </StyledSuggestionListContainer> */}
-      </StyledSubHeader>
     </StyledHeaderMessage>
   );
 };
 
-const StyledSuggestionListContainer = styled.div`
-  display: flex;
-  margin-top: 10px;
-`;
-
 const StyledHeaderMessage = styled.header`
-  padding-bottom: 40px;
-  padding-top: 35px;
+  padding-bottom: 30px;
+  padding-top: 30px;
 
   @media (max-width: 625px) {
     display: none;
@@ -85,23 +68,10 @@ const StyledHeader = styled.h1`
 
     img {
       width: inherit;
+      position: relative;
+      top: 2px;
     }
   }
-`;
-const StyledSubHeader = styled.div`
-  padding-top: 6px;
-  width: 100%;
-  max-width: 275px;
-`;
-const StyledSubHeaderText = styled.p`
-  font-family: 'Archivo', sans-serif;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 1.2rem;
-  line-height: 125%;
-  /* or 14px */
-
-  color: rgba(160, 175, 199, 0.6);
 `;
 
 export default Header;

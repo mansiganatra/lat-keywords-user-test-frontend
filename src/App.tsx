@@ -49,7 +49,7 @@ const App = (): JSX.Element => {
           documentSetId
         }
       });
-
+      res.data.mostFrequentTokens.pop(); // set item length to 4 instead of 5
       setSuggestedList(res.data.mostFrequentTokens);
     } catch (error) {
       console.error(error);
@@ -257,7 +257,8 @@ const App = (): JSX.Element => {
 
     function oboeJS(): Promise<ProgressState> {
       return new Promise((resolve, reject) => {
-        const url: string = 'https://mansi-nlp.data.caltimes.io';
+        const url: string = 'http://localhost:3335/';
+        // const url: string = 'https://mansi-nlp.sdata.caltimes.io';
 
         oboe({
           url: `${process.env.REACT_APP_BASE_URL || url}/generate`,

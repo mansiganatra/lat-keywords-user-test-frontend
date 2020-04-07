@@ -76,18 +76,20 @@ const Keyword = ({
       >
         <StyledKWItem>
           <StyledText>{token}</StyledText>
-          <StyledFreq
-            color={color}
-            selected={selectedToken === token && tokenId === searchedId}
-          >
-            {count}
-          </StyledFreq>
-          <StyledFreq
-            color={color}
-            selected={selectedToken === token && tokenId === searchedId}
-          >
-            {`${(similarity / 1).toFixed(2)}%`.slice(2)}
-          </StyledFreq>
+          <StyledStatsContent>
+            <StyledFreq
+              color={color}
+              selected={selectedToken === token && tokenId === searchedId}
+            >
+              {count}
+            </StyledFreq>
+            <StyledFreq
+              color={color}
+              selected={selectedToken === token && tokenId === searchedId}
+            >
+              {`${(similarity / 1).toFixed(2)}%`.slice(2)}
+            </StyledFreq>
+          </StyledStatsContent>
         </StyledKWItem>
       </StyledKWButton>
       {selectedToken === token && tokenId === searchedId && (
@@ -108,14 +110,17 @@ const Keyword = ({
 const StyledContainer = styled.div`
   position: relative;
 `;
-
-const StyledKWButton = styled.button<{ selected: boolean; color: string }>`
+const StyledStatsContent = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 60px;
+`;
+const StyledKWButton = styled.button<{ selected: boolean }>`
   cursor: pointer;
   width: 100%;
   border: none;
 
-  background: ${({ selected, color }) =>
-    selected ? `${color}30` : '#F3F5F8;'};
+  background: ${({ selected }) => (selected ? '#286FD815' : '#F3F5F8;')};
   border-radius: 21px;
   margin-bottom: 7px;
 `;
@@ -128,7 +133,7 @@ const StyledText = styled.p`
   line-height: 15px;
   text-transform: capitalize;
 `;
-const StyledFreq = styled(StyledText)<{ color: string; selected: boolean }>`
+const StyledFreq = styled(StyledText)<{ selected: boolean }>`
   font-family: 'Helvetica Neue', sans-serif;
   font-style: normal;
   font-weight: bold;
@@ -136,8 +141,7 @@ const StyledFreq = styled(StyledText)<{ color: string; selected: boolean }>`
   line-height: 15px;
   text-align: center;
 
-  color: ${({ color, selected }) =>
-    selected ? color : 'rgba(23, 45, 59, 0.5)'};
+  color: ${({ selected }) => (selected ? '#286FD8' : 'rgba(23, 45, 59, 0.5)')};
 `;
 const StyledKWItem = styled.div`
   display: flex;
@@ -157,9 +161,9 @@ const StyledPlus = styled.button<{ color: string; hover: boolean }>`
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  border: 1px solid ${({ color }): string => color};
+  border: 1px solid rgba(160, 175, 199, 0.5);
 
-  background: ${({ hover, color }) => (hover ? color : '#fafafb')};
+  background: ${({ hover, color }) => (hover ? '#286FD8' : '#fafafb')};
   box-shadow: 0px 4px 20px rgba(23, 45, 59, 0.2);
 
   right: -35px;

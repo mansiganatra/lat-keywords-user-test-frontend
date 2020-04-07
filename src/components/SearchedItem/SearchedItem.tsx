@@ -84,10 +84,10 @@ const SearchedTerm = ({
       >
         <StyledModelHeaderContainer>
           <StyledHeaderTop>
-            <button>
+            <button className="header">
               <h1>{term}</h1>
             </button>
-            <button onClick={handleDelete}>
+            <button onClick={handleDelete} className="header">
               <img src={xAlt} alt="" />
             </button>
           </StyledHeaderTop>
@@ -101,7 +101,7 @@ const SearchedTerm = ({
           <StyledKeywordList>
             {sortBy === 'relevance'
               ? similarTokens
-                  .slice(0, 15)
+                  .slice(0, 10)
                   .map(
                     (word: SimilarToken, i: number): JSX.Element => (
                       <Keyword
@@ -117,7 +117,7 @@ const SearchedTerm = ({
                     )
                   )
               : sortedSimilarTokensByCount
-                  .slice(0, 15)
+                  .slice(0, 10)
                   .map(
                     (word: SimilarToken, i: number): JSX.Element => (
                       <Keyword
@@ -133,12 +133,6 @@ const SearchedTerm = ({
                     )
                   )}
           </StyledKeywordList>
-          {/* <div className="see-more-container">
-          <div className="content">
-            <p>SEE MORE</p>
-            <img src={seeMoreArror} alt="arrow" />
-          </div>
-        </div> */}
         </StyledKeywordListContainer>
       </StyledModelContainer>
     </StyledContainer>
@@ -163,7 +157,6 @@ const StyledModelContainer = styled.div<{
   box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.08);
   border-top-left-radius: 3px;
   border-top-right-radius: 3px;
-  margin-top: ${({ selected }): string => (selected ? '-25px' : '0')};
 `;
 const StyledModelHeaderContainer = styled.header`
   background-color: #ffffff;
@@ -187,9 +180,10 @@ const StyledHeaderTop = styled.div`
   justify-content: space-between;
   align-items: center;
 
-  button {
+  .header {
     cursor: pointer;
     border: none;
+    background-color: transparent;
   }
 
   img:hover {

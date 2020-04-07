@@ -66,15 +66,14 @@ const SearchShowBot = ({
         <StyledFallbackMessage>
           <div className="message-container">
             <h2>Start Searching Now</h2>
-            <p className="message-text">
-              Your document set is now ready to be sorted by the Associator.
+            <MsgText>
               Enter your search term into the search bar above to see a list of
               related words.
-            </p>
-            <p className="message-text">
+            </MsgText>
+            <MsgTextShort>
               Here are some keywords from the document set that you can get
               started with:
-            </p>
+            </MsgTextShort>
             <div>
               {suggestedList.map((suggested: string) => (
                 <SuggestionItem
@@ -91,6 +90,23 @@ const SearchShowBot = ({
   );
 };
 
+const MsgText = styled.p`
+  font-family: 'Archivo', sans-serif;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 1.1rem;
+  line-height: 125%;
+  text-align: center;
+  margin-bottom: 15px;
+  color: #a0afc7;
+
+  width: 105%;
+  /* max-width: 271px; */
+`;
+const MsgTextShort = styled(MsgText)`
+  width: 95%;
+`;
+
 const StyledFallbackMessage = styled.section`
   padding-top: 70px;
   min-height: 100vh;
@@ -105,23 +121,13 @@ const StyledFallbackMessage = styled.section`
     align-items: center;
 
     h2 {
-      font-family: 'Archivo';
+      font-family: 'Archivo', sans-serif;
       font-style: normal;
       font-weight: bold;
       font-size: 1.7rem;
       line-height: 18px;
       text-align: center;
       margin-bottom: 10px;
-      color: #a0afc7;
-    }
-    .message-text {
-      font-family: 'Archivo';
-      font-style: normal;
-      font-weight: bold;
-      font-size: 1.1rem;
-      line-height: 125%;
-      text-align: center;
-      margin-bottom: 15px;
       color: #a0afc7;
     }
     div {

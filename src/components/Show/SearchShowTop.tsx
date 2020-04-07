@@ -50,36 +50,40 @@ const SearchShowTop = ({
   }, [clear, setClear, clearSearchAll]);
   return (
     <StyledSearchShowTop>
-      <div className="search-show-header-container">
-        <ShowTopHeader suggestedList={suggestedList} />
-      </div>
-      <StyledSearchShowTagsContainer>
-        <StyledShowTagsTop>
-          <h2>Search Terms:</h2>
-          <StyledClearHistoryBtn onClick={handleClearConfirm}>
-            <img src={redX} alt="x" />
-            <p>Clear All</p>{' '}
-          </StyledClearHistoryBtn>
-        </StyledShowTagsTop>
-        <StyledTagHistory>
-          <StyledHistoryList>
-            {!!state.searchHistory?.length &&
-              state.searchHistory?.map(
-                (tag: SearchHistory, i: number): JSX.Element => (
-                  <ShowTopTagItem
-                    key={tag.id}
-                    tag={tag}
-                    color={colorArray[i]}
-                    selectModel={selectModel}
-                    deleteModel={deleteModel}
-                    selectedId={selectedId}
-                    setKeywordRef={setKeywordRef}
-                  />
-                )
-              )}
-          </StyledHistoryList>
-        </StyledTagHistory>
-      </StyledSearchShowTagsContainer>
+      {state.searchedList.length === 0 && (
+        <div className="search-show-header-container">
+          <ShowTopHeader suggestedList={suggestedList} />
+        </div>
+      )}
+      {state.searchedList.length > 0 && (
+        <StyledSearchShowTagsContainer>
+          <StyledShowTagsTop>
+            <h2>Search Terms:</h2>
+            <StyledClearHistoryBtn onClick={handleClearConfirm}>
+              <img src={redX} alt="x" />
+              <p>Clear All</p>{' '}
+            </StyledClearHistoryBtn>
+          </StyledShowTagsTop>
+          <StyledTagHistory>
+            <StyledHistoryList>
+              {!!state.searchHistory?.length &&
+                state.searchHistory?.map(
+                  (tag: SearchHistory, i: number): JSX.Element => (
+                    <ShowTopTagItem
+                      key={tag.id}
+                      tag={tag}
+                      color={colorArray[i]}
+                      selectModel={selectModel}
+                      deleteModel={deleteModel}
+                      selectedId={selectedId}
+                      setKeywordRef={setKeywordRef}
+                    />
+                  )
+                )}
+            </StyledHistoryList>
+          </StyledTagHistory>
+        </StyledSearchShowTagsContainer>
+      )}
     </StyledSearchShowTop>
   );
 };
