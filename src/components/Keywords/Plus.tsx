@@ -8,25 +8,25 @@ interface PlusProps {
 const Plus = ({ color, hover }: PlusProps) => {
   return (
     <svg
-      width="10"
-      height="10"
-      viewBox="0 0 10 10"
+      width="8"
+      height="8"
+      viewBox="0 0 8 8"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
       <line
         x1="1"
-        y1="5"
-        x2="9"
-        y2="5"
+        y1="3.8"
+        x2="7"
+        y2="3.8"
         stroke={hover ? 'white' : '#3E5372'}
         stroke-width="2"
         stroke-linecap="round"
       />
       <line
-        x1="5"
-        y1="9"
-        x2="5"
+        x1="3.80005"
+        y1="7"
+        x2="3.80005"
         y2="1"
         stroke={hover ? 'white' : '#3E5372'}
         stroke-width="2"

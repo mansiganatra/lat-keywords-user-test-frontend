@@ -77,31 +77,33 @@ const Keyword = ({
         <StyledKWItem>
           <StyledText>{token}</StyledText>
           <StyledStatsContent>
+            <StyledSimilarity
+              color={color}
+              selected={selectedToken === token && tokenId === searchedId}
+            >
+              {`${(similarity / 1).toFixed(2)}%`.slice(2)}
+            </StyledSimilarity>
             <StyledFreq
               color={color}
               selected={selectedToken === token && tokenId === searchedId}
             >
               {count}
             </StyledFreq>
-            <StyledFreq
-              color={color}
-              selected={selectedToken === token && tokenId === searchedId}
-            >
-              {`${(similarity / 1).toFixed(2)}%`.slice(2)}
-            </StyledFreq>
           </StyledStatsContent>
         </StyledKWItem>
       </StyledKWButton>
       {selectedToken === token && tokenId === searchedId && (
-        <StyledPlus
-          color={color}
-          onClick={e => handleNewClick(e, token)}
-          onMouseEnter={handleHoverEnable}
-          onMouseLeave={handleHoverDisable}
-          hover={hover}
-        >
-          <Plus color={color} hover={hover} />
-        </StyledPlus>
+        <StyledPlusContainer>
+          <StyledPlus
+            color={color}
+            onClick={e => handleNewClick(e, token)}
+            onMouseEnter={handleHoverEnable}
+            onMouseLeave={handleHoverDisable}
+            hover={hover}
+          >
+            <Plus color={color} hover={hover} />
+          </StyledPlus>
+        </StyledPlusContainer>
       )}
     </StyledContainer>
   );
@@ -113,7 +115,8 @@ const StyledContainer = styled.div`
 const StyledStatsContent = styled.div`
   display: flex;
   justify-content: space-between;
-  width: 60px;
+  max-width: 65px;
+  width: 100%;
 `;
 const StyledKWButton = styled.button<{ selected: boolean }>`
   cursor: pointer;
@@ -132,6 +135,9 @@ const StyledText = styled.p`
   font-size: 1.2rem;
   line-height: 15px;
   text-transform: capitalize;
+
+  padding-right: 8px;
+  z-index: 1;
 `;
 const StyledFreq = styled(StyledText)<{ selected: boolean }>`
   font-family: 'Helvetica Neue', sans-serif;
@@ -140,34 +146,62 @@ const StyledFreq = styled(StyledText)<{ selected: boolean }>`
   font-size: 1.2rem;
   line-height: 15px;
   text-align: center;
+  padding-right: 0px;
 
   color: ${({ selected }) => (selected ? '#286FD8' : 'rgba(23, 45, 59, 0.5)')};
+`;
+const StyledSimilarity = styled(StyledFreq)`
+  padding-right: 8px;
 `;
 const StyledKWItem = styled.div`
   display: flex;
   justify-content: space-between;
   height: 30px;
   align-items: center;
-  padding: 0 13px;
+  padding: 0 8px;
   border: none;
 `;
 
 const StyledPlus = styled.button<{ color: string; hover: boolean }>`
   cursor: pointer;
-  position: absolute;
+
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 30px;
-  height: 30px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
   border: 1px solid rgba(160, 175, 199, 0.5);
 
   background: ${({ hover, color }) => (hover ? '#286FD8' : '#fafafb')};
-  box-shadow: 0px 4px 20px rgba(23, 45, 59, 0.2);
+`;
 
-  right: -35px;
-  top: 1px;
+const StyledPlusContainer = styled.div`
+  top: 0px;
+  position: absolute;
+
+  height: 32px;
+  width: 39px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-top-right-radius: 21px;
+  border-bottom-right-radius: 21px;
+  animation-name: slidein;
+  animation-duration: 0.2s;
+  animation-fill-mode: forwards;
+  z-index: 0;
+
+  @keyframes slidein {
+    from {
+      right: -20px;
+      background: transparent;
+    }
+    to {
+      right: -27px;
+      background: #edf3fc;
+    }
+  }
 `;
 
 export default Keyword;

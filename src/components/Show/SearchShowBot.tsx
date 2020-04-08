@@ -38,10 +38,10 @@ const SearchShowBot = ({
 
   return (
     <>
-      {searchedList.length > 0 ? (
+      {!!searchedList.length ? (
         <StyledSearchShowBot>
           <StyledModelList>
-            {searchedList?.length > 0 &&
+            {!!searchedList?.length &&
               searchedList.map((searchedItem: SearchedItem, i: number) => (
                 <>
                   <SearchedTerm

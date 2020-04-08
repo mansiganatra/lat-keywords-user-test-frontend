@@ -57,20 +57,76 @@ const SearchedTerm = ({
     let message;
     setKeywordRef(true);
 
-    if (selectedId === id) {
-      message = {
-        call: 'setDocumentListParams', // call
-        args: [{ q: `` }] // arguments
-      };
-      selectModel!(null);
-    } else {
-      message = {
-        call: 'setDocumentListParams', // call
-        args: [{ q: `${term}` }] // arguments
-      };
-      selectModel(id);
-    }
+    message = {
+      call: 'setDocumentListParams', // call
+      args: [{ q: `${term}` }] // arguments
+    };
+    selectModel(id);
     window.parent.postMessage(message, '*');
+  };
+
+  const handleSortList = () => {
+    if (sortBy === 'similarity') {
+      return (
+        <>
+          {similarTokens.slice(0, 10).map(
+            (word: SimilarToken, i: number): JSX.Element => (
+              <Keyword
+                key={i}
+                word={word}
+                setKeywordRef={setKeywordRef}
+                color={topBarColor}
+                handleTokenSelect={handleTokenSelect}
+                selectedToken={selectedToken}
+                searchedId={id}
+                tokenId={tokenId}
+              />
+            )
+          )}
+        </>
+      );
+    }
+    if (sortBy === 'countAsc') {
+      return (
+        <>
+          {sortedSimilarTokensByCount.slice(0, 10).map(
+            (word: SimilarToken, i: number): JSX.Element => (
+              <Keyword
+                key={i}
+                word={word}
+                setKeywordRef={setKeywordRef}
+                color={topBarColor}
+                handleTokenSelect={handleTokenSelect}
+                selectedToken={selectedToken}
+                searchedId={id}
+                tokenId={tokenId}
+              />
+            )
+          )}
+        </>
+      );
+    }
+    return (
+      <>
+        {sortedSimilarTokensByCount
+          .slice(0, 10)
+          .sort((a, b) => a.count - b.count)
+          .map(
+            (word: SimilarToken, i: number): JSX.Element => (
+              <Keyword
+                key={i}
+                word={word}
+                setKeywordRef={setKeywordRef}
+                color={topBarColor}
+                handleTokenSelect={handleTokenSelect}
+                selectedToken={selectedToken}
+                searchedId={id}
+                tokenId={tokenId}
+              />
+            )
+          )}
+      </>
+    );
   };
 
   return (
@@ -93,46 +149,12 @@ const SearchedTerm = ({
           </StyledHeaderTop>
           <StyledHeaderBot>
             <div className="word">Word</div>
-            <div className="word-partner">count</div>
             <div className="word-partner">Similarity</div>
+            <div className="word-partner">count</div>
           </StyledHeaderBot>
         </StyledModelHeaderContainer>
         <StyledKeywordListContainer>
-          <StyledKeywordList>
-            {sortBy === 'relevance'
-              ? similarTokens
-                  .slice(0, 10)
-                  .map(
-                    (word: SimilarToken, i: number): JSX.Element => (
-                      <Keyword
-                        key={i}
-                        word={word}
-                        setKeywordRef={setKeywordRef}
-                        color={topBarColor}
-                        handleTokenSelect={handleTokenSelect}
-                        selectedToken={selectedToken}
-                        searchedId={id}
-                        tokenId={tokenId}
-                      />
-                    )
-                  )
-              : sortedSimilarTokensByCount
-                  .slice(0, 10)
-                  .map(
-                    (word: SimilarToken, i: number): JSX.Element => (
-                      <Keyword
-                        key={i}
-                        word={word}
-                        setKeywordRef={setKeywordRef}
-                        color={topBarColor}
-                        handleTokenSelect={handleTokenSelect}
-                        selectedToken={selectedToken}
-                        searchedId={id}
-                        tokenId={tokenId}
-                      />
-                    )
-                  )}
-          </StyledKeywordList>
+          <StyledKeywordList>{handleSortList()}</StyledKeywordList>
         </StyledKeywordListContainer>
       </StyledModelContainer>
     </StyledContainer>
@@ -203,7 +225,7 @@ const StyledHeaderBot = styled.div`
     line-height: 11px;
     text-align: right;
     letter-spacing: 0.08em;
-    text-transform: uppercase;
+    text-transform: capitalize;
 
     color: rgba(23, 45, 59, 0.4);
   }

@@ -49,7 +49,7 @@ const SearchTopResult = ({
         setKeywordRef={setKeywordRef}
         suggestedList={suggestedList}
       />
-      {state.searchedList.length > 0 && <SearchShowMid setSortBy={setSortBy} />}
+      {!!state.searchedList.length && <SearchShowMid setSortBy={setSortBy} />}
       <SearchShowBot
         sortBy={sortBy}
         state={state}

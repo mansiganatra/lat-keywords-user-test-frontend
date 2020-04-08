@@ -19,7 +19,7 @@ import Snackbar from './components/Snackbar/Snackbar';
 
 const App = (): JSX.Element => {
   const [notificationIsOpen, setNotificationIsOpen] = useState<boolean>(false);
-  const [sortBy, setSortBy] = useState<string>('relevance');
+  const [sortBy, setSortBy] = useState<string>('similarity');
   const [term, setTerm] = useState<string | null>('');
   const [selectedId, setSelectedId] = useState<number | null>(null);
   const [keywordMode, setKeywordMode] = useState<boolean>(false); // checks if kw is being clicked
@@ -128,7 +128,7 @@ const App = (): JSX.Element => {
           }
         });
 
-        if (res.data.foundTokens.length === 0) {
+        if (!res.data.foundTokens.length) {
           setNotificationIsOpen(true);
 
           setState(prevState => {
@@ -236,7 +236,7 @@ const App = (): JSX.Element => {
         });
 
         if (typeof res.data === 'object' && res.data.associatorStore) {
-          if (res.data.associatorStore.state.searchedList.length > 0) {
+          if (!!res.data.associatorStore.state.searchedList.length) {
             setState(res.data.associatorStore?.state);
           } else {
             // set default initial values to state

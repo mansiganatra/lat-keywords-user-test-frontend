@@ -13,25 +13,47 @@ const SearchShowMid = ({ setSortBy }: Props): JSX.Element => {
   };
 
   return (
-    <StyledShowMidContainer>
-      <StyledShowMidLeft>words associated with...</StyledShowMidLeft>
-      <StyledShowMidRight>
-        <label htmlFor="sort">Sort Associated Words by</label>
-        <form>
-          <select name="sort" id="sort" onChange={handleChange}>
-            <option value="relevance">Similarity</option>
-            <option value="freq">Frequency</option>
-          </select>
-          <div>
-            <img src={arrowDown} alt="arrow-down" />
-          </div>
-        </form>
-      </StyledShowMidRight>
-    </StyledShowMidContainer>
+    <section>
+      <StyledShowMidContainer>
+        <StyledShowMidLeft>words associated with...</StyledShowMidLeft>
+        <StyledShowMidRight>
+          <label htmlFor="sort">Sort Associated Words by</label>
+          <form>
+            <select name="sort" id="sort" onChange={handleChange}>
+              <option value="similarity">Similarity</option>
+              <option value="countAsc">High - Low count</option>
+              <option value="countDesc">Low - High count</option>
+            </select>
+            <div>
+              <img src={arrowDown} alt="arrow-down" />
+            </div>
+          </form>
+        </StyledShowMidRight>
+      </StyledShowMidContainer>
+      <StyledLowerContainer>
+        <p className="p">Tap on an Associated Word to filter your search.</p>
+      </StyledLowerContainer>
+    </section>
   );
 };
 
-const StyledShowMidContainer = styled.section`
+const StyledLowerContainer = styled.div`
+  padding-left: 50px;
+
+  .p {
+    font-family: 'Archivo', sans-serif;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 11px;
+    line-height: 125%;
+    /* or 14px */
+
+    /* #A0AFC7 */
+
+    color: #a0afc7;
+  }
+`;
+const StyledShowMidContainer = styled.div`
   width: 100%;
   justify-content: space-between;
   align-items: center;

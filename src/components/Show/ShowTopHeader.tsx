@@ -3,13 +3,7 @@ import styled from 'styled-components';
 
 import ToolTipModal from '../ToolTipModal/ToolTipModal';
 import moreInfo from '../../lib/images/more_info.png';
-import SuggestionItem from '../shared/SuggestionItem';
-
-interface HeaderProps {
-  suggestedList: string[];
-}
-
-const Header = ({ suggestedList }: HeaderProps): JSX.Element => {
+const Header = (): JSX.Element => {
   const [modalEnabled, setModalEnabled] = useState<boolean>(false);
 
   const handleClick = () => {
@@ -34,10 +28,6 @@ const Header = ({ suggestedList }: HeaderProps): JSX.Element => {
 const StyledHeaderMessage = styled.header`
   padding-bottom: 30px;
   padding-top: 30px;
-
-  @media (max-width: 625px) {
-    display: none;
-  }
 `;
 const StyledHeaderMain = styled.div`
   display: flex;

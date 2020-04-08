@@ -6,6 +6,7 @@ import redX from '../../lib/images/red_x.png';
 import ShowTopHeader from './ShowTopHeader';
 import { colorArray } from '../../utils';
 import { State, SearchHistory } from '../../types';
+import ClearBtn from './ClearBtn';
 
 interface Props {
   state: State;
@@ -50,19 +51,15 @@ const SearchShowTop = ({
   }, [clear, setClear, clearSearchAll]);
   return (
     <StyledSearchShowTop>
-      {state.searchedList.length === 0 && (
+      {!state.searchedList.length && (
         <div className="search-show-header-container">
-          <ShowTopHeader suggestedList={suggestedList} />
+          <ShowTopHeader />
         </div>
       )}
-      {state.searchedList.length > 0 && (
+      {!!state.searchedList.length && (
         <StyledSearchShowTagsContainer>
           <StyledShowTagsTop>
             <h2>Search Terms:</h2>
-            <StyledClearHistoryBtn onClick={handleClearConfirm}>
-              <img src={redX} alt="x" />
-              <p>Clear All</p>{' '}
-            </StyledClearHistoryBtn>
           </StyledShowTagsTop>
           <StyledTagHistory>
             <StyledHistoryList>
@@ -82,6 +79,9 @@ const SearchShowTop = ({
                 )}
             </StyledHistoryList>
           </StyledTagHistory>
+          <StyledClearHistoryBtn onClick={handleClearConfirm}>
+            <ClearBtn />
+          </StyledClearHistoryBtn>
         </StyledSearchShowTagsContainer>
       )}
     </StyledSearchShowTop>
@@ -97,28 +97,13 @@ const StyledSearchShowTop = styled.section`
   padding-left: 50px;
   background-color: #1e2229;
   padding-bottom: 5px;
-
-  @media (max-width: 700px) {
-    padding-left: 15px;
-  }
-
-  @media (max-width: 625px) {
-    flex-direction: column;
-  }
+  padding: 30px 30px 25px 30px;
 `;
 const StyledShowTagsTop = styled.div`
   display: flex;
-  position: absolute;
-  justify-content: space-between;
   background-color: #1e2229;
-  width: 100%;
-  align-items: center;
-  margin-bottom: 10px;
-  padding-top: 20px;
-  padding-bottom: 10px;
   z-index: 2;
-  width: 313px;
-  padding-left: 23px;
+  width: 150px;
 
   h2 {
     font-family: 'Helvetica Neue', sans-serif;
@@ -159,22 +144,15 @@ const StyledClearHistoryBtn = styled.button`
 `;
 const StyledSearchShowTagsContainer = styled.div`
   position: relative;
-  width: 350px;
-  min-height: 130px;
-  max-height: 130px;
+  display: flex;
+  width: 100%;
   background-color: #1e2229;
-  border: 2px solid rgba(160, 175, 199, 0.2);
   border-radius: 6px;
   margin-right: 34px;
-
-  @media (max-width: 700px) {
-    margin-right: 0;
-  }
 `;
 
 const StyledHistoryList = styled.div`
   display: flex;
-  flex-wrap: wrap;
   width: 100%;
 `;
 const StyledTagHistory = styled.div`
@@ -182,16 +160,12 @@ const StyledTagHistory = styled.div`
   width: 100%;
   justify-content: space-between;
   height: 100%;
-  max-height: 105px;
   overflow: auto;
-  padding-left: 25px;
-  padding-top: 51px;
-  min-height: 72px;
-  padding-bottom: 72px;
 
   /* Width */
   &::-webkit-scrollbar {
-    width: 4px;
+    /* width: 4px; */
+    height: 10px;
   }
 
   /* Track */
