@@ -115,7 +115,7 @@ const StyledContainer = styled.div`
 const StyledStatsContent = styled.div`
   display: flex;
   justify-content: space-between;
-  max-width: 65px;
+  max-width: 85px;
   width: 100%;
 `;
 const StyledKWButton = styled.button<{ selected: boolean }>`

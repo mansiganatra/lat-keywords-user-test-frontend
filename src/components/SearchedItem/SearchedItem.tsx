@@ -141,7 +141,11 @@ const SearchedTerm = ({
         <StyledModelHeaderContainer>
           <StyledHeaderTop>
             <button className="header">
-              <h1>{term}</h1>
+              {term!.split(' ')[0].length >= 14 ? (
+                <ShortHeader>{term}</ShortHeader>
+              ) : (
+                <Header>{term}</Header>
+              )}
             </button>
             <button onClick={handleDelete} className="header">
               <img src={xAlt} alt="" />
@@ -183,19 +187,21 @@ const StyledModelContainer = styled.div<{
 const StyledModelHeaderContainer = styled.header`
   background-color: #ffffff;
   padding: 20px 20px 20px;
-
-  h1 {
-    text-transform: capitalize;
-    font-family: 'Helvetica Neue', sans-serif;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 2.1rem;
-    line-height: 26px;
-    color: #172d3b;
-    width: 100%;
-    max-width: 150px;
-    text-align: left;
-  }
+`;
+const Header = styled.h1`
+  text-transform: capitalize;
+  font-family: 'Helvetica Neue', sans-serif;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 2.1rem;
+  line-height: 26px;
+  color: #172d3b;
+  width: 100%;
+  max-width: 150px;
+  text-align: left;
+`;
+const ShortHeader = styled(Header)`
+  font-size: 1.4rem;
 `;
 const StyledHeaderTop = styled.div`
   display: flex;
