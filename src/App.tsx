@@ -16,6 +16,7 @@ import {
   Progress
 } from './types';
 import Snackbar from './components/Snackbar/Snackbar';
+import { start } from 'repl';
 
 const App = (): JSX.Element => {
   const [notificationIsOpen, setNotificationIsOpen] = useState<boolean>(false);
@@ -56,8 +57,23 @@ const App = (): JSX.Element => {
     }
   };
 
-  const selectModel = (id: number | null): void => {
+  const scrollToLastChild = (element: string): void => {
+    let el: any = document.querySelector(element);
+    let scrollIntoViewOptions: any = {
+      behavior: 'smooth',
+      block: 'end',
+      inline: 'nearest'
+    };
+    console.log(scrollIntoViewOptions);
+    el?.scrollIntoView(scrollIntoViewOptions);
+  };
+
+  const selectModel = (id: number | null, className?: string): void => {
     setSelectedId(id);
+    if (className!.length > 0) {
+      console.log('scrolled!', className);
+      scrollToLastChild(className!);
+    }
   };
 
   const setKeywordRef = (bool: boolean): void => {
@@ -201,18 +217,9 @@ const App = (): JSX.Element => {
             };
           });
         }
-        scrollToLastChild();
+        scrollToLastChild('.item:last-child');
       } catch (error) {
         console.error(error);
-      }
-
-      function scrollToLastChild() {
-        const el = document.querySelector('.item:last-child');
-        const scrollIntoViewOptions: any = {
-          behavior: 'smooth',
-          block: 'start'
-        };
-        el?.scrollIntoView(scrollIntoViewOptions);
       }
     },
     [updateStore]

@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import styled from 'styled-components';
 
 import Keyword from '../Keywords/Keyword';
 import xAlt from '../../lib/images/x_alt.png';
 import { SearchedItem, SimilarToken } from '../../types';
+import { copyFile } from 'fs';
 
 interface Props {
   searchedItem: SearchedItem;
@@ -11,7 +12,7 @@ interface Props {
   selected?: boolean;
   sortBy: string;
   selectedId: number | null;
-  selectModel: (id: number | null) => void;
+  selectModel: (id: number | null, className?: string) => void;
   setKeywordRef: (bool: boolean) => void;
   deleteModel: (modelId: number) => void;
   term: string | null;
@@ -41,13 +42,6 @@ const SearchedTerm = ({
   } = searchedItem;
   const [hover, setHover] = useState<boolean>(false);
 
-  const handleHoverEnable = (): void => {
-    if (!hover) return setHover(true);
-  };
-  const handleHoverDisable = (): void => {
-    if (hover) return setHover(false);
-  };
-
   const handleDelete = (e: React.MouseEvent<HTMLButtonElement>): void => {
     e.stopPropagation();
     deleteModel(id);
@@ -61,7 +55,7 @@ const SearchedTerm = ({
       call: 'setDocumentListParams', // call
       args: [{ q: `${term}` }] // arguments
     };
-    selectModel(id);
+    selectModel(id, `${foundTokens[0]}${id}`);
     window.parent.postMessage(message, '*');
   };
 
@@ -129,14 +123,13 @@ const SearchedTerm = ({
     );
   };
 
+  console.log(`in item: ${foundTokens[0]}${id}`);
   return (
-    <StyledContainer className="item">
+    <StyledContainer className={`item ${foundTokens[0]}${id}`}>
       <StyledModelContainer
         selected={selectedId === id}
         topBarColor={topBarColor}
         onClick={handleClick}
-        onMouseEnter={handleHoverEnable}
-        onMouseLeave={handleHoverDisable}
       >
         <StyledModelHeaderContainer>
           <StyledHeaderTop>

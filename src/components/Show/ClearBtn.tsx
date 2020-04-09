@@ -21,7 +21,7 @@ const clearBtn = (): JSX.Element => {
         x2="8.39915"
         y2="10.8879"
         stroke="#FC3636"
-        stroke-linecap="round"
+        strokeLinecap="round"
       />
       <line
         x1="0.5"
@@ -30,7 +30,7 @@ const clearBtn = (): JSX.Element => {
         y2="-0.5"
         transform="matrix(0.707107 0.707107 0.707107 -0.707107 8.11133 6.69223)"
         stroke="#FC3636"
-        stroke-linecap="round"
+        strokeLinecap="round"
       />
     </svg>
   );

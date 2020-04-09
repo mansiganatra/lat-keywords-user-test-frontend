@@ -20,8 +20,8 @@ const Plus = ({ color, hover }: PlusProps) => {
         x2="7"
         y2="3.8"
         stroke={hover ? 'white' : '#3E5372'}
-        stroke-width="2"
-        stroke-linecap="round"
+        strokeWidth="2"
+        strokeLinecap="round"
       />
       <line
         x1="3.80005"
@@ -29,8 +29,8 @@ const Plus = ({ color, hover }: PlusProps) => {
         x2="3.80005"
         y2="1"
         stroke={hover ? 'white' : '#3E5372'}
-        stroke-width="2"
-        stroke-linecap="round"
+        strokeWidth="2"
+        strokeLinecap="round"
       />
     </svg>
   );

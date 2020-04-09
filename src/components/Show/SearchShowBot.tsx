@@ -43,22 +43,20 @@ const SearchShowBot = ({
           <StyledModelList>
             {!!searchedList?.length &&
               searchedList.map((searchedItem: SearchedItem, i: number) => (
-                <>
-                  <SearchedTerm
-                    key={searchedItem.id}
-                    searchedItem={searchedItem}
-                    topBarColor={colorArray[i]}
-                    sortBy={sortBy}
-                    selectedId={selectedId}
-                    selectModel={selectModel}
-                    setKeywordRef={setKeywordRef}
-                    deleteModel={deleteModel}
-                    term={state.searchHistory[i].term}
-                    selectedToken={selectedToken}
-                    handleTokenSelect={handleTokenSelect}
-                    tokenId={tokenId}
-                  />
-                </>
+                <SearchedTerm
+                  key={searchedItem.id}
+                  searchedItem={searchedItem}
+                  topBarColor={colorArray[i]}
+                  sortBy={sortBy}
+                  selectedId={selectedId}
+                  selectModel={selectModel}
+                  setKeywordRef={setKeywordRef}
+                  deleteModel={deleteModel}
+                  term={state.searchHistory[i].term}
+                  selectedToken={selectedToken}
+                  handleTokenSelect={handleTokenSelect}
+                  tokenId={tokenId}
+                />
               ))}
           </StyledModelList>
         </StyledSearchShowBot>

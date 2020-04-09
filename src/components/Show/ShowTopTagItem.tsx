@@ -8,7 +8,7 @@ import { SearchHistory } from '../../types';
 interface Props {
   tag: SearchHistory;
   color: string;
-  selectModel: (id: number | null) => void;
+  selectModel: (id: number | null, className?: string) => void;
   deleteModel: (modelId: number) => void;
   selectedId: number | null;
   setKeywordRef: (bool: boolean) => void;
@@ -33,13 +33,13 @@ const ShowTopTagItem = ({
         call: 'setDocumentListParams', // call
         args: [{ q: `` }] // arguments
       };
-      selectModel(null);
+      selectModel(null, '');
     } else {
       message = {
         call: 'setDocumentListParams', // call
         args: [{ q: `${term}` }] // arguments
       };
-      selectModel(tagId);
+      selectModel(tagId, `.${term}${tagId}`);
     }
 
     window.parent.postMessage(message, '*');
@@ -75,7 +75,7 @@ const ShowTopTagItem = ({
   );
 };
 
-const StyledHistoryItem = styled.button<{ selected: boolean; color: string }>`
+const StyledHistoryItem = styled.div<{ selected: boolean; color: string }>`
   cursor: pointer;
   display: flex;
   justify-content: space-between;

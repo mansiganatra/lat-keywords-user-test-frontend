@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import styled from 'styled-components';
 
 import { SimilarToken } from '../../types';
@@ -115,7 +115,7 @@ const StyledContainer = styled.div`
 const StyledStatsContent = styled.div`
   display: flex;
   justify-content: space-between;
-  max-width: 85px;
+  max-width: 65px;
   width: 100%;
 `;
 const StyledKWButton = styled.button<{ selected: boolean }>`
