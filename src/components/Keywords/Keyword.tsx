@@ -72,19 +72,19 @@ const Keyword = ({
       <StyledKWButton
         onClick={e => handleClick(e, token)}
         selected={selectedToken === token && tokenId === searchedId}
-        color={color}
+        color={nextColor}
       >
         <StyledKWItem>
           <StyledText>{token}</StyledText>
           <StyledStatsContent>
             <StyledSimilarity
-              color={color}
+              color={nextColor}
               selected={selectedToken === token && tokenId === searchedId}
             >
               {`${(similarity / 1).toFixed(2)}%`.slice(2)}
             </StyledSimilarity>
             <StyledFreq
-              color={color}
+              color={nextColor}
               selected={selectedToken === token && tokenId === searchedId}
             >
               {count}
@@ -93,9 +93,9 @@ const Keyword = ({
         </StyledKWItem>
       </StyledKWButton>
       {selectedToken === token && tokenId === searchedId && (
-        <StyledPlusContainer>
+        <StyledPlusContainer color={nextColor}>
           <StyledPlus
-            color={color}
+            color={nextColor}
             onClick={e => handleNewClick(e, token)}
             onMouseEnter={() =>
               handleHoverEnable({ color: nextColor, term: token })
@@ -120,14 +120,18 @@ const StyledStatsContent = styled.div`
   max-width: 65px;
   width: 100%;
 `;
-const StyledKWButton = styled.button<{ selected: boolean }>`
+const StyledKWButton = styled.button<{ selected: boolean; color: string }>`
   cursor: pointer;
   width: 100%;
   border: none;
 
-  background: ${({ selected }) => (selected ? '#286FD815' : '#F3F5F8;')};
+  background: ${({ selected, color }) =>
+    selected ? `${color}15` : '#F3F5F8;'};
   border-radius: 21px;
   margin-bottom: 7px;
+
+  border-bottom-right-radius: ${({ selected }) => (selected ? 0 : '21px')};
+  border-top-right-radius: ${({ selected }) => (selected ? 0 : '21px')};
 `;
 
 const StyledText = styled.p`
@@ -141,7 +145,7 @@ const StyledText = styled.p`
   padding-right: 8px;
   z-index: 1;
 `;
-const StyledFreq = styled(StyledText)<{ selected: boolean }>`
+const StyledFreq = styled(StyledText)<{ selected: boolean; color: string }>`
   font-family: 'Helvetica Neue', sans-serif;
   font-style: normal;
   font-weight: bold;
@@ -150,7 +154,8 @@ const StyledFreq = styled(StyledText)<{ selected: boolean }>`
   text-align: center;
   padding-right: 0px;
 
-  color: ${({ selected }) => (selected ? '#286FD8' : 'rgba(23, 45, 59, 0.5)')};
+  color: ${({ selected, color }) =>
+    selected ? color : 'rgba(23, 45, 59, 0.5)'};
 `;
 const StyledSimilarity = styled(StyledFreq)`
   padding-right: 8px;
@@ -173,17 +178,20 @@ const StyledPlus = styled.button<{ color: string; hover: boolean }>`
   width: 24px;
   height: 24px;
   border-radius: 50%;
+  position: relative;
+  right: 6px;
+
   border: 1px solid rgba(160, 175, 199, 0.5);
 
   background: ${({ hover, color }) => (hover ? '#286FD8' : '#fafafb')};
 `;
 
-const StyledPlusContainer = styled.div`
+const StyledPlusContainer = styled.div<{ color: string }>`
   top: 0px;
   position: absolute;
 
   height: 32px;
-  width: 39px;
+  width: 25px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -200,8 +208,8 @@ const StyledPlusContainer = styled.div`
       background: transparent;
     }
     to {
-      right: -27px;
-      background: #edf3fc;
+      right: -25px;
+      background: ${({ color }) => `${color}15`};
     }
   }
 `;
