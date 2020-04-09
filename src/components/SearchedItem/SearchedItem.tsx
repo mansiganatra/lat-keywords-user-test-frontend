@@ -18,9 +18,10 @@ interface Props {
   selectedToken: string | null;
   handleTokenSelect: (token: string, id: number) => void;
   tokenId: number | null;
-  handleHoverEnable: () => void;
+  handleHoverEnable: ({ color, term }: { color: string; term: string }) => void;
   handleHoverDisable: () => void;
   hover: boolean;
+  nextColor: string;
 }
 
 const SearchedTerm = ({
@@ -37,7 +38,8 @@ const SearchedTerm = ({
   tokenId,
   handleHoverEnable,
   handleHoverDisable,
-  hover
+  hover,
+  nextColor
 }: Props): JSX.Element => {
   const {
     similarTokens,
@@ -81,6 +83,7 @@ const SearchedTerm = ({
                 handleHoverEnable={handleHoverEnable}
                 handleHoverDisable={handleHoverDisable}
                 hover={hover}
+                nextColor={nextColor}
               />
             )
           )}
@@ -104,6 +107,7 @@ const SearchedTerm = ({
                 handleHoverEnable={handleHoverEnable}
                 handleHoverDisable={handleHoverDisable}
                 hover={hover}
+                nextColor={nextColor}
               />
             )
           )}
@@ -129,6 +133,7 @@ const SearchedTerm = ({
                 handleHoverEnable={handleHoverEnable}
                 handleHoverDisable={handleHoverDisable}
                 hover={hover}
+                nextColor={nextColor}
               />
             )
           )}

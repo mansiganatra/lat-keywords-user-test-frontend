@@ -31,6 +31,10 @@ const SearchShowBot = ({
   const { searchedList } = state;
   const [tokenId, setTokenId] = useState<number | null>(null);
   const [selectedToken, setSelectedToken] = useState<string | null>(null);
+  const [prevItemState, setPrevItemState] = useState<{
+    color: string;
+    term: string;
+  }>({ color: '', term: '' });
 
   const handleTokenSelect = (token: string, id: number): void => {
     setSelectedToken(token);
@@ -39,7 +43,14 @@ const SearchShowBot = ({
 
   const [hover, setHover] = useState<boolean>(false);
 
-  const handleHoverEnable = (): void => {
+  const handleHoverEnable = ({
+    color,
+    term
+  }: {
+    color: string;
+    term: string;
+  }): void => {
+    setPrevItemState({ color, term });
     if (!hover) return setHover(true);
   };
   const handleHoverDisable = (): void => {
@@ -52,27 +63,33 @@ const SearchShowBot = ({
         <StyledSearchShowBot>
           <StyledModelList>
             {!!searchedList?.length &&
-              searchedList.map((searchedItem: SearchedItem, i: number) => (
-                <SearchedTerm
-                  key={searchedItem.id}
-                  searchedItem={searchedItem}
-                  topBarColor={colorArray[i]}
-                  sortBy={sortBy}
-                  selectedId={selectedId}
-                  selectModel={selectModel}
-                  setKeywordRef={setKeywordRef}
-                  deleteModel={deleteModel}
-                  term={state.searchHistory[i].term}
-                  selectedToken={selectedToken}
-                  handleTokenSelect={handleTokenSelect}
-                  tokenId={tokenId}
-                  handleHoverEnable={handleHoverEnable}
-                  handleHoverDisable={handleHoverDisable}
-                  hover={hover}
-                />
-              ))}
+              searchedList.map(
+                (searchedItem: SearchedItem, i: number, arr: any) => (
+                  <SearchedTerm
+                    key={searchedItem.id}
+                    searchedItem={searchedItem}
+                    topBarColor={colorArray[i]}
+                    sortBy={sortBy}
+                    selectedId={selectedId}
+                    selectModel={selectModel}
+                    setKeywordRef={setKeywordRef}
+                    deleteModel={deleteModel}
+                    term={state.searchHistory[i].term}
+                    selectedToken={selectedToken}
+                    handleTokenSelect={handleTokenSelect}
+                    tokenId={tokenId}
+                    handleHoverEnable={handleHoverEnable}
+                    handleHoverDisable={handleHoverDisable}
+                    hover={hover}
+                    nextColor={colorArray[arr.length]}
+                  />
+                )
+              )}
             <StyledPrevSearchItem hover={hover}>
-              <PreviewSearchedItem />
+              <PreviewSearchedItem
+                color={prevItemState.color}
+                term={prevItemState.term}
+              />
             </StyledPrevSearchItem>
           </StyledModelList>
         </StyledSearchShowBot>
@@ -177,14 +194,12 @@ const StyledModelList = styled.div`
   display: flex;
   transform: rotateX(180deg);
   padding-bottom: 40px;
-  margin-bottom: -30px;
+  margin-bottom: -40px;
   position: relative;
 `;
 
 const StyledPrevSearchItem = styled.div<{ hover: boolean }>`
   display: ${({ hover }): string => (hover ? 'block' : 'none')};
-  left: 300px;
-  top: 0;
 `;
 
 export default SearchShowBot;

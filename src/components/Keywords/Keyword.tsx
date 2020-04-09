@@ -12,9 +12,10 @@ interface Props {
   selectedToken: string | null;
   searchedId: number;
   tokenId: number | null;
-  handleHoverEnable: () => void;
+  handleHoverEnable: ({ color, term }: { color: string; term: string }) => void;
   handleHoverDisable: () => void;
   hover: boolean;
+  nextColor: string;
 }
 //setKeywordRef
 const Keyword = ({
@@ -27,7 +28,8 @@ const Keyword = ({
   tokenId,
   handleHoverEnable,
   handleHoverDisable,
-  hover
+  hover,
+  nextColor
 }: Props): JSX.Element => {
   const { count, token, similarity } = word;
 
@@ -95,7 +97,9 @@ const Keyword = ({
           <StyledPlus
             color={color}
             onClick={e => handleNewClick(e, token)}
-            onMouseEnter={handleHoverEnable}
+            onMouseEnter={() =>
+              handleHoverEnable({ color: nextColor, term: token })
+            }
             onMouseLeave={handleHoverDisable}
             hover={hover}
           >

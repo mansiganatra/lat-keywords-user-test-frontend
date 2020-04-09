@@ -1,15 +1,20 @@
 import React from 'react';
 import styled from 'styled-components';
 
-interface PreviewSearchedItemProps {}
+interface PreviewSearchedItemProps {
+  term: string;
+  color: string;
+}
 
 const arr: string[] = ['', '', '', '', '', '', '', '', '', ''];
 
-const PreviewSearchedItem = ({}: PreviewSearchedItemProps): JSX.Element => {
-  const term = 'lhdflksjdfldsjlf';
+const PreviewSearchedItem = ({
+  term,
+  color
+}: PreviewSearchedItemProps): JSX.Element => {
   return (
     <StyledContainer>
-      <StyledModelContainer>
+      <StyledModelContainer color={color}>
         <StyledModelHeaderContainer>
           <StyledHeaderTop>
             <button className="header">
@@ -29,7 +34,7 @@ const PreviewSearchedItem = ({}: PreviewSearchedItemProps): JSX.Element => {
         <StyledKeywordList>
           {arr.map(() => (
             <StyledKWContainer>
-              <StyledKWButton />
+              <StyledKWButton color={color} />
             </StyledKWContainer>
           ))}
         </StyledKeywordList>
@@ -41,13 +46,13 @@ const PreviewSearchedItem = ({}: PreviewSearchedItemProps): JSX.Element => {
 const StyledKWContainer = styled.div`
   position: relative;
 `;
-const StyledKWButton = styled.button`
+const StyledKWButton = styled.button<{ color: string }>`
   cursor: pointer;
   width: 100%;
   height: 32px;
   border: none;
 
-  background: #d9e8ff35;
+  background: ${({ color }) => color}25;
   border-radius: 21px;
   margin-bottom: 7px;
 `;
@@ -58,9 +63,9 @@ const StyledContainer = styled.div`
   min-width: 220px;
   padding-top: 80px;
 `;
-const StyledModelContainer = styled.div`
-  border-top: 5px solid #d9e8ff;
-  background-color: #d9e8ff20;
+const StyledModelContainer = styled.div<{ color: string }>`
+  border-top: 5px solid ${({ color }) => color};
+  background-color: ${({ color }) => color}20;
   margin-right: 20px;
   max-width: 200px;
   min-width: 200px;
