@@ -108,8 +108,18 @@ const MsgTextShort = styled(MsgText)`
 `;
 
 const StyledFallbackMessage = styled.section`
-  padding-top: 70px;
   min-height: 100vh;
+  animation-name: display;
+  animation-duration: 0.3s;
+  animation-fill-mode: forwards;
+  @keyframes display {
+    from {
+      padding-top: 130px;
+    }
+    to {
+      padding-top: 170px;
+    }
+  }
 
   .message-container {
     margin: 0 auto;
@@ -143,6 +153,7 @@ const StyledSearchShowBot = styled.section`
   transform: rotateX(180deg);
   padding-left: 50px;
   padding-bottom: 20px;
+  margin-top: 20px;
 
   @media (max-width: 700px) {
     padding-left: 15px;
@@ -151,7 +162,6 @@ const StyledSearchShowBot = styled.section`
 const StyledModelList = styled.div`
   display: flex;
   transform: rotateX(180deg);
-  padding-top: 10px;
   padding-bottom: 40px;
 `;
 

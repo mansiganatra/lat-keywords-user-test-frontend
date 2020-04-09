@@ -5,6 +5,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import notifX from '../../lib/images/notif-x.png';
 import { State } from '../../types';
 import NotifyItem from './NotifyItem';
+import XBtn from './XBtn';
 
 interface SnackbarProps {
   notificationIsOpen: boolean;
@@ -46,7 +47,7 @@ const SnackbarComponent = ({
           </StyledNotifySuggestionList>
         </StyledLeft>
         <StyledNotifImageContainer onClick={handleClose}>
-          <img src={notifX} alt="x" />
+          <XBtn />
         </StyledNotifImageContainer>
       </StyledContent>
     </StyledNotificationContainer>
@@ -62,7 +63,18 @@ const StyledNotificationContainer = styled(Snackbar)`
   background: #3e5372;
   top: 0;
 
-  padding: 30px;
+  animation-name: animateSnack;
+  animation-duration: 0.2s;
+  animation-fill-mode: forwards;
+
+  @keyframes animateSnack {
+    from {
+      padding: 15px 30px;
+    }
+    to {
+      padding: 30px;
+    }
+  }
 `;
 
 const StyledContent = styled.div`
@@ -96,6 +108,30 @@ const StyledLeft = styled.div`
 const StyledNotifySuggestionList = styled.div`
   display: flex;
   align-items: center;
+  overflow: auto;
+
+  /* Width */
+  &::-webkit-scrollbar {
+    /* width: 4px; */
+    height: 10px;
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #1e2229;
+    border-radius: 12px;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #fafafb;
+    border-radius: 6px;
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #ffffff;
+  }
 `;
 
 const StyledNotifImageContainer = styled.button`

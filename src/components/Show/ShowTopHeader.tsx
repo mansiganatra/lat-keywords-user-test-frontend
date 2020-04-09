@@ -26,8 +26,18 @@ const Header = (): JSX.Element => {
 };
 
 const StyledHeaderMessage = styled.header`
-  padding-bottom: 30px;
-  padding-top: 30px;
+  animation-name: animate;
+  animation-duration: 0.2s;
+  animation-fill-mode: forwards;
+
+  @keyframes animate {
+    from {
+      padding: 15px 0;
+    }
+    to {
+      padding: 20px 0;
+    }
+  }
 `;
 const StyledHeaderMain = styled.div`
   display: flex;

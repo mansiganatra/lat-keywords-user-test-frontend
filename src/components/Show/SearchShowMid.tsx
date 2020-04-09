@@ -13,7 +13,7 @@ const SearchShowMid = ({ setSortBy }: Props): JSX.Element => {
   };
 
   return (
-    <section>
+    <Container>
       <StyledShowMidContainer>
         <StyledShowMidLeft>words associated with...</StyledShowMidLeft>
         <StyledShowMidRight>
@@ -33,10 +33,13 @@ const SearchShowMid = ({ setSortBy }: Props): JSX.Element => {
       <StyledLowerContainer>
         <p className="p">Tap on an Associated Word to filter your search.</p>
       </StyledLowerContainer>
-    </section>
+    </Container>
   );
 };
 
+const Container = styled.section`
+  margin-top: 100px;
+`;
 const StyledLowerContainer = styled.div`
   padding-left: 50px;
 

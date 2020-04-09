@@ -92,12 +92,14 @@ const StyledSearchShowTop = styled.section`
   display: flex;
   width: 100%;
   max-width: 100vw;
+  position: fixed;
+  top: 0;
+  z-index: 99;
   justify-content: space-between;
   align-items: center;
   padding-left: 50px;
   background-color: #1e2229;
   padding-bottom: 5px;
-  padding: 30px 30px 25px 30px;
 `;
 const StyledShowTagsTop = styled.div`
   display: flex;
@@ -149,6 +151,18 @@ const StyledSearchShowTagsContainer = styled.div`
   background-color: #1e2229;
   border-radius: 6px;
   margin-right: 34px;
+  animation-fill-mode: forwards;
+  animation-duration: 0.5s;
+  animation-name: top;
+
+  @keyframes top {
+    from {
+      padding: 20px 0;
+    }
+    to {
+      padding: 15px 0;
+    }
+  }
 `;
 
 const StyledHistoryList = styled.div`
