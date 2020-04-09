@@ -5,6 +5,7 @@ import SearchedTerm from '../SearchedItem/SearchedItem';
 import colorArray from '../../utils/colorArray';
 import SuggestionItem from '../shared/SuggestionItem';
 import { State, SearchedItem } from '../../types';
+import PreviewSearchedItem from '../SearchedItem/PreviewSearchedItem';
 
 interface Props {
   sortBy: string;
@@ -36,6 +37,15 @@ const SearchShowBot = ({
     setTokenId(id);
   };
 
+  const [hover, setHover] = useState<boolean>(false);
+
+  const handleHoverEnable = (): void => {
+    if (!hover) return setHover(true);
+  };
+  const handleHoverDisable = (): void => {
+    if (hover) return setHover(false);
+  };
+
   return (
     <>
       {!!searchedList.length ? (
@@ -56,8 +66,14 @@ const SearchShowBot = ({
                   selectedToken={selectedToken}
                   handleTokenSelect={handleTokenSelect}
                   tokenId={tokenId}
+                  handleHoverEnable={handleHoverEnable}
+                  handleHoverDisable={handleHoverDisable}
+                  hover={hover}
                 />
               ))}
+            <StyledPrevSearchItem hover={hover}>
+              <PreviewSearchedItem />
+            </StyledPrevSearchItem>
           </StyledModelList>
         </StyledSearchShowBot>
       ) : (
@@ -146,8 +162,8 @@ const StyledFallbackMessage = styled.section`
 `;
 
 const StyledSearchShowBot = styled.section`
-  overflow: auto;
-  overflow-y: hidden;
+  overflow: hidden;
+  /* overflow-y: hidden; */
   transform: rotateX(180deg);
   padding-left: 50px;
   padding-bottom: 20px;
@@ -161,6 +177,14 @@ const StyledModelList = styled.div`
   display: flex;
   transform: rotateX(180deg);
   padding-bottom: 40px;
+  margin-bottom: -30px;
+  position: relative;
+`;
+
+const StyledPrevSearchItem = styled.div<{ hover: boolean }>`
+  display: ${({ hover }): string => (hover ? 'block' : 'none')};
+  left: 300px;
+  top: 0;
 `;
 
 export default SearchShowBot;

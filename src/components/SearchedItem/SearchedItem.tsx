@@ -1,10 +1,9 @@
-import React, { useState, useCallback } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 import Keyword from '../Keywords/Keyword';
 import xAlt from '../../lib/images/x_alt.png';
 import { SearchedItem, SimilarToken } from '../../types';
-import { copyFile } from 'fs';
 
 interface Props {
   searchedItem: SearchedItem;
@@ -19,6 +18,9 @@ interface Props {
   selectedToken: string | null;
   handleTokenSelect: (token: string, id: number) => void;
   tokenId: number | null;
+  handleHoverEnable: () => void;
+  handleHoverDisable: () => void;
+  hover: boolean;
 }
 
 const SearchedTerm = ({
@@ -32,7 +34,10 @@ const SearchedTerm = ({
   term,
   selectedToken,
   handleTokenSelect,
-  tokenId
+  tokenId,
+  handleHoverEnable,
+  handleHoverDisable,
+  hover
 }: Props): JSX.Element => {
   const {
     similarTokens,
@@ -40,7 +45,6 @@ const SearchedTerm = ({
     id,
     sortedSimilarTokensByCount
   } = searchedItem;
-  const [hover, setHover] = useState<boolean>(false);
 
   const handleDelete = (e: React.MouseEvent<HTMLButtonElement>): void => {
     e.stopPropagation();
@@ -74,6 +78,9 @@ const SearchedTerm = ({
                 selectedToken={selectedToken}
                 searchedId={id}
                 tokenId={tokenId}
+                handleHoverEnable={handleHoverEnable}
+                handleHoverDisable={handleHoverDisable}
+                hover={hover}
               />
             )
           )}
@@ -94,6 +101,9 @@ const SearchedTerm = ({
                 selectedToken={selectedToken}
                 searchedId={id}
                 tokenId={tokenId}
+                handleHoverEnable={handleHoverEnable}
+                handleHoverDisable={handleHoverDisable}
+                hover={hover}
               />
             )
           )}
@@ -116,6 +126,9 @@ const SearchedTerm = ({
                 selectedToken={selectedToken}
                 searchedId={id}
                 tokenId={tokenId}
+                handleHoverEnable={handleHoverEnable}
+                handleHoverDisable={handleHoverDisable}
+                hover={hover}
               />
             )
           )}
@@ -123,7 +136,6 @@ const SearchedTerm = ({
     );
   };
 
-  console.log(`in item: ${foundTokens[0]}${id}`);
   return (
     <StyledContainer className={`item ${foundTokens[0]}${id}`}>
       <StyledModelContainer
@@ -162,6 +174,7 @@ const StyledContainer = styled.div`
   width: 100%;
   max-width: 220px;
   min-width: 220px;
+  padding-top: 80px;
 `;
 const StyledModelContainer = styled.div<{
   selected: boolean;

@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import Snackbar from '@material-ui/core/Snackbar';
 
-import notifX from '../../lib/images/notif-x.png';
 import { State } from '../../types';
 import NotifyItem from './NotifyItem';
 import XBtn from './XBtn';

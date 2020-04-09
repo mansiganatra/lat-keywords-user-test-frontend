@@ -16,7 +16,6 @@ import {
   Progress
 } from './types';
 import Snackbar from './components/Snackbar/Snackbar';
-import { start } from 'repl';
 
 const App = (): JSX.Element => {
   const [notificationIsOpen, setNotificationIsOpen] = useState<boolean>(false);
@@ -61,17 +60,15 @@ const App = (): JSX.Element => {
     let el: any = document.querySelector(element);
     let scrollIntoViewOptions: any = {
       behavior: 'smooth',
-      block: 'end',
+      block: 'start',
       inline: 'nearest'
     };
-    console.log(scrollIntoViewOptions);
     el?.scrollIntoView(scrollIntoViewOptions);
   };
 
   const selectModel = (id: number | null, className?: string): void => {
     setSelectedId(id);
     if (className!.length > 0) {
-      console.log('scrolled!', className);
       scrollToLastChild(className!);
     }
   };
@@ -217,7 +214,7 @@ const App = (): JSX.Element => {
             };
           });
         }
-        scrollToLastChild('.item:last-child');
+        scrollToLastChild('.item:nth-last-child(2)');
       } catch (error) {
         console.error(error);
       }
@@ -264,8 +261,7 @@ const App = (): JSX.Element => {
 
     function oboeJS(): Promise<ProgressState> {
       return new Promise((resolve, reject) => {
-        const url: string = 'http://localhost:3335/';
-        // const url: string = 'https://mansi-nlp.sdata.caltimes.io';
+        const url: string = 'https://mansi-nlp.data.caltimes.io';
 
         oboe({
           url: `${process.env.REACT_APP_BASE_URL || url}/generate`,

@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 import { SimilarToken } from '../../types';
@@ -12,6 +12,9 @@ interface Props {
   selectedToken: string | null;
   searchedId: number;
   tokenId: number | null;
+  handleHoverEnable: () => void;
+  handleHoverDisable: () => void;
+  hover: boolean;
 }
 //setKeywordRef
 const Keyword = ({
@@ -21,17 +24,12 @@ const Keyword = ({
   handleTokenSelect,
   selectedToken,
   searchedId,
-  tokenId
+  tokenId,
+  handleHoverEnable,
+  handleHoverDisable,
+  hover
 }: Props): JSX.Element => {
   const { count, token, similarity } = word;
-  const [hover, setHover] = useState<boolean>(false);
-
-  const handleHoverEnable = (): void => {
-    if (!hover) return setHover(true);
-  };
-  const handleHoverDisable = (): void => {
-    if (hover) return setHover(false);
-  };
 
   const handleClick = (
     e: React.MouseEvent<HTMLButtonElement>,

@@ -1,9 +1,8 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 
 import SearchShowTop from './SearchShowTop';
 import SearchShowBot from './SearchShowBot';
 import SearchShowMid from './SearchShowMid';
-import LoadingSuccess from '../LoadingPage/LoadingSuccess';
 import { State } from '../../types';
 
 interface Props {

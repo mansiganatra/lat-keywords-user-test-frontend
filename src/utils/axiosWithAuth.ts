@@ -13,8 +13,7 @@ function AxiosWithAuth(apiToken: string | null) {
     headers: {
       Authorization: `Basic ${btoa(apiToken + ':x-auth-token')}`
     },
-    baseURL: 'http://localhost:3335/'
-    // baseURL: process.env.REACT_APP_BASE_URL || url
+    baseURL: process.env.REACT_APP_BASE_URL || url
   });
 }
 
