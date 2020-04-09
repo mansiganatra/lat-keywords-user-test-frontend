@@ -8,7 +8,7 @@ interface Props {
   word: SimilarToken;
   setKeywordRef: (bool: boolean) => void;
   color: string;
-  handleTokenSelect: (token: string, id: number) => void;
+  handleTokenSelect: (token: string | null, id: number | null) => void;
   selectedToken: string | null;
   searchedId: number;
   tokenId: number | null;
@@ -64,6 +64,7 @@ const Keyword = ({
         args: [{ q: `${token}` }] // arguments
       };
       window.parent.postMessage(otherMessage, '*');
+      handleTokenSelect(null, null);
     } catch (error) {}
   };
 

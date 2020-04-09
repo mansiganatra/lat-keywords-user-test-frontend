@@ -35,13 +35,12 @@ const SearchShowBot = ({
     color: string;
     term: string;
   }>({ color: '', term: '' });
+  const [hover, setHover] = useState<boolean>(false);
 
-  const handleTokenSelect = (token: string, id: number): void => {
+  const handleTokenSelect = (token: string | null, id: number | null): void => {
     setSelectedToken(token);
     setTokenId(id);
   };
-
-  const [hover, setHover] = useState<boolean>(false);
 
   const handleHoverEnable = ({
     color,

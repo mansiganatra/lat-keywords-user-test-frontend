@@ -39,7 +39,7 @@ const ShowTopTagItem = ({
         call: 'setDocumentListParams', // call
         args: [{ q: `${term}` }] // arguments
       };
-      selectModel(tagId, `.${term}${tagId}`);
+      selectModel(tagId, `.a${term}${tagId}`);
     }
 
     window.parent.postMessage(message, '*');

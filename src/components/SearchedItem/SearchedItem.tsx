@@ -16,7 +16,7 @@ interface Props {
   deleteModel: (modelId: number) => void;
   term: string | null;
   selectedToken: string | null;
-  handleTokenSelect: (token: string, id: number) => void;
+  handleTokenSelect: (token: string | null, id: number | null) => void;
   tokenId: number | null;
   handleHoverEnable: ({ color, term }: { color: string; term: string }) => void;
   handleHoverDisable: () => void;
@@ -61,11 +61,11 @@ const SearchedTerm = ({
       call: 'setDocumentListParams', // call
       args: [{ q: `${term}` }] // arguments
     };
-    selectModel(id, `${foundTokens[0]}${id}`);
+    selectModel(id, `a${foundTokens[0]}${id}`);
     window.parent.postMessage(message, '*');
   };
 
-  const handleSortList = () => {
+  const handleSortList = (): JSX.Element => {
     if (sortBy === 'similarity') {
       return (
         <>
@@ -142,7 +142,7 @@ const SearchedTerm = ({
   };
 
   return (
-    <StyledContainer className={`item ${foundTokens[0]}${id}`}>
+    <StyledContainer className={`item a${foundTokens[0]}${id}`}>
       <StyledModelContainer
         selected={selectedId === id}
         topBarColor={topBarColor}
