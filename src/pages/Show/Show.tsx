@@ -17,6 +17,8 @@ interface Props {
   sortBy: string;
   suggestedList: string[];
   getSuggestion: () => Promise<void>;
+  undoCache: State | null;
+  undoState: () => void;
 }
 
 const Show = ({
@@ -31,7 +33,9 @@ const Show = ({
   setSortBy,
   sortBy,
   suggestedList,
-  getSuggestion
+  getSuggestion,
+  undoCache,
+  undoState
 }: Props): JSX.Element => {
   return (
     <section>
@@ -48,6 +52,8 @@ const Show = ({
           sortBy={sortBy}
           suggestedList={suggestedList}
           getSuggestion={getSuggestion}
+          undoCache={undoCache}
+          undoState={undoState}
         />
       ) : (
         <LoadingPage progress={progressState.lastProgress} />

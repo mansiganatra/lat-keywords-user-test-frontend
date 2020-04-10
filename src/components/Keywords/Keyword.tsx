@@ -65,6 +65,7 @@ const Keyword = ({
       };
       window.parent.postMessage(otherMessage, '*');
       handleTokenSelect(null, null);
+      handleHoverDisable();
     } catch (error) {}
   };
 

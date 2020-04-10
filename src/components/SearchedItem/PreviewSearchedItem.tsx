@@ -6,7 +6,7 @@ interface PreviewSearchedItemProps {
   color: string;
 }
 
-const arr: string[] = ['', '', '', '', '', '', '', '', '', ''];
+const arr: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0];
 
 const PreviewSearchedItem = ({
   term,
@@ -32,8 +32,8 @@ const PreviewSearchedItem = ({
           </StyledHeaderBot>
         </StyledModelHeaderContainer>
         <StyledKeywordList>
-          {arr.map(() => (
-            <StyledKWContainer>
+          {arr.map((item: number) => (
+            <StyledKWContainer key={item}>
               <StyledKWButton color={color} />
             </StyledKWContainer>
           ))}

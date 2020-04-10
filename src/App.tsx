@@ -34,6 +34,7 @@ const App = (): JSX.Element => {
     lastProgress: null,
     isSuccess: false
   });
+  const [undoCache, setUndoCache] = useState<State | null>(null);
 
   const keywordModeRef = useRef<boolean>(keywordMode);
   const progressStateRef = useRef<ProgressState>(progressState);
@@ -112,7 +113,17 @@ const App = (): JSX.Element => {
     [apiToken, server]
   );
 
+  const undoState = (): void => {
+    if (undoCache) {
+      setState(undoCache!);
+      updateStore(undoCache!);
+    }
+    setUndoCache(null);
+  };
+  console.log(undoCache);
   const clearSearchAll = (): void => {
+    setUndoCache(state);
+
     const newState: State = {
       searchedList: [],
       searchHistory: [],
@@ -140,7 +151,6 @@ const App = (): JSX.Element => {
             documentSetId
           }
         });
-
         if (!res.data.foundTokens.length) {
           setNotificationIsOpen(true);
 
@@ -240,9 +250,10 @@ const App = (): JSX.Element => {
         });
 
         if (typeof res.data === 'object' && res.data.associatorStore) {
-          if (!!res.data.associatorStore.state.searchedList.length) {
+          if (res.data.associatorStore.state.searchedList.length > 0) {
             setState(res.data.associatorStore?.state);
           } else {
+            console.log('hello');
             // set default initial values to state
             const newState: State = {
               searchedList: [],
@@ -250,7 +261,14 @@ const App = (): JSX.Element => {
               token: [],
               similarSuggestionslist: []
             };
-            setState(newState);
+            setState(
+              (prevState: State): State => {
+                if (prevState) {
+                  return prevState;
+                }
+                return newState;
+              }
+            );
             updateStore(newState);
           }
         }
@@ -334,11 +352,8 @@ const App = (): JSX.Element => {
     const onNotifyDocumentListParams = (e: MessageEvent) => {
       if (e.data.event === 'notify:documentListParams') {
         const token: string = e.data.args[0].q;
-        if (
-          keywordModeRef.current === false &&
-          token !== undefined &&
-          progressStateRef.current.isSuccess
-        ) {
+        if (keywordModeRef.current === false && token !== undefined) {
+          console.log('sup!');
           getKeywords({
             token,
             server,
@@ -382,6 +397,8 @@ const App = (): JSX.Element => {
           sortBy={sortBy}
           suggestedList={suggestedList}
           getSuggestion={getSuggestion}
+          undoCache={undoCache}
+          undoState={undoState}
         />
       )}
       {pathname === '/metadata' && <Metadata />}

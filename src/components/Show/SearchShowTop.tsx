@@ -6,6 +6,7 @@ import ShowTopHeader from './ShowTopHeader';
 import { colorArray } from '../../utils';
 import { State, SearchHistory } from '../../types';
 import ClearBtn from './ClearBtn';
+import UndoBtn from './UndoBtn';
 
 interface Props {
   state: State;
@@ -15,6 +16,8 @@ interface Props {
   selectedId: number | null;
   setKeywordRef: (bool: boolean) => void;
   suggestedList: string[];
+  undoCache: State | null;
+  undoState: () => void;
 }
 
 const SearchShowTop = ({
@@ -24,36 +27,27 @@ const SearchShowTop = ({
   deleteModel,
   selectedId,
   setKeywordRef,
-  suggestedList
+  suggestedList,
+  undoCache,
+  undoState
 }: Props): JSX.Element => {
-  const [clear, setClear] = useState<boolean>(false);
-
   const handleClearConfirm = (): void => {
-    const clearData = window.confirm(
-      'Do you really want to clear all tags and results?'
-    );
-    setClear(clearData);
+    clearSearchAll();
+    // delete text content inside global overview search bar
+    const message = {
+      call: 'setDocumentListParams',
+      args: [{ q: '' }]
+    };
+    window.parent.postMessage(message, '*');
   };
 
-  useEffect(() => {
-    if (clear) {
-      clearSearchAll();
-
-      // delete text content inside global overview search bar
-      const message = {
-        call: 'setDocumentListParams',
-        args: [{ q: '' }]
-      };
-      window.parent.postMessage(message, '*');
-      setClear(false);
-    }
-  }, [clear, setClear, clearSearchAll]);
   return (
     <StyledSearchShowTop>
       {!state.searchedList.length && (
-        <div className="search-show-header-container">
+        <StyledShowTopContainer>
           <ShowTopHeader />
-        </div>
+          {undoCache && <UndoBtn undoState={undoState} />}
+        </StyledShowTopContainer>
       )}
       {!!state.searchedList.length && (
         <StyledSearchShowTagsContainer>
@@ -197,6 +191,14 @@ const StyledTagHistory = styled.div`
   ::-webkit-scrollbar-thumb:hover {
     background: #ffffff;
   }
+`;
+
+const StyledShowTopContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-right: 50px;
 `;
 
 // #888 handle

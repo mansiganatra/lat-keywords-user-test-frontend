@@ -17,6 +17,8 @@ interface Props {
   sortBy: string;
   suggestedList: string[];
   getSuggestion: () => Promise<void>;
+  undoCache: State | null;
+  undoState: () => void;
 }
 
 const SearchTopResult = ({
@@ -30,7 +32,9 @@ const SearchTopResult = ({
   setKeywordRef,
   sortBy,
   suggestedList,
-  getSuggestion
+  getSuggestion,
+  undoCache,
+  undoState
 }: Props): JSX.Element => {
   useEffect(() => {
     getSuggestion();
@@ -47,6 +51,8 @@ const SearchTopResult = ({
         selectedId={selectedId}
         setKeywordRef={setKeywordRef}
         suggestedList={suggestedList}
+        undoCache={undoCache}
+        undoState={undoState}
       />
       {!!state.searchedList.length && <SearchShowMid setSortBy={setSortBy} />}
       <SearchShowBot
