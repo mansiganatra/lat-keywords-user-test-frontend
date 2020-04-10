@@ -151,10 +151,14 @@ const SearchedTerm = ({
         <StyledModelHeaderContainer>
           <StyledHeaderTop>
             <button className="header">
-              {term!.split(' ')[0].length >= 14 ? (
-                <ShortHeader>{term}</ShortHeader>
-              ) : (
-                <Header>{term}</Header>
+              {term!.split(' ').map(
+                (item: string, i: number): JSX.Element => {
+                  if (item.length > 11) {
+                    return <ShortHeader key={i}>{item}</ShortHeader>;
+                  } else {
+                    return <Header key={i}>{item}</Header>;
+                  }
+                }
               )}
             </button>
             <button onClick={handleDelete} className="header">

@@ -60,7 +60,7 @@ const LoadingPage = ({ progress }: Props) => {
         <StyledTopSection>
           <StyledHeaderSection>
             <StyledHeader>
-              Processing your documents may take about twenty minutes
+              Processing your documents may take up to twenty minutes
             </StyledHeader>
             <StyledSubHeader>
               Lorem ipsum odor sit amet consectur ala to adipiscing elit sed do

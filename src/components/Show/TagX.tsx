@@ -24,7 +24,7 @@ const TagX = ({ handleDelete, selected }: TagXProps): JSX.Element => {
             x2="6.36396"
             y2="6.65685"
             stroke="white"
-            stroke-linecap="round"
+            strokeLinecap="round"
           />
           <line
             x1="0.5"
@@ -33,7 +33,7 @@ const TagX = ({ handleDelete, selected }: TagXProps): JSX.Element => {
             y2="-0.5"
             transform="matrix(-0.707107 0.707107 0.707107 0.707107 7.36426 1)"
             stroke="white"
-            stroke-linecap="round"
+            strokeLinecap="round"
           />
         </svg>
       ) : (
@@ -50,7 +50,7 @@ const TagX = ({ handleDelete, selected }: TagXProps): JSX.Element => {
             x2="6.36396"
             y2="6.65685"
             stroke="#172D3B"
-            stroke-linecap="round"
+            strokeLinecap="round"
           />
           <line
             x1="0.5"
@@ -59,7 +59,7 @@ const TagX = ({ handleDelete, selected }: TagXProps): JSX.Element => {
             y2="-0.5"
             transform="matrix(-0.707107 0.707107 0.707107 0.707107 7.36426 1)"
             stroke="#172D3B"
-            stroke-linecap="round"
+            strokeLinecap="round"
           />
         </svg>
       )}

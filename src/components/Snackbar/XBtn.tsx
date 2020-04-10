@@ -17,7 +17,7 @@ const XBtn = (): JSX.Element => {
         y2="-0.5"
         transform="matrix(0.68497 0.728571 -0.68497 0.728571 6 7)"
         stroke="white"
-        stroke-linecap="round"
+        strokeLinecap="round"
       />
       <line
         x1="0.5"
@@ -26,7 +26,7 @@ const XBtn = (): JSX.Element => {
         y2="-0.5"
         transform="matrix(-0.68497 0.728571 0.68497 0.728571 11.833 7)"
         stroke="white"
-        stroke-linecap="round"
+        strokeLinecap="round"
       />
     </svg>
   );

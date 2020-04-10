@@ -53,26 +53,28 @@ const SearchShowTop = ({
         <StyledSearchShowTagsContainer>
           <StyledShowTagsTop>
             <h2>Search Terms:</h2>
+            <StyledTagHistory>
+              <StyledHistoryList>
+                {!!state.searchHistory?.length &&
+                  state.searchHistory?.map(
+                    (tag: SearchHistory, i: number): JSX.Element => (
+                      <ShowTopTagItem
+                        key={tag.id}
+                        tag={tag}
+                        color={colorArray[i]}
+                        selectModel={selectModel}
+                        deleteModel={deleteModel}
+                        selectedId={selectedId}
+                        setKeywordRef={setKeywordRef}
+                      />
+                    )
+                  )}
+              </StyledHistoryList>
+            </StyledTagHistory>
           </StyledShowTagsTop>
-          <StyledTagHistory>
-            <StyledHistoryList>
-              {!!state.searchHistory?.length &&
-                state.searchHistory?.map(
-                  (tag: SearchHistory, i: number): JSX.Element => (
-                    <ShowTopTagItem
-                      key={tag.id}
-                      tag={tag}
-                      color={colorArray[i]}
-                      selectModel={selectModel}
-                      deleteModel={deleteModel}
-                      selectedId={selectedId}
-                      setKeywordRef={setKeywordRef}
-                    />
-                  )
-                )}
-            </StyledHistoryList>
-          </StyledTagHistory>
-          <ClearBtn handleClearConfirm={handleClearConfirm} />
+          <StyledClearBtnContainer>
+            <ClearBtn handleClearConfirm={handleClearConfirm} />
+          </StyledClearBtnContainer>
         </StyledSearchShowTagsContainer>
       )}
     </StyledSearchShowTop>
@@ -96,7 +98,8 @@ const StyledShowTagsTop = styled.div`
   display: flex;
   background-color: #1e2229;
   z-index: 2;
-  width: 150px;
+  width: 100%;
+  max-width: 530px;
 
   h2 {
     font-family: 'Helvetica Neue', sans-serif;
@@ -105,6 +108,7 @@ const StyledShowTagsTop = styled.div`
     font-size: 1.2rem;
     line-height: 15px;
     text-transform: capitalize;
+    width: 125px;
 
     color: #ffffff;
   }
@@ -113,10 +117,11 @@ const StyledShowTagsTop = styled.div`
 const StyledSearchShowTagsContainer = styled.div`
   position: relative;
   display: flex;
+  justify-content: space-between;
   width: 100%;
   background-color: #1e2229;
   border-radius: 6px;
-  margin-right: 34px;
+  margin-right: 50px;
   animation-fill-mode: forwards;
   animation-duration: 0.5s;
   animation-name: top;
@@ -141,6 +146,7 @@ const StyledTagHistory = styled.div`
   justify-content: space-between;
   height: 100%;
   overflow: auto;
+  overflow-y: hidden;
 
   /* Width */
   &::-webkit-scrollbar {
@@ -171,10 +177,11 @@ const StyledShowTopContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  margin-right: 50px;
+  margin-right: 55px;
 `;
 
-// #888 handle
-// #f1f1f1 track
-// #555
+const StyledClearBtnContainer = styled.div`
+  margin-top: 7px;
+`;
+
 export default SearchShowTop;
