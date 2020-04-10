@@ -61,7 +61,7 @@ const StyledContainer = styled.div`
   width: 100%;
   max-width: 220px;
   min-width: 220px;
-  padding-top: 80px;
+  padding-top: 40px;
 `;
 const StyledModelContainer = styled.div<{ color: string }>`
   border-top: 5px solid ${({ color }) => color};
@@ -81,7 +81,7 @@ const Header = styled.h1`
   font-family: 'Helvetica Neue', sans-serif;
   font-style: normal;
   font-weight: bold;
-  font-size: 2.1rem;
+  font-size: 1.4rem;
   line-height: 26px;
   color: #172d3b20;
   width: 100%;

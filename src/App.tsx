@@ -224,7 +224,7 @@ const App = (): JSX.Element => {
             };
           });
         }
-        scrollToLastChild('.item:nth-last-child(2)');
+        scrollToLastChild('.item:nth-last-child(1)');
       } catch (error) {
         console.error(error);
       }

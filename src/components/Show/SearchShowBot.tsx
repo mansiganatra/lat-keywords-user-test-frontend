@@ -84,13 +84,13 @@ const SearchShowBot = ({
                   />
                 )
               )}
-            <StyledPrevSearchItem hover={hover}>
-              <PreviewSearchedItem
-                color={prevItemState.color}
-                term={prevItemState.term}
-              />
-            </StyledPrevSearchItem>
           </StyledModelList>
+          <StyledPrevSearchItem hover={hover}>
+            <PreviewSearchedItem
+              color={prevItemState.color}
+              term={prevItemState.term}
+            />
+          </StyledPrevSearchItem>
         </StyledSearchShowBot>
       ) : (
         <StyledFallbackMessage>
@@ -178,6 +178,8 @@ const StyledFallbackMessage = styled.section`
 `;
 
 const StyledSearchShowBot = styled.section`
+  display: flex;
+  justify-content: space-between;
   overflow: hidden;
   /* overflow-y: hidden; */
   transform: rotateX(180deg);
@@ -195,10 +197,14 @@ const StyledModelList = styled.div`
   padding-bottom: 40px;
   margin-bottom: -40px;
   position: relative;
+  max-width: calc(100% - 240px);
+  width: 100%;
+  overflow: hidden;
 `;
 
 const StyledPrevSearchItem = styled.div<{ hover: boolean }>`
   display: ${({ hover }): string => (hover ? 'block' : 'none')};
+  transform: rotateX(180deg);
 `;
 
 export default SearchShowBot;

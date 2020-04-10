@@ -45,6 +45,8 @@ const Keyword = ({
       args: [{ q: `${token}` }] // arguments
     };
     window.parent.postMessage(message, '*');
+
+    handleHoverEnable({ color: nextColor, term: token });
   };
 
   const handleNewClick = async (
@@ -99,10 +101,6 @@ const Keyword = ({
           <StyledPlus
             color={nextColor}
             onClick={e => handleNewClick(e, token)}
-            onMouseEnter={() =>
-              handleHoverEnable({ color: nextColor, term: token })
-            }
-            onMouseLeave={handleHoverDisable}
             hover={hover}
           >
             <Plus color={color} hover={hover} />

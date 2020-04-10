@@ -151,15 +151,7 @@ const SearchedTerm = ({
         <StyledModelHeaderContainer>
           <StyledHeaderTop>
             <button className="header">
-              {term!.split(' ').map(
-                (item: string, i: number): JSX.Element => {
-                  if (item.length > 11) {
-                    return <ShortHeader key={i}>{item}</ShortHeader>;
-                  } else {
-                    return <Header key={i}>{item}</Header>;
-                  }
-                }
-              )}
+              <ShortHeader>{term}</ShortHeader>
             </button>
             <button onClick={handleDelete} className="header">
               <img src={xAlt} alt="" />

@@ -99,7 +99,8 @@ const StyledShowTagsTop = styled.div`
   background-color: #1e2229;
   z-index: 2;
   width: 100%;
-  max-width: 530px;
+  max-width: 85%;
+  /* max-width: 530px; */
 
   h2 {
     font-family: 'Helvetica Neue', sans-serif;
@@ -139,6 +140,7 @@ const StyledSearchShowTagsContainer = styled.div`
 const StyledHistoryList = styled.div`
   display: flex;
   width: 100%;
+  max-width: 85%;
 `;
 const StyledTagHistory = styled.div`
   display: flex;
