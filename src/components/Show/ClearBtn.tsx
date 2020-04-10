@@ -1,9 +1,13 @@
 import React from 'react';
-import styled from 'styled-components';
+import { StyledButton } from './styles';
 
-const clearBtn = (): JSX.Element => {
+interface Props {
+  handleClearConfirm: () => void;
+}
+
+const clearBtn = ({ handleClearConfirm }: Props): JSX.Element => {
   return (
-    <StyledButton>
+    <StyledButton onClick={handleClearConfirm}>
       <svg
         width="64"
         height="18"
@@ -38,10 +42,5 @@ const clearBtn = (): JSX.Element => {
     </StyledButton>
   );
 };
-
-const StyledButton = styled.button`
-  background-color: transparent;
-  border: none;
-`;
 
 export default clearBtn;

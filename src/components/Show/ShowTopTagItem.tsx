@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import xImage from '../../lib/images/x.png';
 import xAltImage from '../../lib/images/x_alt.png';
 import { SearchHistory } from '../../types';
+import TagX from './TagX';
 
 interface Props {
   tag: SearchHistory;
@@ -45,12 +46,9 @@ const ShowTopTagItem = ({
     window.parent.postMessage(message, '*');
   };
 
-  const handleDelete = (
-    e: React.MouseEvent<HTMLButtonElement>,
-    tagId: number
-  ): void => {
+  const handleDelete = (e: React.MouseEvent<HTMLButtonElement>): void => {
     e.stopPropagation();
-    deleteModel!(tagId);
+    deleteModel!(id);
   };
 
   return (
@@ -60,33 +58,24 @@ const ShowTopTagItem = ({
       onClick={() => handleSelectModel(id)}
     >
       <p>{term}</p>
-      <StyleRemoveBtn
-        color={color}
-        selected={selectedId === id}
-        onClick={e => handleDelete(e, id)}
-      >
-        {selectedId === id ? (
-          <img src={xAltImage} alt="x" />
-        ) : (
-          <img src={xImage} alt="x" />
-        )}
-      </StyleRemoveBtn>
+      <TagX handleDelete={handleDelete} selected={selectedId === id} />
     </StyledHistoryItem>
   );
 };
 
 const StyledHistoryItem = styled.div<{ selected: boolean; color: string }>`
-  cursor: pointer;
+  cursor: default;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: white;
   background-color: ${({ selected, color }): string =>
-    selected ? `${color}30` : '#ffffff'};
-  border: 1px solid rgba(182, 192, 198, 0.6);
+    selected ? color : '#ffffff'};
+  border: 1px solid
+    ${({ selected }): string =>
+      selected ? 'rgba(23, 45, 59, 0.2)' : 'rgba(182, 192, 198, 0.6)'};
   box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.02);
   border-radius: 3px;
-  min-width: 86px;
+  min-width: 90px;
   padding: 0 10px;
   height: 24px;
 
@@ -104,22 +93,6 @@ const StyledHistoryItem = styled.div<{ selected: boolean; color: string }>`
     text-align: center;
     letter-spacing: 0.08em;
     box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.02);
-  }
-`;
-const StyleRemoveBtn = styled.button<{ selected: boolean; color: string }>`
-  border: 0;
-  background-color: ${({ selected, color }): string =>
-    selected ? `transparent` : '#ffffff'};
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transform: scale(0.8);
-
-  img {
-    transform: scale(1.2);
-  }
-  &:hover {
-    transform: scale(1);
   }
 `;
 

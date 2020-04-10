@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import { StyledButton } from './styles';
 
 interface Props {
   undoState: () => void;
@@ -24,10 +24,4 @@ const UndoBtn = ({ undoState }: Props): JSX.Element => {
     </StyledButton>
   );
 };
-
-const StyledButton = styled.button`
-  background-color: transparent;
-  border: none;
-`;
-
 export default UndoBtn;

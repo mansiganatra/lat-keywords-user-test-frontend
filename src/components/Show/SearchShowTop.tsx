@@ -72,9 +72,7 @@ const SearchShowTop = ({
                 )}
             </StyledHistoryList>
           </StyledTagHistory>
-          <StyledClearHistoryBtn onClick={handleClearConfirm}>
-            <ClearBtn />
-          </StyledClearHistoryBtn>
+          <ClearBtn handleClearConfirm={handleClearConfirm} />
         </StyledSearchShowTagsContainer>
       )}
     </StyledSearchShowTop>
@@ -111,32 +109,7 @@ const StyledShowTagsTop = styled.div`
     color: #ffffff;
   }
 `;
-const StyledClearHistoryBtn = styled.button`
-  cursor: pointer;
-  min-width: 77px;
-  height: 21px;
-  border: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #1e2229;
 
-  p {
-    font-family: 'Helvetica Neue', sans-serif;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 1rem;
-    line-height: 12px;
-    text-transform: capitalize;
-
-    color: #fc3636;
-  }
-
-  img {
-    width: inherit;
-    margin-right: 5px;
-  }
-`;
 const StyledSearchShowTagsContainer = styled.div`
   position: relative;
   display: flex;
