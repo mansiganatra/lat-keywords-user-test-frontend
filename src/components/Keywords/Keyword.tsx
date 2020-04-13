@@ -20,8 +20,9 @@ interface Props {
     term: string;
   }) => void;
   handleHighlightedDisable: () => void;
-  highlighted: boolean;
+  hover: boolean;
   nextColor: string;
+  handleHover: () => void;
 }
 //setKeywordRef
 const Keyword = ({
@@ -34,8 +35,9 @@ const Keyword = ({
   tokenId,
   handleHighlightedEnable,
   handleHighlightedDisable,
-  highlighted,
-  nextColor
+  hover,
+  nextColor,
+  handleHover
 }: Props): JSX.Element => {
   const { count, token, similarity } = word;
 
@@ -61,6 +63,7 @@ const Keyword = ({
   ): Promise<void> => {
     e.stopPropagation();
     try {
+      handleHover();
       handleTokenSelect(token, searchedId);
       const message = {
         call: 'setDocumentListParams', // call
@@ -107,9 +110,11 @@ const Keyword = ({
           <StyledPlus
             color={nextColor}
             onClick={e => handleNewClick(e, token)}
-            highlighted={highlighted}
+            hover={hover}
+            onMouseLeave={handleHover}
+            onMouseEnter={handleHover}
           >
-            <Plus color={color} highlighted={highlighted} />
+            <Plus color={color} hover={hover} />
           </StyledPlus>
         </StyledPlusContainer>
       )}
@@ -175,7 +180,7 @@ const StyledKWItem = styled.div`
   border: none;
 `;
 
-const StyledPlus = styled.button<{ color: string; highlighted: boolean }>`
+const StyledPlus = styled.button<{ color: string; hover: boolean }>`
   cursor: pointer;
 
   display: flex;
@@ -189,8 +194,7 @@ const StyledPlus = styled.button<{ color: string; highlighted: boolean }>`
 
   border: 1px solid rgba(160, 175, 199, 0.5);
 
-  background: ${({ highlighted, color }) =>
-    highlighted ? '#286FD8' : '#fafafb'};
+  background: ${({ hover, color }) => (hover ? '#286FD8' : '#fafafb')};
 `;
 
 const StyledPlusContainer = styled.div<{ color: string }>`

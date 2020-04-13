@@ -26,8 +26,9 @@ interface Props {
     term: string;
   }) => void;
   handleHighlightedDisable: () => void;
-  highlighted: boolean;
+  hover: boolean;
   nextColor: string;
+  handleHover: () => void;
 }
 
 const SearchedTerm = ({
@@ -44,8 +45,9 @@ const SearchedTerm = ({
   tokenId,
   handleHighlightedEnable,
   handleHighlightedDisable,
-  highlighted,
-  nextColor
+  hover,
+  nextColor,
+  handleHover
 }: Props): JSX.Element => {
   const {
     similarTokens,
@@ -88,8 +90,9 @@ const SearchedTerm = ({
                 tokenId={tokenId}
                 handleHighlightedEnable={handleHighlightedEnable}
                 handleHighlightedDisable={handleHighlightedDisable}
-                highlighted={highlighted}
+                hover={hover}
                 nextColor={nextColor}
+                handleHover={handleHover}
               />
             )
           )}
@@ -112,8 +115,9 @@ const SearchedTerm = ({
                 tokenId={tokenId}
                 handleHighlightedEnable={handleHighlightedEnable}
                 handleHighlightedDisable={handleHighlightedDisable}
-                highlighted={highlighted}
+                hover={hover}
                 nextColor={nextColor}
+                handleHover={handleHover}
               />
             )
           )}
@@ -138,8 +142,9 @@ const SearchedTerm = ({
                 tokenId={tokenId}
                 handleHighlightedEnable={handleHighlightedEnable}
                 handleHighlightedDisable={handleHighlightedDisable}
-                highlighted={highlighted}
+                hover={hover}
                 nextColor={nextColor}
+                handleHover={handleHover}
               />
             )
           )}
@@ -227,7 +232,7 @@ const StyledHeaderTop = styled.div`
     background-color: transparent;
   }
 
-  img:highlighted {
+  img:hover {
     transform: scale(1.2);
   }
 `;

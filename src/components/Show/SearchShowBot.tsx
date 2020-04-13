@@ -50,13 +50,12 @@ const SearchShowBot = ({
 
   const [hover, setHover] = useState<boolean>(false);
 
-  const handleHoverEnable = () => {
+  const handleHover = (): void => {
     if (!hover) {
-      return setHover(true);
+      setHover(true);
+    } else {
+      setHover(false);
     }
-  };
-  const handleHoverDisable = () => {
-    if (hover) return setHover(false);
   };
 
   const handleTokenSelect = (token: string | null, id: number | null): void => {
@@ -87,8 +86,9 @@ const SearchShowBot = ({
                     tokenId={tokenId}
                     handleHighlightedEnable={handleHighlightedEnable}
                     handleHighlightedDisable={handleHighlightedDisable}
-                    highlighted={highlighted}
+                    hover={hover}
                     nextColor={colorArray[arr.length]}
+                    handleHover={handleHover}
                   />
                 )
               )}
