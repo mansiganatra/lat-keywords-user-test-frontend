@@ -18,9 +18,15 @@ interface Props {
   selectedToken: string | null;
   handleTokenSelect: (token: string | null, id: number | null) => void;
   tokenId: number | null;
-  handleHoverEnable: ({ color, term }: { color: string; term: string }) => void;
-  handleHoverDisable: () => void;
-  hover: boolean;
+  handleHighlightedEnable: ({
+    color,
+    term
+  }: {
+    color: string;
+    term: string;
+  }) => void;
+  handleHighlightedDisable: () => void;
+  highlighted: boolean;
   nextColor: string;
 }
 
@@ -36,9 +42,9 @@ const SearchedTerm = ({
   selectedToken,
   handleTokenSelect,
   tokenId,
-  handleHoverEnable,
-  handleHoverDisable,
-  hover,
+  handleHighlightedEnable,
+  handleHighlightedDisable,
+  highlighted,
   nextColor
 }: Props): JSX.Element => {
   const {
@@ -80,9 +86,9 @@ const SearchedTerm = ({
                 selectedToken={selectedToken}
                 searchedId={id}
                 tokenId={tokenId}
-                handleHoverEnable={handleHoverEnable}
-                handleHoverDisable={handleHoverDisable}
-                hover={hover}
+                handleHighlightedEnable={handleHighlightedEnable}
+                handleHighlightedDisable={handleHighlightedDisable}
+                highlighted={highlighted}
                 nextColor={nextColor}
               />
             )
@@ -104,9 +110,9 @@ const SearchedTerm = ({
                 selectedToken={selectedToken}
                 searchedId={id}
                 tokenId={tokenId}
-                handleHoverEnable={handleHoverEnable}
-                handleHoverDisable={handleHoverDisable}
-                hover={hover}
+                handleHighlightedEnable={handleHighlightedEnable}
+                handleHighlightedDisable={handleHighlightedDisable}
+                highlighted={highlighted}
                 nextColor={nextColor}
               />
             )
@@ -130,9 +136,9 @@ const SearchedTerm = ({
                 selectedToken={selectedToken}
                 searchedId={id}
                 tokenId={tokenId}
-                handleHoverEnable={handleHoverEnable}
-                handleHoverDisable={handleHoverDisable}
-                hover={hover}
+                handleHighlightedEnable={handleHighlightedEnable}
+                handleHighlightedDisable={handleHighlightedDisable}
+                highlighted={highlighted}
                 nextColor={nextColor}
               />
             )
@@ -221,7 +227,7 @@ const StyledHeaderTop = styled.div`
     background-color: transparent;
   }
 
-  img:hover {
+  img:highlighted {
     transform: scale(1.2);
   }
 `;

@@ -18,6 +18,7 @@ interface Props {
   suggestedList: string[];
   undoCache: State | null;
   undoState: () => void;
+  handleHighlightedDisable: () => void;
 }
 
 const SearchShowTop = ({
@@ -29,10 +30,12 @@ const SearchShowTop = ({
   setKeywordRef,
   suggestedList,
   undoCache,
-  undoState
+  undoState,
+  handleHighlightedDisable
 }: Props): JSX.Element => {
   const handleClearConfirm = (): void => {
     clearSearchAll();
+    handleHighlightedDisable();
     // delete text content inside global overview search bar
     const message = {
       call: 'setDocumentListParams',

@@ -102,7 +102,7 @@ const StyledHeaderTop = styled.div`
     background-color: transparent;
   }
 
-  img:hover {
+  img:highlighted {
     transform: scale(1.2);
   }
 `;

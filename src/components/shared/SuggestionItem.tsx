@@ -43,7 +43,7 @@ const StyledSuggestionItem = styled.button<{ inversed: boolean }>`
   justify-content: center;
   align-items: center;
 
-  &:hover {
+  &:highlighted {
     background-color: ${({ inversed }): string =>
       inversed ? '#1e2229' : '#a0afc7'};
 

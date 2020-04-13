@@ -16,6 +16,19 @@ interface Props {
   deleteModel: (modelId: number) => void;
   term: string | null;
   suggestedList: string[];
+  handleHighlightedEnable: ({
+    color,
+    term
+  }: {
+    color: string;
+    term: string;
+  }) => void;
+  handleHighlightedDisable: () => void;
+  highlighted: boolean;
+  prevItemState: {
+    color: string;
+    term: string;
+  };
 }
 
 const SearchShowBot = ({
@@ -25,35 +38,30 @@ const SearchShowBot = ({
   selectModel,
   setKeywordRef,
   deleteModel,
-  term,
-  suggestedList
+  suggestedList,
+  handleHighlightedEnable,
+  handleHighlightedDisable,
+  highlighted,
+  prevItemState
 }: Props): JSX.Element => {
   const { searchedList } = state;
   const [tokenId, setTokenId] = useState<number | null>(null);
   const [selectedToken, setSelectedToken] = useState<string | null>(null);
-  const [prevItemState, setPrevItemState] = useState<{
-    color: string;
-    term: string;
-  }>({ color: '', term: '' });
+
   const [hover, setHover] = useState<boolean>(false);
+
+  const handleHoverEnable = () => {
+    if (!hover) {
+      return setHover(true);
+    }
+  };
+  const handleHoverDisable = () => {
+    if (hover) return setHover(false);
+  };
 
   const handleTokenSelect = (token: string | null, id: number | null): void => {
     setSelectedToken(token);
     setTokenId(id);
-  };
-
-  const handleHoverEnable = ({
-    color,
-    term
-  }: {
-    color: string;
-    term: string;
-  }): void => {
-    setPrevItemState({ color, term });
-    if (!hover) return setHover(true);
-  };
-  const handleHoverDisable = (): void => {
-    if (hover) return setHover(false);
   };
 
   return (
@@ -77,15 +85,15 @@ const SearchShowBot = ({
                     selectedToken={selectedToken}
                     handleTokenSelect={handleTokenSelect}
                     tokenId={tokenId}
-                    handleHoverEnable={handleHoverEnable}
-                    handleHoverDisable={handleHoverDisable}
-                    hover={hover}
+                    handleHighlightedEnable={handleHighlightedEnable}
+                    handleHighlightedDisable={handleHighlightedDisable}
+                    highlighted={highlighted}
                     nextColor={colorArray[arr.length]}
                   />
                 )
               )}
           </StyledModelList>
-          <StyledPrevSearchItem hover={hover}>
+          <StyledPrevSearchItem highlighted={highlighted}>
             <PreviewSearchedItem
               color={prevItemState.color}
               term={prevItemState.term}
@@ -202,8 +210,8 @@ const StyledModelList = styled.div`
   overflow: hidden;
 `;
 
-const StyledPrevSearchItem = styled.div<{ hover: boolean }>`
-  display: ${({ hover }): string => (hover ? 'block' : 'none')};
+const StyledPrevSearchItem = styled.div<{ highlighted: boolean }>`
+  display: ${({ highlighted }): string => (highlighted ? 'flex' : 'none')};
   transform: rotateX(180deg);
 `;
 

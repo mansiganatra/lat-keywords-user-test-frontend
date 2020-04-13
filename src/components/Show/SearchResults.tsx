@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import SearchShowTop from './SearchShowTop';
 import SearchShowBot from './SearchShowBot';
@@ -36,10 +36,30 @@ const SearchTopResult = ({
   undoCache,
   undoState
 }: Props): JSX.Element => {
+  const [prevItemState, setPrevItemState] = useState<{
+    color: string;
+    term: string;
+  }>({ color: '', term: '' });
+  const [highlighted, setHighlighted] = useState<boolean>(false);
+
   useEffect(() => {
     getSuggestion();
     // eslint-disable-next-line
   }, []);
+
+  const handleHighlightedEnable = ({
+    color,
+    term
+  }: {
+    color: string;
+    term: string;
+  }): void => {
+    setPrevItemState({ color, term });
+    if (!highlighted) return setHighlighted(true);
+  };
+  const handleHighlightedDisable = (): void => {
+    if (highlighted) return setHighlighted(false);
+  };
 
   return (
     <>
@@ -53,6 +73,7 @@ const SearchTopResult = ({
         suggestedList={suggestedList}
         undoCache={undoCache}
         undoState={undoState}
+        handleHighlightedDisable={handleHighlightedDisable}
       />
       {!!state.searchedList.length && <SearchShowMid setSortBy={setSortBy} />}
       <SearchShowBot
@@ -64,6 +85,10 @@ const SearchTopResult = ({
         deleteModel={deleteModel}
         term={term}
         suggestedList={suggestedList}
+        handleHighlightedEnable={handleHighlightedEnable}
+        handleHighlightedDisable={handleHighlightedDisable}
+        highlighted={highlighted}
+        prevItemState={prevItemState}
       />
     </>
   );

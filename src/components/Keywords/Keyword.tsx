@@ -12,9 +12,15 @@ interface Props {
   selectedToken: string | null;
   searchedId: number;
   tokenId: number | null;
-  handleHoverEnable: ({ color, term }: { color: string; term: string }) => void;
-  handleHoverDisable: () => void;
-  hover: boolean;
+  handleHighlightedEnable: ({
+    color,
+    term
+  }: {
+    color: string;
+    term: string;
+  }) => void;
+  handleHighlightedDisable: () => void;
+  highlighted: boolean;
   nextColor: string;
 }
 //setKeywordRef
@@ -26,9 +32,9 @@ const Keyword = ({
   selectedToken,
   searchedId,
   tokenId,
-  handleHoverEnable,
-  handleHoverDisable,
-  hover,
+  handleHighlightedEnable,
+  handleHighlightedDisable,
+  highlighted,
   nextColor
 }: Props): JSX.Element => {
   const { count, token, similarity } = word;
@@ -46,7 +52,7 @@ const Keyword = ({
     };
     window.parent.postMessage(message, '*');
 
-    handleHoverEnable({ color: nextColor, term: token });
+    handleHighlightedEnable({ color: nextColor, term: token });
   };
 
   const handleNewClick = async (
@@ -67,7 +73,7 @@ const Keyword = ({
       };
       window.parent.postMessage(otherMessage, '*');
       handleTokenSelect(null, null);
-      handleHoverDisable();
+      handleHighlightedDisable();
     } catch (error) {}
   };
 
@@ -101,9 +107,9 @@ const Keyword = ({
           <StyledPlus
             color={nextColor}
             onClick={e => handleNewClick(e, token)}
-            hover={hover}
+            highlighted={highlighted}
           >
-            <Plus color={color} hover={hover} />
+            <Plus color={color} highlighted={highlighted} />
           </StyledPlus>
         </StyledPlusContainer>
       )}
@@ -169,7 +175,7 @@ const StyledKWItem = styled.div`
   border: none;
 `;
 
-const StyledPlus = styled.button<{ color: string; hover: boolean }>`
+const StyledPlus = styled.button<{ color: string; highlighted: boolean }>`
   cursor: pointer;
 
   display: flex;
@@ -183,7 +189,8 @@ const StyledPlus = styled.button<{ color: string; hover: boolean }>`
 
   border: 1px solid rgba(160, 175, 199, 0.5);
 
-  background: ${({ hover, color }) => (hover ? '#286FD8' : '#fafafb')};
+  background: ${({ highlighted, color }) =>
+    highlighted ? '#286FD8' : '#fafafb'};
 `;
 
 const StyledPlusContainer = styled.div<{ color: string }>`
