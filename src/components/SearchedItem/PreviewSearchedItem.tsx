@@ -1,5 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+
+import { axiosWithAuth, query } from '../../utils';
+import PreviewKeyword from '../Keywords/PreviewKeyword';
 
 interface PreviewSearchedItemProps {
   term: string;
@@ -12,18 +15,42 @@ const PreviewSearchedItem = ({
   term,
   color
 }: PreviewSearchedItemProps): JSX.Element => {
+  const [keywords, setKeywords] = useState([]);
+  const { server, apiToken, documentSetId } = query;
+
+  useEffect(() => {
+    if (term.length > 0) {
+      const fetch = async () => {
+        try {
+          const res = await axiosWithAuth(apiToken).get('/search', {
+            params: {
+              term,
+              server,
+              documentSetId
+            }
+          });
+
+          setKeywords(res.data.similarTokens.slice(0, 11));
+
+          console.log(res.data);
+        } catch (error) {
+          console.error(error);
+        }
+      };
+      fetch();
+    }
+  }, [term]);
+
   return (
     <StyledContainer>
       <StyledModelContainer color={color}>
         <StyledModelHeaderContainer>
           <StyledHeaderTop>
-            <button className="header">
-              {term!.split(' ')[0].length >= 14 ? (
-                <ShortHeader>{term}</ShortHeader>
-              ) : (
-                <Header>{term}</Header>
-              )}
-            </button>
+            {term!.split(' ')[0].length >= 14 ? (
+              <ShortHeader>{term}</ShortHeader>
+            ) : (
+              <Header>{term}</Header>
+            )}
           </StyledHeaderTop>
           <StyledHeaderBot>
             <div className="word">Word</div>
@@ -32,11 +59,33 @@ const PreviewSearchedItem = ({
           </StyledHeaderBot>
         </StyledModelHeaderContainer>
         <StyledKeywordList>
-          {arr.map((item: number) => (
-            <StyledKWContainer key={item}>
-              <StyledKWButton color={color} />
-            </StyledKWContainer>
-          ))}
+          {keywords.length > 0 ? (
+            <>
+              {keywords.map(
+                (item: {
+                  count: number;
+                  similarity: number;
+                  token: string;
+                }): JSX.Element => (
+                  <StyledKWContainer key={item.token}>
+                    <PreviewKeyword
+                      token={item.token}
+                      similarity={item.similarity}
+                      count={item.count}
+                    />
+                  </StyledKWContainer>
+                )
+              )}
+            </>
+          ) : (
+            <>
+              {arr.map((item: number) => (
+                <StyledKWContainer key={item}>
+                  <StyledKWButton color={color} />
+                </StyledKWContainer>
+              ))}
+            </>
+          )}
         </StyledKeywordList>
       </StyledModelContainer>
     </StyledContainer>
@@ -46,7 +95,7 @@ const PreviewSearchedItem = ({
 const StyledKWContainer = styled.div`
   position: relative;
 `;
-const StyledKWButton = styled.button<{ color: string }>`
+const StyledKWButton = styled.div<{ color: string }>`
   cursor: pointer;
   width: 100%;
   height: 32px;
@@ -92,12 +141,13 @@ const ShortHeader = styled(Header)`
   font-size: 1.4rem;
 `;
 const StyledHeaderTop = styled.div`
+  cursor: default;
   display: flex;
   justify-content: space-between;
   align-items: center;
 
   .header {
-    cursor: pointer;
+    cursor: default;
     border: none;
     background-color: transparent;
   }
@@ -107,6 +157,7 @@ const StyledHeaderTop = styled.div`
   }
 `;
 const StyledHeaderBot = styled.div`
+  cursor: default;
   display: flex;
   padding-top: 25px;
   justify-content: space-between;
@@ -121,7 +172,7 @@ const StyledHeaderBot = styled.div`
     letter-spacing: 0.08em;
     text-transform: capitalize;
 
-    color: rgba(23, 45, 59, 0.2);
+    color: rgba(23, 45, 59, 0.4);
   }
 `;
 
