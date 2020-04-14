@@ -1,8 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import xImage from '../../lib/images/x.png';
-import xAltImage from '../../lib/images/x_alt.png';
 import { SearchHistory } from '../../types';
 import TagX from './TagX';
 
@@ -56,6 +54,7 @@ const ShowTopTagItem = ({
       color={color}
       selected={selectedId === id}
       onClick={() => handleSelectModel(id)}
+      className="tag"
     >
       <p>{term}</p>
       <TagX handleDelete={handleDelete} selected={selectedId === id} />

@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 
 import Keyword from '../Keywords/Keyword';
-import xAlt from '../../lib/images/x_alt.png';
 import { SearchedItem, SimilarToken } from '../../types';
 import SearchItemX from './SearchItemX';
 

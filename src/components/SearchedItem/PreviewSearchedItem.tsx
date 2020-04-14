@@ -16,11 +16,11 @@ const PreviewSearchedItem = ({
   color
 }: PreviewSearchedItemProps): JSX.Element => {
   const [keywords, setKeywords] = useState([]);
-  const { server, apiToken, documentSetId } = query;
 
   useEffect(() => {
     if (term.length > 0) {
       const fetch = async () => {
+        const { server, apiToken, documentSetId } = query;
         try {
           setKeywords([]);
           const res = await axiosWithAuth(apiToken).get('/search', {
@@ -32,8 +32,6 @@ const PreviewSearchedItem = ({
           });
 
           setKeywords(res.data.similarTokens.slice(0, 11));
-
-          console.log(res.data);
         } catch (error) {
           console.error(error);
         }

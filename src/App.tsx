@@ -67,12 +67,15 @@ const App = (): JSX.Element => {
     el?.scrollIntoView(scrollIntoViewOptions);
   };
 
-  const selectModel = (id: number | null, className?: string): void => {
-    setSelectedId(id);
-    if (className!.length > 0) {
-      scrollToLastChild(className!);
-    }
-  };
+  const selectModel = useCallback(
+    (id: number | null, className?: string): void => {
+      setSelectedId(id);
+      if (className!.length > 0) {
+        scrollToLastChild(className!);
+      }
+    },
+    []
+  );
 
   const setKeywordRef = (bool: boolean): void => {
     keywordModeRef.current = bool;
@@ -120,7 +123,6 @@ const App = (): JSX.Element => {
     }
     setUndoCache(null);
   };
-  console.log(undoCache);
   const clearSearchAll = (): void => {
     setUndoCache(state);
 
@@ -213,7 +215,11 @@ const App = (): JSX.Element => {
               similarSuggestionslist,
               token
             };
+            // push new state to overview store object
             updateStore(newState);
+
+            // higlights newly created tag
+            selectModel(newID, '');
 
             return {
               ...prevState,
@@ -224,12 +230,18 @@ const App = (): JSX.Element => {
             };
           });
         }
-        scrollToLastChild('.item:nth-last-child(1)');
+        // auto scroll to newly created list
+        scrollToLastChild('.item:last-child');
+
+        // scroll to newly created tag
+        setTimeout(() => {
+          scrollToLastChild('.tag:last-child');
+        }, 1000);
       } catch (error) {
         console.error(error);
       }
     },
-    [updateStore]
+    [updateStore, selectModel]
   );
 
   // json stream and initial logic
@@ -253,7 +265,6 @@ const App = (): JSX.Element => {
           if (res.data.associatorStore.state.searchedList.length > 0) {
             setState(res.data.associatorStore?.state);
           } else {
-            console.log('hello');
             // set default initial values to state
             const newState: State = {
               searchedList: [],
@@ -353,7 +364,6 @@ const App = (): JSX.Element => {
       if (e.data.event === 'notify:documentListParams') {
         const token: string = e.data.args[0].q;
         if (keywordModeRef.current === false && token !== undefined) {
-          console.log('sup!');
           getKeywords({
             token,
             server,

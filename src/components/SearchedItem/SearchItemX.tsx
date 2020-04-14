@@ -16,8 +16,8 @@ const SearchItemX = (): JSX.Element => {
         y2="-0.6"
         transform="matrix(0.688984 0.724776 -0.688984 0.724776 0 1)"
         stroke="#172d3b"
-        stroke-width="1.2"
-        stroke-linecap="round"
+        strokeWidth="1.2"
+        strokeLinecap="round"
       />
       <line
         x1="0.6"
@@ -26,8 +26,8 @@ const SearchItemX = (): JSX.Element => {
         y2="-0.6"
         transform="matrix(-0.688984 0.724776 0.688984 0.724776 10 1)"
         stroke="#172d3b"
-        stroke-width="1.2"
-        stroke-linecap="round"
+        strokeWidth="1.2"
+        strokeLinecap="round"
       />
     </svg>
   );
