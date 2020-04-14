@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import Keyword from '../Keywords/Keyword';
 import xAlt from '../../lib/images/x_alt.png';
 import { SearchedItem, SimilarToken } from '../../types';
+import SearchItemX from './SearchItemX';
 
 interface Props {
   searchedItem: SearchedItem;
@@ -69,7 +70,7 @@ const SearchedTerm = ({
       call: 'setDocumentListParams', // call
       args: [{ q: `${term}` }] // arguments
     };
-    selectModel(id, `a${foundTokens[0]}${id}`);
+    selectModel(id, `a${foundTokens[0].replace(/'/, '')}${id}`);
     window.parent.postMessage(message, '*');
   };
 
@@ -165,7 +166,7 @@ const SearchedTerm = ({
               <ShortHeader>{term}</ShortHeader>
             </button>
             <button onClick={handleDelete} className="header">
-              <img src={xAlt} alt="" />
+              <SearchItemX />
             </button>
           </StyledHeaderTop>
           <StyledHeaderBot>

@@ -22,6 +22,7 @@ const PreviewSearchedItem = ({
     if (term.length > 0) {
       const fetch = async () => {
         try {
+          setKeywords([]);
           const res = await axiosWithAuth(apiToken).get('/search', {
             params: {
               term,
@@ -46,11 +47,7 @@ const PreviewSearchedItem = ({
       <StyledModelContainer color={color}>
         <StyledModelHeaderContainer>
           <StyledHeaderTop>
-            {term!.split(' ')[0].length >= 14 ? (
-              <ShortHeader>{term}</ShortHeader>
-            ) : (
-              <Header>{term}</Header>
-            )}
+            <ShortHeader>{term}</ShortHeader>
           </StyledHeaderTop>
           <StyledHeaderBot>
             <div className="word">Word</div>
@@ -132,7 +129,7 @@ const Header = styled.h1`
   font-weight: bold;
   font-size: 1.4rem;
   line-height: 26px;
-  color: #172d3b20;
+  color: #172d3b85;
   width: 100%;
   max-width: 150px;
   text-align: left;
