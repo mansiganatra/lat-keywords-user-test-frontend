@@ -69,7 +69,7 @@ const SearchedTerm = ({
       call: 'setDocumentListParams', // call
       args: [{ q: `${term}` }] // arguments
     };
-    selectModel(id, `a${foundTokens[0].replace(/'/, '')}${id}`);
+    selectModel(id, `.a${foundTokens[0].replace(/'/, '')}${id}`);
     window.parent.postMessage(message, '*');
   };
 
@@ -153,7 +153,7 @@ const SearchedTerm = ({
   };
 
   return (
-    <StyledContainer className={`item a${foundTokens[0]}${id}`}>
+    <StyledContainer className={`item a${foundTokens[0].replace(/'/, '')}${id}`}>
       <StyledModelContainer
         selected={selectedId === id}
         topBarColor={topBarColor}

@@ -59,6 +59,7 @@ const App = (): JSX.Element => {
 
   const scrollToLastChild = (element: string): void => {
     let el: any = document.querySelector(element);
+    console.log(element);
     let scrollIntoViewOptions: any = {
       behavior: 'smooth',
       block: 'start',
