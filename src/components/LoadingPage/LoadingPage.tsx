@@ -57,23 +57,19 @@ const LoadingPage = ({ progress }: Props) => {
   if (fraction < 0.25) {
     return (
       <LoadingPageContainer>
-        <StyledTopSection>
-          <StyledHeaderSection>
-            <StyledHeader>
-              Processing your documents may take up to twenty minutes
-            </StyledHeader>
-            <StyledSubHeader>
-              Lorem ipsum odor sit amet consectur ala to adipiscing elit sed do
-              emusod
-            </StyledSubHeader>
-          </StyledHeaderSection>
-          <StyledImgContainer>
-            <img src={LoadImgOne} alt="" />
-          </StyledImgContainer>
-        </StyledTopSection>
         <StyledLoadingBar>
           <StyledLoadingFiller fraction={fraction} />
         </StyledLoadingBar>
+        <StyledTopSection>
+          <StyledImgContainer>
+            <img src={LoadImgOne} alt="" />
+          </StyledImgContainer>
+          <StyledHeaderSection>
+            <StyledHeader>
+              Processing your documents may take up to ten minutes
+            </StyledHeader>
+          </StyledHeaderSection>
+        </StyledTopSection>
       </LoadingPageContainer>
     );
   }
@@ -81,44 +77,36 @@ const LoadingPage = ({ progress }: Props) => {
   if (fraction < 0.75) {
     return (
       <LoadingPageContainer>
-        <StyledTopSection>
-          <StyledHeaderSection>
-            <StyledHeader>Results are coming in as we speak</StyledHeader>
-            <StyledSubHeader>
-              Lorem ipsum odor sit amet consectur ala to adipiscing elit sed do
-              emusod
-            </StyledSubHeader>
-          </StyledHeaderSection>
-          <StyledImgContainer>
-            <img src={LoadImgTwo} alt="" />
-          </StyledImgContainer>
-        </StyledTopSection>
         <StyledLoadingBar>
           <StyledLoadingFiller fraction={fraction} />
         </StyledLoadingBar>
+        <StyledTopSection>
+          <StyledImgContainer>
+            <img src={LoadImgTwo} alt="" />
+          </StyledImgContainer>
+          <StyledHeaderSection>
+            <StyledHeader>Results are coming in as we speak</StyledHeader>
+          </StyledHeaderSection>
+        </StyledTopSection>
       </LoadingPageContainer>
     );
   }
 
   return (
     <LoadingPageContainer>
+      <StyledLoadingBar>
+        <StyledLoadingFiller fraction={fraction} />
+      </StyledLoadingBar>
       <StyledTopSection>
+        <StyledImgContainer>
+          <img src={LoadImgThree} alt="" />
+        </StyledImgContainer>
         <StyledHeaderSection>
           <StyledHeader>
             Find word associated with your search in a few minutes
           </StyledHeader>
-          <StyledSubHeader>
-            Lorem ipsum odor sit amet consectur ala to adipiscing elit sed do
-            emusod
-          </StyledSubHeader>
         </StyledHeaderSection>
-        <StyledImgContainer>
-          <img src={LoadImgThree} alt="" />
-        </StyledImgContainer>
       </StyledTopSection>
-      <StyledLoadingBar>
-        <StyledLoadingFiller fraction={fraction} />
-      </StyledLoadingBar>
     </LoadingPageContainer>
   );
 };
