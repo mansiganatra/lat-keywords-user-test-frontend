@@ -74,8 +74,7 @@ const StyledHistoryItem = styled.div<{ selected: boolean; color: string }>`
       selected ? 'rgba(23, 45, 59, 0.2)' : 'rgba(182, 192, 198, 0.6)'};
   box-shadow: 0px 4px 5px rgba(0, 0, 0, 0.02);
   border-radius: 3px;
-  min-width: 90px;
-  padding: 0 10px;
+  padding: 0 0 0 5px;
   height: 24px;
 
   color: ${({ selected }) => (selected ? '#ffffff' : '#172D3B')};

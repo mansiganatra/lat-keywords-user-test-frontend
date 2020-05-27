@@ -12,6 +12,9 @@ export const StyledTopSection = styled.section`
   display: flex;
   justify-content: space-between;
   margin-right: 50px;
+  max-width: 500px;
+  width: 100%;
+  margin: 0 auto;
   @media (max-width: 700px) {
     margin-right: 0;
   }
@@ -23,7 +26,7 @@ export const StyledHeader = styled.h1`
   font-family: 'Helvetica Neue', sans-serif;
   font-style: normal;
   font-weight: bold;
-  font-size: 2.1rem;
+  font-size: 2rem;
   line-height: 26px;
   text-transform: capitalize;
 
@@ -36,6 +39,7 @@ export const StyledLoadingBar = styled.div`
   width: 100%;
   max-width: 620px;
   height: 7px;
+  margin-bottom: 41px;
 
   background: #dfe2e5;
 `;
